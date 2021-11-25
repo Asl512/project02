@@ -65,8 +65,14 @@ flutter:
 
   assets:
     - image/icon/password.svg
-    - image/icon/hide.png
-    - image/icon/show.png
+    - image/icon/email.svg
+    - image/icon/hide.svg
+    - image/icon/show.svg
+    - image/icon/vk.svg
+    - image/icon/okru.svg
+    - image/icon/facebook.svg
+    - image/icon/google.svg
+    - image/icon/twitter.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

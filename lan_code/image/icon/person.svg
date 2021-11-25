@@ -5,9 +5,9 @@
 <style type="text/css">
 	.st0{fill:none;stroke:#FF0000;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
 </style>
-<g>
-	<circle class="st0" cx="60.2" cy="22.5" r="7.2"/>
-	<path class="st0" d="M54.7,2.5C40.6,2.5,29.1,14,29.1,28.1c0,4.2,1,8.1,2.8,11.6L2.5,69.4v10.9h9.8l3.8-3.8v-6.7h6.5l3.4-3.4v-6.7
-		h7.8l9-9c3.6,1.9,7.6,2.9,11.9,2.9c14.1,0,25.6-11.5,25.6-25.6S68.9,2.5,54.7,2.5z"/>
-</g>
+<image style="display:none;overflow:visible;" width="512" height="512" xlink:href="../../../../../Downloads/user.png"  transform="matrix(0.1615 0 0 0.1615 -0.6044 0)">
+</image>
+<circle class="st0" cx="41.3" cy="19.9" r="17.3"/>
+<path class="st0" d="M71,80.4H11.7c-2.8,0-5-2.2-5-5v-3.6c0-15.6,12.7-28.3,28.3-28.3h12.7C63.3,43.4,76,56.1,76,71.7v3.6
+	C76,78.1,73.8,80.4,71,80.4z"/>
 </svg>

@@ -7,17 +7,19 @@ import 'assets/style.dart';
 import 'assets/finally.dart';
 import 'assets/text.dart';
 
-class Authorization extends StatefulWidget
+
+class Registration extends StatefulWidget
 {
-  const Authorization({Key? key}) : super(key: key);
+  const Registration({Key? key}) : super(key: key);
 
   @override
-  State<Authorization> createState() => _AuthorizationState();
+  State<Registration> createState() => _RegistrationState();
 }
 
-class _AuthorizationState extends State<Authorization> {
+class _RegistrationState extends State<Registration> {
 bool passwordVisible = false;
 bool isChecked = false;
+List errorNameSurname = [false,'errorNameSurname'];
 List errorPassword = [false,'errorPassword'];
 List errorEmail = [false,'errorEmail'];
 
@@ -25,26 +27,70 @@ List errorEmail = [false,'errorEmail'];
   Widget build(BuildContext context)
   {
     return Scaffold(backgroundColor: LigthGreen,
-        body:Stack(children: [
-          ///ТРЕУГОЛЬНИКИ
+      body:Stack(children: [
+        ///ТРЕУГОЛЬНИКИ
           ListView(children:[Stack(children:[
             ClipPath(
               child: Container(decoration: BoxDecoration(color: GreenReady.withOpacity(0.5)),height: 500,width: 500,),
               clipper: Triangle(1),),
             ClipPath(
-              child: Container(decoration: BoxDecoration(color: LigthGreen,),height: 500,width: 500,),
+              child: Container(decoration: BoxDecoration(color: LigthGreen),height: 500,width: 500,),
               clipper: Triangle(2),),
           ])]),
 
-
           ListView(shrinkWrap: true,padding: EdgeInsets.symmetric(horizontal: 14),
               children:[
-                ///ВОЙТИ
+                ///РЕГИСТРАЦИЯ
                 Container(alignment: Alignment.center,margin: EdgeInsets.symmetric(vertical: 70),
-                    child:Text(textWelcome, style: Montserrat(style:SemiBold,color:Blue, size: 28))),
+                    child:Text(textRegistration, style: Montserrat(style:SemiBold,color:Blue, size: 28))),
 
                 Column(mainAxisAlignment:MainAxisAlignment.center,
                     children:[
+
+                      ///ИМЯ И ФАМИЛИЯ
+                      Container(height: 112,
+                          child: Column(children:
+                          [
+                            Container(width: double.infinity,
+                              margin: EdgeInsets.fromLTRB(10, 0, 0, 10),
+                              child: Text(textNameSurname, style: Montserrat(color:Blue)),
+                            ),
+
+                            Stack(
+                                children: [
+                                  Container(decoration: BoxDecoration(color:LigthGreen,
+                                    borderRadius: BorderRadius.circular(500),
+                                    boxShadow: [BoxShadow(
+                                      color: Colors.grey, blurRadius: 5, spreadRadius: 0.5,
+                                      offset: Offset(0, 3),
+                                    )],),height: 50,),
+
+                                  TextField(style: Montserrat(color:Blue),
+                                      obscureText: passwordVisible,
+                                      decoration: InputDecoration(
+
+                                        //ИКОНКА
+                                          prefixIcon: Container(margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                                              child: iconEmail
+                                          ),
+
+                                          //ВЫВОД ОШИБКИ
+                                          errorText: errorNameSurname[0] == true ? errorNameSurname[1] : null,
+                                          errorStyle: Montserrat(style:Medium,color: Red,size: 15),
+
+                                          isDense: true,
+                                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(500),
+                                              borderSide: BorderSide(width: 0, style: errorNameSurname[0] == true ? BorderStyle.solid : BorderStyle.none)
+                                          ),
+                                          fillColor: White,
+                                          filled: true
+                                      )
+                                  )
+                                ]
+                            )
+                          ]
+                          )
+                      ),
 
                       ///EMAIL
                       Container(height: 112,
@@ -95,24 +141,11 @@ List errorEmail = [false,'errorEmail'];
                       Container(height: 128,
                           child: Column(children:
                           [
-                            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(left: 10),
-                                  child: Text(textPassword, style: Montserrat(color:Blue)),
-                                ),
 
-                                TextButton(
-                                  child: Text(textHelp, style: Montserrat(color:Blue)),
-                                  onPressed: ()
-                                  {
-                                    setState(() {
-                                      errorPassword[0] = !errorPassword[0];
-                                      errorEmail[0] = !errorEmail[0];
-                                    });
-                                  },
-                                )
-                              ],),
+                            Container(width: double.infinity,
+                              margin: EdgeInsets.fromLTRB(10, 0, 0, 10),
+                              child: Text(textComePassword, style: Montserrat(color:Blue)),
+                            ),
 
                             Stack(children: [
                               Container(decoration: BoxDecoration(color:LigthGreen,
@@ -175,7 +208,7 @@ List errorEmail = [false,'errorEmail'];
                           )
                       ),
 
-                      ///ТЕКСТ
+                      ///РЕГИСТРАЦИЯ
                       Container(margin: EdgeInsets.only(top:50),
                           child: Column(
                             children: [
@@ -184,7 +217,7 @@ List errorEmail = [false,'errorEmail'];
                               TextButton(
                                   child: Text(textRegister, style: Montserrat(size:16,color:Green,style: Regular)),
                                   onPressed: (){
-                                    Navigator.pushNamed(context, '/registration');
+                                    Navigator.pop(context);
                                   })
                             ],)
                       )
