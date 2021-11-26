@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 
 import 'finally.dart';
 
-TextStyle Montserrat({FontWeight? style, Color? color, double? size})
-{
-  color ??= White;
-  style ??= Medium;
-  size ??= 18;
 
+///Функция для строк
+TextStyle Montserrat({FontWeight style = Medium, Color color = White, double size = 18})
+{
   return TextStyle(
     fontSize: size,
     color: color,
@@ -18,42 +16,47 @@ TextStyle Montserrat({FontWeight? style, Color? color, double? size})
   );
 }
 
-Widget IconShowHide(bool passwordVisible)
+///Виджет тени на текстовые блоки
+Widget Shadow(double height)
 {
-  if(passwordVisible == true)
-  {
-    return iconShow;
-  }
-  else
-    {
-      return iconHide;
-    }
+  return Container(height: height,
+      decoration: BoxDecoration(color:LigthGreen,
+        borderRadius: BorderRadius.circular(500),
+        boxShadow:const [BoxShadow(color: Colors.grey,
+          blurRadius: 5,
+          spreadRadius: 0.5,
+          offset: Offset(0, 3)
+        )],
+      )
+  );
 }
 
-///ТРЕУГОЛЬНИК (НА ВХОДЕ И РЕГИСТРАЦИИ)
-class Triangle extends CustomClipper<Path>{
+///Класс рисующий треугольники (НА ВХОДЕ И РЕГИСТРАЦИИ)
+class Triangle extends CustomClipper<Path>
+{
   int numb = 1;
-
+  var points = [Offset(0, 0)];
   Triangle(int numb)
   {
     this.numb = numb;
   }
 
   @override
-  Path getClip(Size size) {
-    var points = [
-      Offset(1, 0), // точка p1
-      Offset(1, size.height), // точка p3
-      Offset(size.width, size.height / 2) // точка p4
-    ];
-
+  Path getClip(Size size)
+  {
     if(numb == 2)
     {
       points = [
         Offset(1, 60), // точка p1
-        Offset(1, size.height-60), // точка p3
-        Offset(size.width/1.3, size.height / 2) // точка p4
-      ];
+        Offset(1, size.height-60), // точка p2
+        Offset(size.width/1.3, size.height / 2)];// точка p3
+    }
+    else if(numb ==1)
+    {
+      points = [
+        Offset(1, 0), // точка p1
+        Offset(1, size.height), // точка p2
+        Offset(size.width, size.height / 2)];// точка p3
     }
 
     Path path = Path()
@@ -67,18 +70,18 @@ class Triangle extends CustomClipper<Path>{
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
-///ВОЙТИ ЧЕРЕЗ
+///Виджет ВОЙТИ ЧЕРЕЗ
 Widget LoginHrough(text)
 {
-  return
-    Container(
-      child: Column(children: [
-        Container(width: double.infinity,
-          margin: EdgeInsets.fromLTRB(10, 0, 0, 10),
-          child: Text(text, style: Montserrat(color:Blue)),
-        ),
+  return Container(
+    child: Column(children:[
+      Container(width: double.infinity,
+        margin: EdgeInsets.fromLTRB(10, 0, 0, 10),
+        child: Text(text, style: Montserrat(color:Blue)),
+      ),
 
-        Row(children: [
+      Row(mainAxisAlignment:MainAxisAlignment.spaceAround ,
+        children:[
           IconButton(icon: iconGoogle, iconSize: 50,
             onPressed: (){},
           ),
@@ -93,9 +96,9 @@ Widget LoginHrough(text)
           ),
           IconButton(icon: iconTwitter,iconSize: 50,
             onPressed: (){},
-          ),
-        ],mainAxisAlignment:MainAxisAlignment.spaceAround ,
-        )
-      ],),
-    );
+          )
+        ]
+      )
+    ])
+  );
 }

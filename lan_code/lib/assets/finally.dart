@@ -15,10 +15,13 @@ const Color Green = Color(0xFF48C28B);
 const Color Grey = Color(0xFF9D9F9F);
 
 ///ICON
-final Widget iconPassword = SvgPicture.asset('image/icon/password.svg', height: 25, width: 25, allowDrawingOutsideViewBox: true, cacheColorFilter: true);
+//final Widget iconPassword = SvgPicture.network('image/icon/password.svg', height: 25, width: 25, allowDrawingOutsideViewBox: true, cacheColorFilter: true);
 final Widget iconEmail = SvgPicture.asset('image/icon/email.svg', height: 25, width: 25, allowDrawingOutsideViewBox: true, color: Blue);
 final Widget iconShow = SvgPicture.asset('image/icon/show.svg', height: 25, width: 25, allowDrawingOutsideViewBox: true, color: Blue);
 final Widget iconHide = SvgPicture.asset('image/icon/hide.svg', height: 25, width: 25, allowDrawingOutsideViewBox: true, color: Blue);
+
+final String dogUrl = 'image/icon/email.svg';
+final Widget iconPassword = SvgPicture.asset(dogUrl);
 
 final Widget iconVK = SvgPicture.asset('image/icon/vk.svg', height: 80, width: 80, allowDrawingOutsideViewBox: true, color: Color(0xFF5181B8));
 final Widget iconGoogle = SvgPicture.asset('image/icon/google.svg', height: 80, width: 80, allowDrawingOutsideViewBox: true, color: Color(0xFFEB4335));
