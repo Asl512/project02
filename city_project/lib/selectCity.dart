@@ -2,11 +2,13 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'city.dart';
+import 'city/city.dart';
 
 import 'assets/style.dart';
 import 'assets/finally.dart';
 import 'assets/text.dart';
+import 'assets/data.dart';
+
 
 class SelectCity extends StatefulWidget
 {
@@ -23,42 +25,47 @@ class _SelectCityState extends State<SelectCity> {
   @override
   Widget build(BuildContext context)
   {
+    double heigthBar = MediaQuery.of(context).size.height/6;
     return Scaffold(backgroundColor: LigthGreen,
         ///МЕНЮ
         drawer: Theme(
             data: Theme.of(context).copyWith(canvasColor: Colors.black.withOpacity(0.9),),
             child:Menu(context)
         ),
-        ///ШАПКА
-        appBar: PreferredSize(preferredSize: Size.fromHeight(70),
-          child: AppBar(flexibleSpace: Image(image: AssetImage(imgBackCity),
-              fit: BoxFit.cover),
-              centerTitle: false,
-              titleSpacing: 0.0,
-            title: Stack(children: [
-              Container(width: double.infinity,
-                  height: 70,
-                  decoration: BoxDecoration(color: Colors.black.withOpacity(0.7))
-              ),
 
-              Container(height: 70,
-                  padding: EdgeInsets.only(left: 20),
-                  child: Column(crossAxisAlignment:CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(textNameApp,style: Montserrat(style:SemiBold,size: 18)),
-                        Row(children: [
-                          Container(margin: EdgeInsets.only(right: 7),
-                              child:Text(textMotto1,style: Montserrat(style:SemiBold, size: 18))
-                          ),
-                          Text(textMotto2,style: Montserrat(style:SemiBold,color: Colors.yellow, size: 18)),
-                        ])
-                      ]
+        ///ШАПКА
+        appBar: PreferredSize(preferredSize: Size.fromHeight(heigthBar),
+            child: AppBar(flexibleSpace: Image(image: AssetImage(imgBackCity),
+                fit: BoxFit.cover),
+                centerTitle: false,
+                titleSpacing: 0.0,
+                bottom: PreferredSize(child:Stack(children: [
+                  Container(width: double.infinity,
+                      height: heigthBar/2,
+                      decoration: BoxDecoration(color: Colors.black.withOpacity(0.7))
+                  ),
+
+                  Container(height: heigthBar/2,
+                      padding: EdgeInsets.only(left: 20),
+                      child: Column(crossAxisAlignment:CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(textNameApp,style: Montserrat(style:SemiBold,size: 23)),
+                            Row(children: [
+                              Container(margin: EdgeInsets.only(right: 7),
+                                  child:Text(textMotto1,style: Montserrat(style:SemiBold, size: 23))
+                              ),
+                              Text(textMotto2,style: Montserrat(style:SemiBold,color: Colors.yellow, size: 23)),
+                            ])
+                          ]
+                      )
                   )
-              )
-            ])
-          ),
+                ]),
+                  preferredSize: Size.fromHeight(50),)
+            )
         ),
+
+
         ///ТЕЛО
         body: ListView(padding: EdgeInsets.zero,
                 children: [
@@ -145,7 +152,7 @@ class _SelectCityState extends State<SelectCity> {
             },
                 child: Container(padding: EdgeInsets.only(left: 10),
                     alignment: Alignment.centerLeft,
-                    child: Text(dataCity[i][1], style: Montserrat(color: Colors.black,size: 15),))
+                    child: Text(dataCity[i][0], style: Montserrat(color: Colors.black,size: 15),))
                 )
         ));
       }
@@ -175,14 +182,15 @@ class _SelectCityState extends State<SelectCity> {
     for(int i = 0; i < dataCity.length; i++)
       {
         city.add(Container(margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
-          child: TextButton(onPressed:(){
+          child: TextButton(onPressed:()
+          {
             Navigator.push(context, MaterialPageRoute(builder: (context) => City(IndexCity: i),));///передаем index города
           },
           child: Stack(alignment: AlignmentDirectional.bottomCenter,
               children: [
                 //КАРТИНКА
                 ClipRRect(borderRadius: BorderRadius.circular(40),
-                    child: Image.asset(dataCity[i][0], fit: BoxFit.cover,
+                    child: Image.asset(dataCity[i][1], fit: BoxFit.cover,
                       width: double.infinity, height: 200)
                 ),
                 //НАЗВАНИЕ
@@ -193,7 +201,7 @@ class _SelectCityState extends State<SelectCity> {
                               borderRadius: BorderRadius.only(bottomRight: Radius.circular(40),bottomLeft: Radius.circular(40))
                           )
                       ),
-                      Text(dataCity[i][1],style: Montserrat(size: 25,style: SemiBold)),
+                      Text(dataCity[i][0],style: Montserrat(size: 25,style: SemiBold)),
                     ])
               ]
           ),),

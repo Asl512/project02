@@ -28,6 +28,8 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   shared_preferences: ^2.0.9
+  mask_text_input_formatter: ^2.0.0
+  url_launcher: ^6.0.17
   flutter:
     sdk: flutter
 
@@ -78,6 +80,7 @@ flutter:
     - image/performance/Three.png
     - image/performance/Four.png
     - image/icon/arrow.svg
+    - image/icon/favorite.svg
     - image/icon/arrowBottom.svg
     - image/icon/reverse.svg
     - image/icon/handbook.svg
@@ -86,9 +89,48 @@ flutter:
     - image/icon/ruble.svg
     - image/backCity.png
     - image/icon/magnifier.svg
-    - image/1city.png
-    - image/2city.png
-    - image/3city.png
+    - image/defoult/defoultUser.jpg
+    - image/icon/tickets.svg
+    - image/icon/settings.svg
+    - image/icon/exit.svg
+    - image/icon/myExcursion.svg
+    - image/icon/phone.svg
+    - image/icon/add.svg
+    - image/icon/time.svg
+
+
+      #data
+    - image/data/city/сочи.png
+    - image/data/city/анапа.png
+    - image/data/city/москва.jpg
+    - image/data/city/тюмень.jpeg
+    - image/data/user/иван.jpg
+    - image/data/user/анна.jpg
+    - image/data/user/мария.jpg
+    - image/data/user/миша.jpg
+    - image/data/excursion/сочи1.jpg
+    - image/data/excursion/сочи2.jpg
+    - image/data/excursion/анапа1.jpg
+    - image/data/excursion/москва1.jpg
+    - image/data/excursion/москва2.jpg
+    - image/data/excursion/москва3.jpg
+    - image/data/excursion/тюмень1.jpg
+    - image/data/excursion/тюмень2.jpg
+    - image/data/excursion/сочи11.jpg
+    - image/data/excursion/сочи12.png
+    - image/data/excursion/сочи13.jpg
+    - image/data/excursion/сочи21.jpg
+    - image/data/excursion/сочи22.jpg
+    - image/data/excursion/анапа11.jpg
+    - image/data/excursion/анапа12.jpg
+    - image/data/excursion/анапа13.jpg
+    - image/data/excursion/москва11.jpg
+    - image/data/excursion/москва12.jpg
+    - image/data/excursion/москва21.jpg
+    - image/data/excursion/москва31.jpg
+    - image/data/excursion/москва32.jpg
+    - image/data/excursion/тюмень21.jpg
+    - image/data/excursion/тюмень22.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

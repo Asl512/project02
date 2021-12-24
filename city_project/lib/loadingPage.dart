@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'assets/style.dart';
 import 'assets/finally.dart';
 import 'assets/text.dart';
+import 'assets/data.dart';
 
 class Loading extends StatefulWidget
 {
@@ -27,14 +28,23 @@ class _LoadingState extends State<Loading> {
     {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       int? _seen = prefs.getInt('seer');
+      int? _authUser = prefs.getInt('auth');
 
-      if (_seen == 10)
+      if (_seen == 40)
       {
-        Navigator.pushNamedAndRemoveUntil(context, '/authorization', (route) => false);
+        if(_authUser == -1)
+          {
+            Navigator.pushNamedAndRemoveUntil(context, '/authorization', (route) => false);
+          }
+        else
+          {
+            auth = _authUser??0;
+            Navigator.pushNamedAndRemoveUntil(context, '/selectCity', (route) => false);
+          }
       }
       else
       {
-        prefs.setInt('seer', 10);
+        prefs.setInt('seer', 40);
         Navigator.pushNamedAndRemoveUntil(context, '/perfomanceOne', (route) => false);
       }
     }

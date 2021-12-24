@@ -1,14 +1,9 @@
-import 'dart:ui';
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
 
-import 'assets/style.dart';
-import 'assets/finally.dart';
-import 'assets/text.dart';
-
-class Test extends StatefulWidget
-{
+class Test extends StatefulWidget {
   const Test({Key? key}) : super(key: key);
 
   @override
@@ -16,55 +11,39 @@ class Test extends StatefulWidget
 }
 
 class _TestState extends State<Test> {
+  DateTime selectedDate = DateTime.now();
 
-  String _serch = '';
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+      });
+  }
 
   @override
-  Widget build(BuildContext context)
-  {
+  Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(padding: EdgeInsets.symmetric(horizontal: 20),
-          margin: EdgeInsets.only(top: 200),
-          child:
-          Stack(children: [
-            ///Поисковая строка
-            TextField(style: Montserrat(color:Blue),
-                decoration: InputDecoration(
-
-                  //СТИЛЬ
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(500),
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none)
-                  ),
-                  fillColor: White,
-                  isDense: true,
-                  filled: true,
-
-                  suffixIcon: Container(decoration: BoxDecoration(color: Green,
-                      borderRadius: BorderRadius.only(topRight: Radius.circular(500),bottomRight: Radius.circular(500))),
-                      height: 50,
-                      child: IconButton(
-                        icon: iconMagnifier,
-                        onPressed: () {},
-                      )
-                  ),
-                )
+      appBar: AppBar(
+        title: Text('ll'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text("${selectedDate.toLocal()}".split(' ')[0]),
+            SizedBox(height: 20.0,),
+            RaisedButton(
+              onPressed: () => _selectDate(context),
+              child: Text('Select date'),
             ),
-
-          ])
+          ],
+        ),
       ),
     );
   }
-
-  Widget City()
-  {
-    if(_serch != '')
-      {
-        return Text('ddd');
-      }
-    else
-      {
-        return Container();
-      }
-  }
-
 }

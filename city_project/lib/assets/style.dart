@@ -21,8 +21,8 @@ TextStyle Montserrat({FontWeight style = Medium, Color color = White, double siz
 ///МЕНЮ
 Widget Menu(context)
 {
-  List<String> menuItems = [textWhere,textPersonalArea,textFavorites,textAbout,textEarn];
-  List<String> urlItems = ['/selectCity','','','',''];
+  List<String> menuItems = [textWhere,textPersonalArea,textMyTickets.toUpperCase(),textFavorite.toUpperCase()];
+  List<String> urlItems = ['/selectCity','/personalArea','/records','/favorite'];
   List<Widget> widgetItems = [];
 
   for(int i = 0; i < menuItems.length; i++)
