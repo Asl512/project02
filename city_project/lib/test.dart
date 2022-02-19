@@ -3,46 +3,62 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-class Test extends StatefulWidget {
-  const Test({Key? key}) : super(key: key);
+
+class MyStatefulWidget extends StatefulWidget {
+  const MyStatefulWidget({Key? key}) : super(key: key);
 
   @override
-  State<Test> createState() => _TestState();
+  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
 }
 
-class _TestState extends State<Test> {
-  DateTime selectedDate = DateTime.now();
-
-  Future<Null> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
-      setState(() {
-        selectedDate = picked;
-      });
-  }
+class _MyStatefulWidgetState extends State<MyStatefulWidget>{
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('ll'),
+        title: Text('title'),
+        bottom: PreferredSize(child:Text('bottom'),
+          preferredSize: Size.fromHeight(50),)
       ),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text("${selectedDate.toLocal()}".split(' ')[0]),
-            SizedBox(height: 20.0,),
-            RaisedButton(
-              onPressed: () => _selectDate(context),
-              child: Text('Select date'),
-            ),
-          ],
-        ),
+      body: MyStatelessWidget()
+    );
+  }
+}
+
+class MyStatelessWidget extends StatelessWidget {
+  const MyStatelessWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ElevatedButton(
+        child: const Text('showModalBottomSheet'),
+        onPressed: () {
+          showModalBottomSheet<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return Container(
+                height: 200,
+                color: Colors.amber,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const Text('Modal BottomSheet'),
+                      ElevatedButton(
+                        child: const Text('Close BottomSheet'),
+                        onPressed: () => Navigator.pop(context),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }
