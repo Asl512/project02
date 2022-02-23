@@ -1,0 +1,44 @@
+{
+  "0": "MENU AND OPTIONS",
+  "activity": "Activity",
+  "myTickets": "My tickets",
+  "errorNet": "Oops. No internet connection.",
+  "textLoading": "Please wait loading...",
+  "repeat": "Repeat",
+
+  "1": "ПРОФИЛЬ",
+  "not_autorization": "Login to use all features.",
+  "autorization": "Autorization",
+  "registration": "Registration",
+  "come": "Come",
+
+  "2": "///AUTORIZATION",
+  "autorization2": "Autorization",
+  "email": "Email:",
+  "password": "Password:",
+  "remind": "Remind",
+  "terms": "By entering, you accept the terms of service. ",
+  "more": "More.",
+  "errorEmptyEmail": "Enter email",
+  "errorEmptyPassword": "Enter password",
+
+  "3": "///REGISTRATION",
+  "nameSurname": "Name Surname:",
+  "registration2": "Registration",
+  "errorEmptyName": "Enter name",
+
+  "4": "///TERMS OF AGREEMENT",
+  "termsOneTitle": "One title",
+  "termsOneText": "The terms of use of the site govern the interaction of travelers, guides and Tripster. All legal details are set out in the documents: the privacy policy, the agreement between the guide and the Tripster (accepted at registration, but actually starts working after the publication of the tour) and the contracts for the provision of excursion services between the guide and the traveler (accepted by the guide and the traveler upon making an advance payment for the excursion).",
+  "termsTwoTitle":"Two title",
+  "termsTwoText": "The terms of use of the site govern the interaction of travelers, guides and Tripster. All legal details are set out in the documents: the privacy policy, the agreement between the guide and the Tripster (accepted at registration, but actually starts working after the publication of the tour) and the contracts for the provision of excursion services between the guide and the traveler (accepted by the guide and the traveler upon making an advance payment for the excursion).",
+
+  "5": "SETTINGS",
+  "change_language": "Change language",
+  "choose_language": "Choose language",
+
+  "6": "///CITY PAGE",
+  "dontMero": "There are no active events in the city yet",
+  "search": "Search",
+  "hintSearch": "Enter the name of the city"
+}

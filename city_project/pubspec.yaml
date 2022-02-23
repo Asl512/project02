@@ -28,6 +28,11 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   shared_preferences: ^2.0.9
+  localize_and_translate: ^4.1.1
+  curved_navigation_bar: ^1.0.3
+  motion_tab_bar: ^0.1.5
+  very_good_infinite_list: ^0.3.0
+  shimmer: ^2.0.0
   postgres: ^2.4.3
   mask_text_input_formatter: ^2.0.0
   url_launcher: ^6.0.17
@@ -66,8 +71,14 @@ flutter:
   # To add assets to your application, add an assets section, like this:
 
   assets:
+    - assets/locales/en.json
+    - image/flags/flagUsa.png
+    - assets/locales/ru.json
+    - image/flags/flagRussia.png
+
     - image/icon/email.svg
     - image/icon/password.svg
+    - image/icon/setting.svg
     - image/icon/hide.svg
     - image/icon/show.svg
     - image/icon/vk.svg
@@ -98,9 +109,7 @@ flutter:
 
     - image/menu/MenuActivity.svg
     - image/menu/MenuExcursion.svg
-    - image/menu/MenuExcursionActiv.svg
     - image/menu/MenuProfil.svg
-    - image/menu/MenuProfilActiv.svg
     - image/menu/MenuTickets.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
