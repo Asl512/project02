@@ -36,7 +36,7 @@ main() async {
       '/setting': (context) => const Local(),
 
       '/serch': (context) => const Serch(),
-      '/city': (context) => const City(),
+      '/city': (context) => City(),
 
       '/profil': (context) => const Profil(),
       '/authorization': (context) => const Authorization(),

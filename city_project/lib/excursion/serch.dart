@@ -133,30 +133,44 @@ class CityPagination extends StatelessWidget {
   }
 
 
-
-
-
   Future<List<Widget>?> itemLoader(int limit, {int start = 0}) async {
+    var connection = PostgreSQLConnection("rc1b-zkri5cth30iw9y0q.mdb.yandexcloud.net", 6432, "tripteam_db", username: "TripTeamAdmin2", password: "NCR2I4%Te44A", useSSL:true);
+    try{
 
-    await Future<void>.delayed(const Duration(seconds: 1));
-    List<Widget> city = [];
-    for (int i = 0; i < this.data.length; i++) {
-      city.add(CardCity(i, 'Город '+this.data[i].toString(),'https://upload.wikimedia.org/wikipedia/commons/2/20/Tokyo_Tower_and_Tokyo_Sky_Tree_2011_January.jpg'));
-    }
-    limit = 5;
-    if (start >= city.length) return null;
-    if (false) throw Exception();
-    if (false) throw InfiniteListException();
-    if (city.length - start > 0 && city.length - start  < limit){
-      int count = city.length - start;
-      return List.generate(count, (index) {
+      await connection.open();
+      List<dynamic> results = await connection.query("SELECT * FROM public.city;");
+
+      for(int i = 0; i < results.length; i++)
+      {
+        print(results[i]);
+        this.data.add(results[i]);
+      }
+
+      await Future<void>.delayed(const Duration(seconds: 1));
+      List<Widget> city = [];
+      for (int i = 0; i < this.data.length; i++) {
+        city.add(CardCity(this.data[i][0], this.data[i][1],'https://upload.wikimedia.org/wikipedia/commons/2/20/Tokyo_Tower_and_Tokyo_Sky_Tree_2011_January.jpg'));
+      }
+      limit = 5;
+      if (start >= city.length) return null;
+      if (false) throw Exception();
+      if (false) throw InfiniteListException();
+      if (city.length - start > 0 && city.length - start  < limit){
+        int count = city.length - start;
+        return List.generate(count, (index) {
+          return city[index+start];
+        });
+      }
+
+      return List.generate(limit, (index) {
         return city[index+start];
       });
-    }
 
-    return List.generate(limit, (index) {
-      return city[index+start];
-    });
+    }catch(e){
+      print('ERROR CONNECT===============');
+      print(e.toString());
+      throw Exception(e);
+    }
   }
 }
 

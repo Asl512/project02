@@ -166,7 +166,7 @@ class Placholder extends StatelessWidget {
     return Shimmer.fromColors(
         baseColor: Colors.transparent.withOpacity(0.1),
         highlightColor: White,
-        child: Container(width: double.infinity,height: 120,
+        child: Container(width: double.infinity,height: this.heigth,
             color: White, alignment: Alignment.center,
             child: Container(width: this.width,height: this.heigth)
         )

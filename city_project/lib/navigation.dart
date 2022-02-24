@@ -40,6 +40,7 @@ class Navigation extends StatefulWidget {
 
 class _NavigationState extends State<Navigation> {
   int _page = 0;
+
   List<Widget> _widgetPages = <Widget>[
     City(),
     Container(width: double.infinity, height: double.infinity, color:Grey,

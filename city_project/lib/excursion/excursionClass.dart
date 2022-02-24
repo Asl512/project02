@@ -83,10 +83,6 @@ class _ExcursionState extends State<Excursion>{
                                       child: Image.network(widget.author.toString(),
                                         fit: BoxFit.cover,
                                         width: 40, height: 40,
-                                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                                          if (loadingProgress == null) return child;
-                                          return Placholder(MediaQuery.of(context).size.width/10, MediaQuery.of(context).size.width/10);
-                                        },
                                       ),
                                     ),
 

@@ -26,6 +26,8 @@ final Widget iconEmail = SvgPicture.asset('image/icon/email.svg', height: 25, wi
 final Widget iconShow = SvgPicture.asset('image/icon/show.svg', height: 25, width: 25, allowDrawingOutsideViewBox: true, color: Blue);
 final Widget iconHide = SvgPicture.asset('image/icon/hide.svg', height: 25, width: 25, allowDrawingOutsideViewBox: true, color: Blue);
 final Widget iconSetting = SvgPicture.asset('image/icon/setting.svg', height: 20, width: 20, allowDrawingOutsideViewBox: true, color: Blue);
+final Widget iconKey = SvgPicture.asset('image/icon/key.svg', height: 20, width: 20, allowDrawingOutsideViewBox: true, color: Blue);
+
 
 final Widget iconLightning = SvgPicture.asset('image/icon/lightning.svg', height: 25, width: 25, allowDrawingOutsideViewBox: true, color: Red);
 final Widget iconConfirmation = SvgPicture.asset('image/icon/confirmation.svg', height: 25, width: 25, allowDrawingOutsideViewBox: true);

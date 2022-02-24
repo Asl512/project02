@@ -77,6 +77,7 @@ flutter:
     - image/flags/flagRussia.png
 
     - image/icon/email.svg
+    - image/icon/key.svg
     - image/icon/password.svg
     - image/icon/setting.svg
     - image/icon/hide.svg
