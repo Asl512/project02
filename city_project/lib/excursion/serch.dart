@@ -139,12 +139,7 @@ class CityPagination extends StatelessWidget {
 
       await connection.open();
       List<dynamic> results = await connection.query("SELECT * FROM public.city;");
-
-      for(int i = 0; i < results.length; i++)
-      {
-        print(results[i]);
-        this.data.add(results[i]);
-      }
+      this.data = results;
 
       await Future<void>.delayed(const Duration(seconds: 1));
       List<Widget> city = [];

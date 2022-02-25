@@ -67,7 +67,7 @@ class _NavigationState extends State<Navigation> {
           ],
           color: Blue,
           buttonBackgroundColor: Blue,
-          backgroundColor: Grey,
+          backgroundColor: Grey.withOpacity(0),
           animationCurve: Curves.easeInOut,
           animationDuration: Duration(milliseconds: 600),
           onTap: (index) {

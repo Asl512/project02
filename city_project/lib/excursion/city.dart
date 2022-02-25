@@ -14,14 +14,7 @@ import 'excursionClass.dart';
 
 class City extends StatefulWidget
 {
-  City({Key? key}) : super(key: key);
-  int idCity = 0;
-
-  void getStringValuesSF() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    idCity = prefs.getInt('city') ?? 1;
-    print(this.idCity);
-  }
+  const City({Key? key}) : super(key: key);
 
   @override
   State<City> createState() => _CityState();
@@ -29,8 +22,7 @@ class City extends StatefulWidget
 
 class _CityState extends State<City> with TickerProviderStateMixin {
   late TabController _tabController;
-  int idCity = 1;
-  List data = [0,'Null'];
+  List d = [];
 
 
   @override
@@ -39,21 +31,29 @@ class _CityState extends State<City> with TickerProviderStateMixin {
     _tabController = TabController(length: 4, vsync: this);
   }
 
+  int idCity = -1;
+  List data = [-1,'...'];
+
   void getStringValuesSF() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      this.idCity = prefs.getInt('city') ?? 1;
-    });
-    print(this.idCity);
-  }
+    if(this.idCity == -1)
+      {
+        setState(() {
+          this.idCity = prefs.getInt('city') ?? 1;
+        });
+      }
 
-  void includeBD() async{
+
     var connection = PostgreSQLConnection("rc1b-zkri5cth30iw9y0q.mdb.yandexcloud.net", 6432, "tripteam_db", username: "TripTeamAdmin2", password: "NCR2I4%Te44A", useSSL:true);
     try {
       await connection.open();
 
       List<dynamic> results = await connection.query("SELECT * FROM public.city WHERE id = " + this.idCity.toString());
-      this.data = results[0];
+      if(this.data[0] == -1){
+        setState(() {
+          this.data = results[0];
+        });
+      }
 
       print('D'+results[0].toString());
 
@@ -61,14 +61,12 @@ class _CityState extends State<City> with TickerProviderStateMixin {
       print('ERROR CONNECT================');
       print(e.toString());
     }
-    }
+  }
 
   @override
   Widget build(BuildContext context) {
     Size SizePage = MediaQuery.of(context).size;
-    //getStringValuesSF();
-    //includeBD();
-
+    getStringValuesSF();
 
     return Scaffold(backgroundColor: Grey,
       appBar: PreferredSize(preferredSize: Size.fromHeight(SizePage.height/5),
@@ -193,7 +191,6 @@ class ExcursionPagination extends StatelessWidget {
 
       for(int i = 0; i < results.length; i++)
       {
-        //print(results[i]);
         this.data.add(results[i]);
       }
 
@@ -204,8 +201,8 @@ class ExcursionPagination extends StatelessWidget {
             Excursion(
               id: 0,
               name: data[i][1],
-              photo: 'https://firebasestorage.googleapis.com/v0/b/dbapp-28831.appspot.com/o/city%2Fмосква.jpg?alt=media&token=2e8ebb29-1528-41ac-a38f-1cc0664daf72',
-              author: 'https://firebasestorage.googleapis.com/v0/b/dbapp-28831.appspot.com/o/city%2Fмосква.jpg?alt=media&token=2e8ebb29-1528-41ac-a38f-1cc0664daf72',
+              photo: 'https://upload.wikimedia.org/wikipedia/commons/2/20/Tokyo_Tower_and_Tokyo_Sky_Tree_2011_January.jpg',
+              author: 'https://upload.wikimedia.org/wikipedia/commons/2/20/Tokyo_Tower_and_Tokyo_Sky_Tree_2011_January.jpg',
               description: 'Описание путешествия по Золотому Рогу и Босфору Описание путешествия по Золотому Рогу и Босфору',
               type: 'Индивидуальная',
               price: 99999,

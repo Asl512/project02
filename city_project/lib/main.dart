@@ -30,12 +30,12 @@ main() async {
     routes:
     {
       '/loading': (context) => const Loading(),
-      //'/test': (context) =>  MyApp(),
+      '/test': (context) =>  MyApp(),
       '/navigation': (context) =>  LocaleNavigation(),
 
       '/setting': (context) => const Local(),
 
-      '/serch': (context) => const Serch(),
+      '/search': (context) => const Serch(),
       '/city': (context) => City(),
 
       '/profil': (context) => const Profil(),
