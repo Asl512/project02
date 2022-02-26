@@ -1,77 +1,66 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pw_validator/flutter_pw_validator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
 
+final themeColor = new Color(0xfff5a623);
+final primaryColor = new Color(0xff203152);
+final greyColor = new Color(0xffaeaeae);
+final greyColor2 = new Color(0xffE8E8E8);
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class LoadindScreen extends StatefulWidget {
+  LoadindScreen({Key? key}) : super(key: key);
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: new Scaffold(
-            appBar: new AppBar(
-              title: new Text("Flutter Pw Validator"),
-            ),
-            body: new AppHome()));
-  }
+  LoginScreenState createState() => new LoginScreenState();
 }
 
-class AppHome extends StatelessWidget {
-  final TextEditingController controller = new TextEditingController();
+class LoginScreenState extends State<LoadindScreen> {
+  late SharedPreferences prefs;
+
+  bool isLoading = false;
+
+  Future<Null> handleSignIn() async {
+    setState(() {
+      isLoading = true;
+    });
+    await Future.delayed(const Duration(seconds: 3));
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return new Stack(children: [
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 12.5),
-        child: Column(
-          children: [
-            new Flexible(flex: 5, child: new FlutterLogo(size: 200)),
-            Flexible(
-              flex: 7,
-              child: new Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    child: new TextField(
-                        controller: controller,
-                        decoration: new InputDecoration(
-                            hintText: "Password",
-                            border: new OutlineInputBorder(
-                                borderSide: BorderSide()))),
+    return Scaffold(
+        body: Stack(
+          children: <Widget>[
+            Center(
+              child: FlatButton(
+                  onPressed: handleSignIn,
+                  child: Text(
+                    'SIGN IN WITH GOOGLE',
+                    style: TextStyle(fontSize: 16.0),
                   ),
-                  new SizedBox(
-                    height: 5,
+                  color: Color(0xffdd4b39),
+                  highlightColor: Color(0xffff7f7f),
+                  splashColor: Colors.transparent,
+                  textColor: Colors.white,
+                  padding: EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0)),
+            ),
+
+            // Loading
+            Positioned(
+              child: isLoading
+                  ? Container(
+                child: Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(themeColor),
                   ),
-                  new FlutterPwValidator(
-                    controller: controller,
-                    minLength: 8,
-                    uppercaseCharCount: 2,
-                    numericCharCount: 3,
-                    specialCharCount: 1,
-                    width: 400,
-                    height: 150,
-                    onSuccess: () {
-                      print("MATCHED");
-                      ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
-                          content: new Text("Password is matched")));
-                    },
-                    onFail: () {
-                      print("NOT MATCHED");
-                    },
-                  ),
-                ],
-              ),
-            )
+                ),
+                color: Colors.white.withOpacity(0.8),
+              )
+                  : Container(),
+            ),
           ],
-        ),
-      ),
-    ]);
+        ));
   }
 }

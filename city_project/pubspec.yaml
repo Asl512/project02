@@ -31,6 +31,7 @@ dependencies:
   localize_and_translate: ^4.1.1
   curved_navigation_bar: ^1.0.3
   flutter_pw_validator: ^1.4.1
+  pin_code_fields: ^7.3.0
   very_good_infinite_list: ^0.3.0
   shimmer: ^2.0.0
   postgres: ^2.4.3

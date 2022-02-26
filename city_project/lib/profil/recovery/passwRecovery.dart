@@ -4,26 +4,25 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import 'doublePsw.dart';
+import 'package:postgres/postgres.dart';
+import 'dart:async';
+import 'codeRecovery.dart';
 
-import '../assets/style.dart';
-import '../assets/finally.dart';
+import '../../assets/style.dart';
+import '../../assets/finally.dart';
 
-class codeRecovery extends StatefulWidget
+class passwRecovery extends StatefulWidget
 {
-  const codeRecovery({Key? key}) : super(key: key);
+  const passwRecovery({Key? key}) : super(key: key);
 
   @override
-  State<codeRecovery> createState() => _codeRecoveryState();
+  State<passwRecovery> createState() => _passwRecoveryState();
 }
 
-class _codeRecoveryState extends State<codeRecovery> {
-  bool passwordVisible = true;
-  bool isChecked = false;
-  List errorPassword = [false,'errorPassword'];
+class _passwRecoveryState extends State<passwRecovery> {
   List errorEmail = [false,'errorEmail'];
   String email = '';
-  String password = '';
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context)
@@ -34,7 +33,8 @@ class _codeRecoveryState extends State<codeRecovery> {
     ]);
 
     Size SizePage = MediaQuery.of(context).size;
-    return Scaffold(backgroundColor: Grey,
+    return Stack(children: [
+        Scaffold(backgroundColor: Grey,
 
         ///ШАПКА
         appBar: PreferredSize(preferredSize: Size.fromHeight(50),
@@ -58,7 +58,7 @@ class _codeRecoveryState extends State<codeRecovery> {
               height: SizePage.height/5-70,
               child: Container(alignment: Alignment.centerLeft,
                   padding: EdgeInsets.only(left: SizePage.width/15),
-                  child:Text("codeRec".tr(), style: Montserrat(style:Bold,color:Blue, size: 30))
+                  child:Text("pswRec".tr(), style: Montserrat(style:Bold,color:Blue, size: 30))
               ),
             ),
             Container(
@@ -68,12 +68,12 @@ class _codeRecoveryState extends State<codeRecovery> {
                   child: Column(
                       children:[
 
-                        ///KEY
+                        ///EMAIL
                         Container(height: 112,
                             child: Column(children:[
                               Container(width: double.infinity,
                                 margin: EdgeInsets.fromLTRB(10, 0, 0, 5),
-                                child: Text("code".tr(), style: Montserrat(color:Blue,style: SemiBold)),
+                                child: Text("email".tr(), style: Montserrat(color:Blue,style: SemiBold)),
                               ),
 
                               Stack(children: [
@@ -92,7 +92,7 @@ class _codeRecoveryState extends State<codeRecovery> {
                                             ),
                                             width: 40,
                                             padding: EdgeInsets.all(6),
-                                            child: iconKey
+                                            child: iconEmail
                                         ),
 
                                         //ВЫВОД ОШИБКИ
@@ -111,24 +111,26 @@ class _codeRecoveryState extends State<codeRecovery> {
                               ])
                             ])
                         ),
-
                         ///ТЕКСТ
                         Container(
-                            padding: EdgeInsets.symmetric(horizontal: SizePage.width/5),
-                            child: Text("discriptionEnterCode".tr(), style: Montserrat(style: SemiBold,size: 13, color:Blue),)
+                            padding: EdgeInsets.symmetric(horizontal: SizePage.width/10),
+                            child: Text("discriptionEnterEmail".tr(), textAlign: TextAlign.center,
+                              style: Montserrat(style: SemiBold,size: 13, color:Blue),)
                         ),
 
                       ]),
                 )
             ),
 
+
             Container(
                 height: SizePage.height/3-60,
                 child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ///КНОПКА ВОЙТИ
+                    ///КНОПКА ДАЛЕЕ
                     TextButton(onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (_)=> doublePsw()));
+
+                      Validation();
                     },
                         child: Container(width: SizePage.width-SizePage.width/15*2,
                             height: 50,
@@ -137,79 +139,70 @@ class _codeRecoveryState extends State<codeRecovery> {
                             child: Center(child: Text("next".tr(), style: Montserrat(style: SemiBold,size: 19)),)
                         )
                     ),
+
                   ],
                 )
             ),
           ],
         )
-    );
-  }
+    ),
 
-  void Validation()
-  {
-    setState(() {
-      bool check = true;
-      if(email == '')
-      {
-        check = false;
-        errorEmail[0] = true;
-        errorEmail[1] = "errorEmptyEmail".tr();
-      }
-
-      if(password == '')
-      {
-        check = false;
-        errorPassword[0] = true;
-        errorPassword[1] = "errorEmptyPassword".tr();
-      }
-
-      ///проверка в бд
-      if(check == true)
-      {
-      }
-    });
-  }
-
-}
-
-class ShowDialog extends StatelessWidget {
-  const ShowDialog({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-
-    List<Widget> Conditions = [
-      TextDialogWindows("termsOneTitle".tr(),"termsOneText".tr()),
-      TextDialogWindows("termsTwoTitle".tr(),"termsTwoText".tr())
-    ];
-
-    return DraggableScrollableSheet(
-      builder: (BuildContext context, ScrollController scrollController) {
-        return Stack(alignment: Alignment.topCenter,
-          children: [
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.only(top:25,left: 30,right: 30),
-              decoration: BoxDecoration(color: Blue,
-                  borderRadius: BorderRadius.only(topRight: Radius.circular(50),topLeft: Radius.circular(50))
-              ),
-              child: ListView.builder(
-                controller: scrollController,
-                itemCount: Conditions.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Conditions[index];
-                },
-              ),
+      Positioned(
+        child: isLoading
+            ? Container(
+          child: Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Blue),
             ),
+          ),
+          color: Colors.white.withOpacity(0.8),
+        ) : Container(),
+      ),
+    ]);
+  }
 
-            Container(width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/2.3,vertical: 10),
-              height: 4,
-              decoration: BoxDecoration(color: White,borderRadius: BorderRadius.all(Radius.circular(500))),
-            )
-          ],
-        );
-      },
-    );
+  void Validation() {
+    bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+"
+    r"@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+    if(email == '') {
+      setState(() {
+        errorEmail = [true,"errorEmptyEmail".tr()];
+      });
+    }
+    else if (emailValid == false) {
+      setState(() {
+        errorEmail = [true,"errorValidEmail".tr()];
+      });
+    }
+    else{
+      CheckEmail();
+    }
+  }
+
+  Future<Null> CheckEmail() async {
+    setState(() {isLoading = true;});
+
+    var connection = PostgreSQLConnection(
+        "rc1b-zkri5cth30iw9y0q.mdb.yandexcloud.net", 6432, "tripteam_db",
+        username: "TripTeamAdmin2", password: "NCR2I4%Te44A", useSSL: true);
+    try {
+      await connection.open();
+      List emailDB = await connection.query("SELECT * FROM user_tripteam WHERE email = '" + email+"'");
+      setState(() {isLoading = false;});
+      if(emailDB.isEmpty){
+        setState(() {
+          errorEmail = [true,"errorDontHaveEmail".tr()];
+        });
+      }
+      else{
+        Navigator.push(context, MaterialPageRoute(builder: (_)=> codeRecovery()));
+      }
+    }
+    catch (e) {
+      print('ERROR CONNECT===============');
+      print(e.toString());
+      setState(() {isLoading = false;});
+    }
   }
 }
+

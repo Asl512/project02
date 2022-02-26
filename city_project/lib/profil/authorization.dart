@@ -8,7 +8,7 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../assets/style.dart';
 import '../assets/finally.dart';
-import 'passwRecovery.dart';
+import 'recovery/passwRecovery.dart';
 
 class Authorization extends StatefulWidget
 {
@@ -263,6 +263,8 @@ String password = '';
         }
     });
   }
+
+  
 
 }
 

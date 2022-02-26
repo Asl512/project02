@@ -29,7 +29,8 @@ class _RegistrationState extends State<Registration> {
   String name = '';
   String email = '';
   String password = '';
-  final TextEditingController controller = new TextEditingController();
+  bool isLoading = false;
+  final TextEditingController controllerValidPassword = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,8 @@ class _RegistrationState extends State<Registration> {
     Size SizePage = MediaQuery
         .of(context)
         .size;
-    return Scaffold(backgroundColor: Grey,
+    return Stack(children: [
+        Scaffold(backgroundColor: Grey,
 
         ///ШАПКА
         appBar: PreferredSize(preferredSize: Size.fromHeight(50),
@@ -214,7 +216,7 @@ class _RegistrationState extends State<Registration> {
                                     Shadow(50, 500), // ТЕНЬ
 
                                     TextField(
-                                        controller: controller,
+                                        controller: controllerValidPassword,
                                         style: Montserrat(
                                             color: Blue, style: SemiBold),
                                         obscureText: passwordVisible,
@@ -255,14 +257,6 @@ class _RegistrationState extends State<Registration> {
                                                 )
                                             ),
 
-                                            //ВЫВОД ОШИБКИ
-                                            errorText: errorPassword[0] == true
-                                                ? errorPassword[1]
-                                                : null,
-                                            errorStyle: Montserrat(style: Medium,
-                                                color: Red,
-                                                size: 15),
-
                                             //СТИЛЬ
                                             border: OutlineInputBorder(
                                                 borderRadius: BorderRadius.circular(
@@ -284,12 +278,21 @@ class _RegistrationState extends State<Registration> {
                               height: 10,
                             ),
                             new FlutterPwValidator(
-                              controller: controller,
+                              controller: controllerValidPassword,
                               minLength: 6,
                               numericCharCount: 1,
                               width: SizePage.width,
                               height: SizePage.height/15,
-                              onSuccess: (){},
+                              onSuccess: (){
+                                setState(() {
+                                  errorPassword[0] = false;
+                                });
+                              },
+                              onFail: (){
+                                setState(() {
+                                  errorPassword[0] = true;
+                                });
+                              },
                             )
                           ],
                         )
@@ -305,7 +308,6 @@ class _RegistrationState extends State<Registration> {
                     ///КНОПКА ЗАРЕГЕСТРИРОВАТЬСЯ
                     TextButton(onPressed: () {
                       Validation();
-                      Registration();
                     },
                         child: Container(
                             width: SizePage.width - SizePage.width / 15 * 2,
@@ -353,26 +355,61 @@ class _RegistrationState extends State<Registration> {
             ),
           ],
         )
-    );
+    ),
+
+      Positioned(
+        child: isLoading
+            ? Container(
+          child: Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Blue),
+            ),
+          ),
+          color: Colors.white.withOpacity(0.8),
+        ) : Container(),
+      ),
+    ]);
   }
 
   void Validation() {
-    setState(() {
+    int countError = 0;
       bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+"
       r"@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
-      if (emailValid == false) {
-        errorEmail[0] = true;
-        errorEmail[1] = "errorEmptyEmail".tr();
+      if(email == '') {
+          setState(() {
+            errorEmail = [true,"errorEmptyEmail".tr()];
+          });
+          countError++;
+        }
+      else if (emailValid == false) {
+        setState(() {
+          errorEmail = [true,"errorValidEmail".tr()];
+        });
+        countError++;
       }
+
       if (name == '') {
-        errorName[0] = true;
-        errorName[1] = "errorEmptyName".tr();
+        setState(() {
+          errorName = [true,"errorEmptyName".tr()];
+        });
+        countError++;
       }
-    });
-  }
+      else if(name.length < 5){
+        setState(() {
+          errorName = [true,"errorMiniName".tr()];
+        });
+        countError++;
+      }
+
+      if(countError == 0 && !errorPassword[0])
+        {
+          Registration();
+        }
+    }
 
   void Registration() async
   {
+    setState(() {isLoading = true;});
     var connection = PostgreSQLConnection(
         "rc1b-zkri5cth30iw9y0q.mdb.yandexcloud.net", 6432, "tripteam_db",
         username: "TripTeamAdmin2", password: "NCR2I4%Te44A", useSSL: true);
@@ -381,11 +418,18 @@ class _RegistrationState extends State<Registration> {
       await connection.query("INSERT INTO user_tripteam "
           "(name, email, password) VALUES ('" + name + "', '" + email + "', '" +
           password + "');");
+      setState(() {isLoading = false;});
     }
     catch (e) {
       print('ERROR CONNECT===============');
+      List errorList = e.toString().split(' ');
+      if(errorList[1] == "23505:"){
+        setState(() {
+          errorEmail = [true,"errorEmailHave".tr()];
+        });
+      }
+      setState(() {isLoading = false;});
       print(e.toString());
-      throw Exception(e);
     }
   }
 }

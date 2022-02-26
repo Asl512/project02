@@ -1,5 +1,3 @@
-import 'dart:io';
-import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +28,7 @@ main() async {
     routes:
     {
       '/loading': (context) => const Loading(),
-      '/test': (context) =>  MyApp(),
+      '/test': (context) =>  LoadindScreen(),
       '/navigation': (context) =>  LocaleNavigation(),
 
       '/setting': (context) => const Local(),
