@@ -18,21 +18,7 @@ class Loading extends StatefulWidget
 class _LoadingState extends State<Loading> {
 
   @override
-  Widget build(BuildContext context)
-  {
-    Size SizePage = MediaQuery.of(context).size;
-
-    ///ПРОВЕРКА НА СУПЕР ГЛОБАЛЬНУЮ ПЕРЕМЕННУЮ
-    Future checkFirstSeen() async
-    {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      int? _seen = prefs.getInt('seer');
-      if (_seen == 115)
-      {
-        prefs.setInt('seer', 115);
-      }
-    }
-
+  Widget build(BuildContext context) {
     return Scaffold(backgroundColor: Grey,
 
         body:WaitDialog(iLoading,"textLoading".tr())

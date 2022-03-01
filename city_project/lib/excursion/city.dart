@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:very_good_infinite_list/very_good_infinite_list.dart';
-import 'package:postgres/postgres.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../assets/style.dart';
 import '../assets/finally.dart';
@@ -22,45 +22,31 @@ class City extends StatefulWidget
 
 class _CityState extends State<City> with TickerProviderStateMixin {
   late TabController _tabController;
-  List d = [];
-
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
-  int idCity = -1;
-  List data = [-1,'...'];
+  String idCity = '';
+  DocumentSnapshot? data;
+  bool isLoading = false;
+  List types = [];
 
   void getStringValuesSF() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(this.idCity == -1)
-      {
+    if(this.idCity == '') {
+      setState(() {isLoading = true;});
+      SharedPreferences prefs = await SharedPreferences.getInstance();
         setState(() {
-          this.idCity = prefs.getInt('city') ?? 1;
+          this.idCity = prefs.getString('city') ?? 'EZbunvBvO0EJEVg29Qt9';
         });
-      }
-
-
-    var connection = PostgreSQLConnection("rc1b-zkri5cth30iw9y0q.mdb.yandexcloud.net", 6432, "tripteam_db", username: "TripTeamAdmin2", password: "NCR2I4%Te44A", useSSL:true);
-    try {
-      await connection.open();
-
-      List<dynamic> results = await connection.query("SELECT * FROM public.city WHERE id = " + this.idCity.toString());
-      if(this.data[0] == -1){
-        setState(() {
-          this.data = results[0];
+        this.data = await FirebaseFirestore.instance.collection('city').doc(idCity).get();
+        await FirebaseFirestore.instance.collection('typeExcursion').get().then((snapshot) => {
+          setState(() {this.types = snapshot.docs;})
         });
+      setState(() {isLoading = false;});
       }
-
-      print('D'+results[0].toString());
-
-    }catch(e){
-      print('ERROR CONNECT================');
-      print(e.toString());
-    }
   }
 
   @override
@@ -68,73 +54,96 @@ class _CityState extends State<City> with TickerProviderStateMixin {
     Size SizePage = MediaQuery.of(context).size;
     getStringValuesSF();
 
-    return Scaffold(backgroundColor: Grey,
-      appBar: PreferredSize(preferredSize: Size.fromHeight(SizePage.height/5),
-          ///ШАПКА
-          child: AppBar(flexibleSpace: Stack(children: [
-            Image.network('https://upload.wikimedia.org/wikipedia/commons/2/20/Tokyo_Tower_and_Tokyo_Sky_Tree_2011_January.jpg',
+    if (this.isLoading){
+      return Center(
+        child: Column(children: [
+          WaitDialog(iLoading,"textLoading".tr()),
+          Container(padding: EdgeInsets.all(20),
+              child: CircularProgressIndicator(color: Blue)
+          )
+        ],
+          mainAxisAlignment: MainAxisAlignment.center,
+        ),
+      );
+    }
+    else{
+      return Scaffold(backgroundColor: Grey,
+        appBar: PreferredSize(
+            preferredSize: Size.fromHeight(SizePage.height / 5),
+
+            ///ШАПКА
+            child: AppBar(flexibleSpace: Stack(children: [
+              Image.network(this.data!['photo'],
                 fit: BoxFit.cover,
                 width: double.infinity,
-            ),
-            Container(width: double.infinity, height: double.infinity,
-                decoration: BoxDecoration(color: Colors.black.withOpacity(0.5))
-            ),
-            Container(alignment: Alignment.centerLeft,
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(child: Text(this.data[1].toString().toUpperCase(),style: Montserrat(color:White,size: 35,style: SemiBold)),),
-                    TextButton(onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (_)=> Serch()));
-                    },
-                        child:Container(
-                          padding: EdgeInsets.all(12),
-                          width: 50, height: 50,
-                          decoration: BoxDecoration(color: Blue,borderRadius: BorderRadius.all(Radius.circular(20))),
-                          child: iconMagnifier,
-                        ))
-                  ],
-                )
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Placholder(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height);
+                },
+              ),
+              Container(width: double.infinity, height: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.5))
+              ),
+              Container(alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(child: Text(
+                          this.data!['name'].toString().toUpperCase(),
+                          style: Montserrat(
+                              color: White, size: 35, style: SemiBold)),),
+                      TextButton(onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => Serch()));
+                        //Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> Serch()), (route) => false);
+                      },
+                          child: Container(
+                            padding: EdgeInsets.all(12),
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                                color: Blue, borderRadius: BorderRadius.all(
+                                Radius.circular(20))),
+                            child: iconMagnifier,
+                          ))
+                    ],
+                  )
+              )
+            ]),
+              centerTitle: false,
+              titleSpacing: 0.0,
+              bottom: TabBar(
+                controller: _tabController,
+                tabs: Tabs(),
+                isScrollable: true,
+                indicatorColor: White,
+              ),
             )
-          ]),
-            centerTitle: false,
-            titleSpacing: 0.0,
-            bottom: TabBar(
-              controller: _tabController,
-              tabs: Tabs(),
-              isScrollable: true,
-              indicatorColor: White,
-            ),
-          )
-      ),
+        ),
 
-      body: TabBarView(
-        controller: _tabController,
-        children: RequestExcursion(),
-      ),
-    );
+        body: TabBarView(
+          controller: _tabController,
+          children: RequestExcursion(),
+        ),
+      );
+  }
   }
 
   List<Widget> RequestExcursion(){
     List<Widget> widgets = [];
-    for(int i = 0; i < names.length; i++){
-      widgets.add(ExcursionPagination(names[i],idCity));
+    for(int i = 0; i < types.length; i++){
+      widgets.add(ExcursionPagination(types[i].id,this.idCity));
     }
     return widgets;
   }
 
-  List<String> names = ['Все','Групповые','Индивидуальные','Индивидуальные'];
+
   List<Widget> Tabs()
   {
     List<Widget> tabs = [];
-
-    for(int i = 0; i < names.length; i++)
-      {
-        tabs.add(
-          Tab(
-              child: Text(names[i],style: Montserrat(color:White,size: 15))
-          ),
-        );
+    for(int i = 0; i < types.length; i++) {
+        tabs.add(Tab(child: Text(types[i]['name'].toString(),style: Montserrat(color:White,size: 15))),);
       }
     return tabs;
   }
@@ -142,10 +151,13 @@ class _CityState extends State<City> with TickerProviderStateMixin {
 
 class ExcursionPagination extends StatelessWidget {
 
-  int idCity = 1;
-  String request = '';
-  List data = [];
-  ExcursionPagination(this.request, this.idCity);
+  String idCity = '';
+  String idType = '';
+  List dataExcursion = [];
+  List dataGid = [];
+  List dataType = [];
+
+  ExcursionPagination(this.idType, this.idCity);
 
 
   @override
@@ -175,7 +187,6 @@ class ExcursionPagination extends StatelessWidget {
         bottomLoader: (context) => Center(child: Container(padding: EdgeInsets.all(20),
           child: CircularProgressIndicator(color: Blue))
         )
-        //errorLoader: (context, retry, error) => _ErrorLoader(retry: retry),
       ),
     );
   }
@@ -183,32 +194,35 @@ class ExcursionPagination extends StatelessWidget {
 
 
   Future<List<Widget>?> itemLoader(int limit, {int start = 0}) async {
-    var connection = PostgreSQLConnection("rc1b-zkri5cth30iw9y0q.mdb.yandexcloud.net", 6432, "tripteam_db", username: "TripTeamAdmin2", password: "NCR2I4%Te44A", useSSL:true);
-    try{
+    if(idType == '000'){
+      await FirebaseFirestore.instance.collection('excursion').where("idCity",isEqualTo:this.idCity).get().then((snapshot) => {
+        this.dataExcursion = snapshot.docs
+      });
+    }else{
+      await FirebaseFirestore.instance.collection('excursion').where("idCity",isEqualTo:this.idCity).where("type",isEqualTo:this.idType).get().then((snapshot) => {
+        this.dataExcursion = snapshot.docs
+      });
+    }
 
-      await connection.open();
-      List<dynamic> results = await connection.query("SELECT * FROM public.city WHERE id = "+ this.idCity.toString());
+    for (int i = 0; i < this.dataExcursion.length; i++) {
+      this.dataGid.add(await FirebaseFirestore.instance.collection('user').doc(dataExcursion[i]['idGid']).get());
+      this.dataType.add(await FirebaseFirestore.instance.collection('typeExcursion').doc(dataExcursion[i]['type']).get());
+    }
 
-      for(int i = 0; i < results.length; i++)
-      {
-        this.data.add(results[i]);
-      }
-
-      await Future<void>.delayed(const Duration(seconds: 1));
       List<Widget> entertainmentWidgets = [];
-      for (int i = 0; i < this.data.length; i++) {
+      for (int i = 0; i < this.dataExcursion.length; i++) {
         entertainmentWidgets.add(
             Excursion(
-              id: 0,
-              name: data[i][1],
-              photo: 'https://upload.wikimedia.org/wikipedia/commons/2/20/Tokyo_Tower_and_Tokyo_Sky_Tree_2011_January.jpg',
-              author: 'https://upload.wikimedia.org/wikipedia/commons/2/20/Tokyo_Tower_and_Tokyo_Sky_Tree_2011_January.jpg',
-              description: 'Описание путешествия по Золотому Рогу и Босфору Описание путешествия по Золотому Рогу и Босфору',
-              type: 'Индивидуальная',
-              price: 99999,
-              time: 1.5,
-              authorCheck: true,
-              moment: true,
+              id: this.dataExcursion[i].id,
+              name: this.dataExcursion[i]['name'],
+              photo: this.dataExcursion[i]['photo'],
+              author: this.dataGid[i]['photo'],
+              description: this.dataExcursion[i]['description'],
+              type: this.dataType[i]['name'],
+              price: this.dataExcursion[i]['price'],
+              time: this.dataExcursion[i]['time'],
+              authorCheck: this.dataGid[i]['verified'],
+              moment: this.dataExcursion[i]['moment'],
             )
         );
       }
@@ -226,11 +240,5 @@ class ExcursionPagination extends StatelessWidget {
       return List.generate(limit, (index) {
         return entertainmentWidgets[index+start];
       });
-
-    }catch(e){
-      print('ERROR CONNECT===============');
-      print(e.toString());
-      throw Exception(e);
-    }
   }
 }

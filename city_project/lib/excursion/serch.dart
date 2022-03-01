@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import 'package:postgres/postgres.dart';
 import 'package:very_good_infinite_list/very_good_infinite_list.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../assets/style.dart';
 import '../assets/finally.dart';
@@ -21,7 +21,7 @@ class Serch extends StatefulWidget
 
 class _SerchState extends State<Serch> {
 
-  String _serchCity = '';
+  String serchCity = '';
 
   @override
   Widget build(BuildContext context)
@@ -30,66 +30,68 @@ class _SerchState extends State<Serch> {
     return Scaffold(backgroundColor: Grey,
 
       ///ШАПКА
-      appBar: PreferredSize(preferredSize: Size.fromHeight(220),
+      appBar: PreferredSize(preferredSize: Size.fromHeight(SizePage.height/5),
           child: AppBar(backgroundColor:Grey,
-              leading: Container(
-                decoration: BoxDecoration(color: Blue,borderRadius: BorderRadius.only(bottomRight: Radius.circular(40))),
-                child: Transform.rotate(angle: 45*3.14/90,
-                  child: IconButton(icon: iconArrowBottomWhite,
-                    onPressed: (){
-                      Navigator.pop(context);
-                    },),
-                ),
-              ),
+              leading: Container(),
+              flexibleSpace:Stack(alignment: Alignment.topLeft,
+                  children: [
+                Column(children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 40),
+                    alignment: Alignment.center,
+                    child: Text("search".tr(),style: Montserrat(color:Blue,size: 40,style: Bold)),
+                    padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
+                  ),
 
-              flexibleSpace:Column(children: [
-                Container(
-                  margin: EdgeInsets.only(top: 100),
-                  alignment: Alignment.centerLeft,
-                  child: Text("search".tr(),style: Montserrat(color:Blue,size: 40,style: Bold)),
-                  padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
-                ),
+                  Container(padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
+                      margin: EdgeInsets.only(top: 30),
+                      child: Stack(children: [
+                        Shadow(38,15), // ТЕНЬ
+                        ///Поисковая строка
+                        Container(height: 40,
+                            child:  TextField(style: Montserrat(color:Blue,size: 15),
+                              decoration: InputDecoration(hintText: "hintSearch".tr(),
 
-                Container(padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
-                    margin: EdgeInsets.only(top: 30),
-                    child: Stack(children: [
-                      Shadow(38,15), // ТЕНЬ
-                      ///Поисковая строка
-                      Container(height: 40,
-                          child:  TextField(style: Montserrat(color:Blue,size: 15),
-                            decoration: InputDecoration(hintText: "hintSearch".tr(),
+                                prefixIcon: Container(margin: EdgeInsets.fromLTRB(5, 5, 10, 5),
+                                    padding: EdgeInsets.all(5),
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),
+                                      color: Blue,),
+                                    child: iconMagnifier
+                                ),
 
-                              prefixIcon: Container(margin: EdgeInsets.fromLTRB(5, 5, 10, 5),
-                                  padding: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),
-                                    color: Blue,),
-                                  child: iconMagnifier
+                                //СТИЛЬ
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(15),
+                                    borderSide: BorderSide(width: 0, style: BorderStyle.none)
+                                ),
+                                fillColor: White,
+                                isDense: true,
+                                filled: true,
                               ),
+                              onChanged: (String value)
+                              {
+                                setState((){this.serchCity = value;});
+                              },
+                            )
+                        )
+                      ])
+                  ),
+                ]),
+                    Container(
+                        height: 70,width: 50,
+                        decoration: BoxDecoration(color: Blue,borderRadius: BorderRadius.only(bottomRight: Radius.circular(40))),
+                        child: IconButton(icon: Icon(Icons.arrow_back_ios,size: 20,color: White,),
+                            onPressed: (){
+                              Navigator.pop(context);
+                            })
+                    ),
 
-                              //СТИЛЬ
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(15),
-                                  borderSide: BorderSide(width: 0, style: BorderStyle.none)
-                              ),
-                              fillColor: White,
-                              isDense: true,
-                              filled: true,
-                            ),
-                            onChanged: (String value)
-                            {
-                              setState((){_serchCity = value;});
-                            },
-                          )
-                      )
-                    ])
-                ),
-              ],)
-
+              ])
           )
       ),
 
 
         ///ТЕЛО
-        body: CityPagination('f')
+        body: CityPagination(this.serchCity)
     );
   }
 }
@@ -98,7 +100,6 @@ class CityPagination extends StatelessWidget {
 
   String request = '';
   List data = [];
-  List testdata = [];
   CityPagination(this.request);
 
 
@@ -134,62 +135,47 @@ class CityPagination extends StatelessWidget {
 
 
   Future<List<Widget>?> itemLoader(int limit, {int start = 0}) async {
-    var connection = PostgreSQLConnection("rc1b-zkri5cth30iw9y0q.mdb.yandexcloud.net", 6432, "tripteam_db", username: "TripTeamAdmin2", password: "NCR2I4%Te44A", useSSL:true);
-    try{
+    await FirebaseFirestore.instance.collection('city').get().then((snapshot) => {
+      this.data = snapshot.docs
+    });
 
-      await connection.open();
-      List<dynamic> results = await connection.query("SELECT * FROM public.city;");
-      this.data = results;
-
-      await Future<void>.delayed(const Duration(seconds: 1));
-      List<Widget> city = [];
-      for (int i = 0; i < this.data.length; i++) {
-        city.add(CardCity(this.data[i][0], this.data[i][1],'https://upload.wikimedia.org/wikipedia/commons/2/20/Tokyo_Tower_and_Tokyo_Sky_Tree_2011_January.jpg'));
-      }
-      limit = 5;
-      if (start >= city.length) return null;
-      if (false) throw Exception();
-      if (false) throw InfiniteListException();
-      if (city.length - start > 0 && city.length - start  < limit){
-        int count = city.length - start;
-        return List.generate(count, (index) {
-          return city[index+start];
-        });
-      }
-
-      return List.generate(limit, (index) {
+    List<Widget> city = [];
+    for (int i = 0; i < this.data.length; i++) {
+      city.add(CardCity(this.data[i].id, this.data[i]['name'],this.data[i]['photo']));
+    }
+    limit = 5;
+    if (start >= city.length) return null;
+    if (false) throw Exception();
+    if (false) throw InfiniteListException();
+    if (city.length - start > 0 && city.length - start  < limit){
+      int count = city.length - start;
+      return List.generate(count, (index) {
         return city[index+start];
       });
-
-    }catch(e){
-      print('ERROR CONNECT===============');
-      print(e.toString());
-      throw Exception(e);
     }
+
+    return List.generate(limit, (index) {
+      return city[index+start];
+    });
   }
 }
 
 
 class CardCity extends StatelessWidget{
   String name = '';
-  int id = 0;
+  String id = '';
   String photo = '';
 
-  CardCity(int id, String name, String photo){
-    this.name = name;
-    this.id = id;
-    this.photo = photo;
-  }
+  CardCity(this.id , this.name, this.photo);
 
   @override
   Widget build(BuildContext context) {
 
     return Container(margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width/20-5, 0, MediaQuery.of(context).size.width/20-5, 10),
-      child: TextButton(onPressed:() async
-      {
+      child: TextButton(onPressed:() async {
         /// ЗАПИСАТЬ ID ГОРОДА
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setInt('city', this.id);
+        await prefs.setString('city', this.id);
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> LocaleNavigation()), (route) => false);
       },
         child: Stack(alignment: AlignmentDirectional.bottomStart,
@@ -202,6 +188,12 @@ class CardCity extends StatelessWidget{
                       ImageChunkEvent? loadingProgress) {
                     if (loadingProgress == null) return child;
                     return Placholder(double.infinity, MediaQuery.of(context).size.height/7);
+                  },
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(excursionDef,
+                        fit: BoxFit.cover,
+                        width: double.infinity, height: MediaQuery.of(context).size.height/10+20
+                    );
                   },
                 ),
 
@@ -217,9 +209,53 @@ class CardCity extends StatelessWidget{
                     Container(
                       child: Text(this.name.toUpperCase(),style: Montserrat(size: 25,style: Bold)),
                     )
-                  ])
+                  ]),
             ]
         ),),
     );
+  }
+}
+
+
+class Movie {
+  Movie({
+    required this.genre,
+    required this.likes,
+    required this.poster,
+    required this.rated,
+    required this.runtime,
+    required this.title,
+    required this.year,
+  });
+
+  Movie.fromJson(Map<String, Object?> json)
+      : this(
+    genre: (json['genre']! as List).cast<String>(),
+    likes: json['likes']! as int,
+    poster: json['poster']! as String,
+    rated: json['rated']! as String,
+    runtime: json['runtime']! as String,
+    title: json['title']! as String,
+    year: json['year']! as int,
+  );
+
+  final String poster;
+  final int likes;
+  final String title;
+  final int year;
+  final String runtime;
+  final String rated;
+  final List<String> genre;
+
+  Map<String, Object?> toJson() {
+    return {
+      'genre': genre,
+      'likes': likes,
+      'poster': poster,
+      'rated': rated,
+      'runtime': runtime,
+      'title': title,
+      'year': year,
+    };
   }
 }

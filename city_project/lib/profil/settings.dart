@@ -19,12 +19,10 @@ class Local extends StatelessWidget {
                 leading: Container(
                   width: 70,
                   decoration: BoxDecoration(color: Blue,borderRadius: BorderRadius.only(bottomRight: Radius.circular(40))),
-                  child: Transform.rotate(angle: 45*3.14/90,
-                    child: IconButton(icon: iconArrowBottomWhite,
+                  child: IconButton(icon: Icon(Icons.arrow_back_ios),
                       onPressed: (){
                         Navigator.pop(context);
-                      },),
-                  ),
+                      })
                 )
             )
         ),

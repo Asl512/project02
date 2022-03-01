@@ -4,13 +4,16 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import 'package:postgres/postgres.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 
 import '../assets/style.dart';
 import '../assets/finally.dart';
 import 'authorization.dart';
+import '../navigation.dart';
 
 class Registration extends StatefulWidget
 {
@@ -44,37 +47,39 @@ class _RegistrationState extends State<Registration> {
     return Stack(children: [
         Scaffold(backgroundColor: Grey,
 
-        ///ШАПКА
-        appBar: PreferredSize(preferredSize: Size.fromHeight(50),
-            child: AppBar(backgroundColor: Grey, elevation: 0.0,
-                leading: Container(
-                  width: 70,
-                  decoration: BoxDecoration(color: Blue,
-                      borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(40))),
-                  child: Transform.rotate(angle: 45 * 3.14 / 90,
-                    child: IconButton(icon: iconArrowBottomWhite,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },),
-                  ),
+            ///ШАПКА
+            appBar: PreferredSize(preferredSize: Size.fromHeight(SizePage.height/10),
+                child: AppBar(backgroundColor:Grey, elevation: 0.0,
+                    leading: Container(),
+                    flexibleSpace:Stack(alignment: Alignment.topLeft,
+                        children: [
+                          Column(children: [
+                            Container(
+                              margin: EdgeInsets.only(top: 40),
+                              alignment: Alignment.center,
+                              child: Text("registration".tr(),style: Montserrat(color:Blue,size: 35,style: Bold)),
+                              padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
+                            ),
+                          ]),
+                          Container(
+                              height: 70,width: 50,
+                              decoration: BoxDecoration(color: Blue,borderRadius: BorderRadius.only(bottomRight: Radius.circular(40))),
+                              child: IconButton(icon: Icon(Icons.arrow_back_ios,size: 20,color: White,),
+                                  onPressed: (){
+                                    Navigator.pop(context);
+                                  })
+                          ),
+
+                        ])
                 )
-            )
-        ),
+            ),
 
         body: ListView(shrinkWrap: true,
           children: [
             Container(
-              height: SizePage.height / 5 - 70,
-              child: Container(alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(left: SizePage.width / 15),
-                  child: Text("registration".tr(),
-                      style: Montserrat(style: Bold, color: Blue, size: 30))
-              ),
-            ),
-            Container(
-                height: SizePage.height / 2 ,
+                height: SizePage.height /20*12 ,
                 child: Container(
+                  margin: EdgeInsets.only(top: 50),
                   padding: EdgeInsets.symmetric(
                       horizontal: SizePage.width / 15),
                   child: Column(mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -301,7 +306,7 @@ class _RegistrationState extends State<Registration> {
             ),
 
             Container(
-                height: SizePage.height / 3 - 60,
+                height: SizePage.height / 4,
                 child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
 
@@ -371,21 +376,31 @@ class _RegistrationState extends State<Registration> {
     ]);
   }
 
-  void Validation() {
+  void Validation()async{
     int countError = 0;
       bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+"
       r"@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
       if(email == '') {
-          setState(() {
-            errorEmail = [true,"errorEmptyEmail".tr()];
-          });
+          setState(()=>errorEmail = [true,"errorEmptyEmail".tr()]);
           countError++;
         }
       else if (emailValid == false) {
-        setState(() {
-          errorEmail = [true,"errorValidEmail".tr()];
-        });
+        setState(()=>errorEmail = [true,"errorValidEmail".tr()]);
         countError++;
+      }
+      else{
+        setState(() {isLoading = true;});
+        List emails = [];
+        await FirebaseFirestore.instance.collection('user').where("email",isEqualTo:this.email).get().then((snapshot) => {
+            emails = snapshot.docs
+        });
+        if(!emails.isEmpty){
+          setState(() {
+            errorEmail = [true,"errorEmailHave".tr()];
+          });
+          countError++;
+        }
+        setState(() {isLoading = false;});
       }
 
       if (name == '') {
@@ -403,33 +418,19 @@ class _RegistrationState extends State<Registration> {
 
       if(countError == 0 && !errorPassword[0])
         {
-          Registration();
+          print(password);
+          String hp = md5.convert(utf8.encode(password)).toString();
+          print(hp);
+          setState(() {isLoading = true;});
+          await FirebaseFirestore.instance.collection('user').add({
+            "name":this.name,
+            "email":this.email,
+            "password":this.password,
+            "verified": false,
+            "photo": 'null'
+          });
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> LocaleNavigation(index: 3)), (route) => false);
+          setState(() {isLoading = false;});
         }
     }
-
-  void Registration() async
-  {
-    setState(() {isLoading = true;});
-    var connection = PostgreSQLConnection(
-        "rc1b-zkri5cth30iw9y0q.mdb.yandexcloud.net", 6432, "tripteam_db",
-        username: "TripTeamAdmin2", password: "NCR2I4%Te44A", useSSL: true);
-    try {
-      await connection.open();
-      await connection.query("INSERT INTO user_tripteam "
-          "(name, email, password) VALUES ('" + name + "', '" + email + "', '" +
-          password + "');");
-      setState(() {isLoading = false;});
-    }
-    catch (e) {
-      print('ERROR CONNECT===============');
-      List errorList = e.toString().split(' ');
-      if(errorList[1] == "23505:"){
-        setState(() {
-          errorEmail = [true,"errorEmailHave".tr()];
-        });
-      }
-      setState(() {isLoading = false;});
-      print(e.toString());
-    }
-  }
 }

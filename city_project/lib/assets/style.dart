@@ -173,3 +173,45 @@ class Placholder extends StatelessWidget {
     );
   }
 }
+
+class ShowDialog extends StatelessWidget {
+  const ShowDialog({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+
+    List<Widget> Conditions = [
+      TextDialogWindows("termsOneTitle".tr(),"termsOneText".tr()),
+      TextDialogWindows("termsTwoTitle".tr(),"termsTwoText".tr())
+    ];
+
+    return DraggableScrollableSheet(
+      builder: (BuildContext context, ScrollController scrollController) {
+        return Stack(alignment: Alignment.topCenter,
+          children: [
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.only(top:25,left: 30,right: 30),
+              decoration: BoxDecoration(color: Blue,
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(50),topLeft: Radius.circular(50))
+              ),
+              child: ListView.builder(
+                controller: scrollController,
+                itemCount: Conditions.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Conditions[index];
+                },
+              ),
+            ),
+
+            Container(width: MediaQuery.of(context).size.width,
+              margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/2.3,vertical: 10),
+              height: 4,
+              decoration: BoxDecoration(color: White,borderRadius: BorderRadius.all(Radius.circular(500))),
+            )
+          ],
+        );
+      },
+    );
+  }
+}

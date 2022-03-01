@@ -4,7 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import 'package:postgres/postgres.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'codeRecovery.dart';
 
@@ -36,34 +36,39 @@ class _passwRecoveryState extends State<passwRecovery> {
     return Stack(children: [
         Scaffold(backgroundColor: Grey,
 
-        ///ШАПКА
-        appBar: PreferredSize(preferredSize: Size.fromHeight(50),
-            child: AppBar(backgroundColor:Grey, elevation: 0.0,
-                leading: Container(
-                  width: 70,
-                  decoration: BoxDecoration(color: Blue,borderRadius: BorderRadius.only(bottomRight: Radius.circular(40))),
-                  child: Transform.rotate(angle: 45*3.14/90,
-                    child: IconButton(icon: iconArrowBottomWhite,
-                      onPressed: (){
-                        Navigator.pop(context);
-                      },),
-                  ),
+            ///ШАПКА
+            appBar: PreferredSize(preferredSize: Size.fromHeight(SizePage.height/5),
+                child: AppBar(backgroundColor:Grey, elevation: 0.0,
+                    leading: Container(),
+                    flexibleSpace:Stack(alignment: Alignment.topLeft,
+                        children: [
+                          Column(children: [
+                            Container(
+                              margin: EdgeInsets.only(top: 70),
+                              alignment: Alignment.center,
+                              child: Text("pswRec".tr(),style: Montserrat(color:Blue,size: 35,style: Bold)),
+                              padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
+                            ),
+                          ]),
+                          Container(
+                              height: 70,width: 50,
+                              decoration: BoxDecoration(color: Blue,borderRadius: BorderRadius.only(bottomRight: Radius.circular(40))),
+                              child: IconButton(icon: Icon(Icons.arrow_back_ios,size: 20,color: White,),
+                                  onPressed: (){
+                                    Navigator.pop(context);
+                                  })
+                          ),
+
+                        ])
                 )
-            )
-        ),
+            ),
 
         body:ListView(shrinkWrap: true,
           children: [
             Container(
-              height: SizePage.height/5-70,
-              child: Container(alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(left: SizePage.width/15),
-                  child:Text("pswRec".tr(), style: Montserrat(style:Bold,color:Blue, size: 30))
-              ),
-            ),
-            Container(
-                height: SizePage.height/2,
+                height: SizePage.height/20*10,
                 child: Container(
+                  margin: EdgeInsets.only(top: 50),
                   padding: EdgeInsets.symmetric(horizontal: SizePage.width/15),
                   child: Column(
                       children:[
@@ -124,7 +129,7 @@ class _passwRecoveryState extends State<passwRecovery> {
 
 
             Container(
-                height: SizePage.height/3-60,
+                height: SizePage.height/4,
                 child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ///КНОПКА ДАЛЕЕ
@@ -181,28 +186,17 @@ class _passwRecoveryState extends State<passwRecovery> {
 
   Future<Null> CheckEmail() async {
     setState(() {isLoading = true;});
-
-    var connection = PostgreSQLConnection(
-        "rc1b-zkri5cth30iw9y0q.mdb.yandexcloud.net", 6432, "tripteam_db",
-        username: "TripTeamAdmin2", password: "NCR2I4%Te44A", useSSL: true);
-    try {
-      await connection.open();
-      List emailDB = await connection.query("SELECT * FROM user_tripteam WHERE email = '" + email+"'");
-      setState(() {isLoading = false;});
-      if(emailDB.isEmpty){
-        setState(() {
-          errorEmail = [true,"errorDontHaveEmail".tr()];
-        });
-      }
-      else{
-        Navigator.push(context, MaterialPageRoute(builder: (_)=> codeRecovery()));
-      }
+    List emails = [];
+    await FirebaseFirestore.instance.collection('user').where("email",isEqualTo:this.email).get().then((snapshot) => {
+      emails = snapshot.docs
+    });
+    if(emails.isEmpty) {
+      setState(() {
+        errorEmail = [true, "errorDontHaveEmail".tr()];
+      });
     }
-    catch (e) {
-      print('ERROR CONNECT===============');
-      print(e.toString());
-      setState(() {isLoading = false;});
-    }
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> codeRecovery(this.email)));
+    setState(() {isLoading = false;});
   }
 }
 

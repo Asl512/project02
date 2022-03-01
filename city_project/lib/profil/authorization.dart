@@ -4,11 +4,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 import '../assets/style.dart';
 import '../assets/finally.dart';
 import 'recovery/passwRecovery.dart';
+import '../navigation.dart';
 
 class Authorization extends StatefulWidget
 {
@@ -25,6 +27,7 @@ List errorPassword = [false,'errorPassword'];
 List errorEmail = [false,'errorEmail'];
 String email = '';
 String password = '';
+bool isLoading = false;
 
   @override
   Widget build(BuildContext context)
@@ -35,43 +38,49 @@ String password = '';
     ]);
 
     Size SizePage = MediaQuery.of(context).size;
-    return Scaffold(backgroundColor: Grey,
+    return Stack(
+      children: [
+        Scaffold(backgroundColor: Grey,
 
         ///ШАПКА
-        appBar: PreferredSize(preferredSize: Size.fromHeight(50),
+        appBar: PreferredSize(preferredSize: Size.fromHeight(SizePage.height/10),
             child: AppBar(backgroundColor:Grey, elevation: 0.0,
-              leading: Container(
-                width: 70,
-                  decoration: BoxDecoration(color: Blue,borderRadius: BorderRadius.only(bottomRight: Radius.circular(40))),
-                  child: Transform.rotate(angle: 45*3.14/90,
-                    child: IconButton(icon: iconArrowBottomWhite,
-                      onPressed: (){
-                      Navigator.pop(context);
-                      },),
-                  ),
-              )
+                leading: Container(),
+                flexibleSpace:Stack(alignment: Alignment.topLeft,
+                    children: [
+                      Column(children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 40),
+                          alignment: Alignment.center,
+                          child: Text("autorization2".tr(),style: Montserrat(color:Blue,size: 35,style: Bold)),
+                          padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
+                        ),
+                      ]),
+                      Container(
+                          height: 70,width: 50,
+                          decoration: BoxDecoration(color: Blue,borderRadius: BorderRadius.only(bottomRight: Radius.circular(40))),
+                          child: IconButton(icon: Icon(Icons.arrow_back_ios,size: 20,color: White,),
+                              onPressed: (){
+                                Navigator.pop(context);
+                              })
+                      ),
+
+                    ])
             )
         ),
 
         body:ListView(shrinkWrap: true,
           children: [
             Container(
-              height: SizePage.height/5-70,
-                child: Container(alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(left: SizePage.width/15),
-                    child:Text("autorization2".tr(), style: Montserrat(style:Bold,color:Blue, size: 30))
-                ),
-            ),
-            Container(
-              height: SizePage.height/2,
+                height: SizePage.height/20*12,
                 child: Container(
+                  margin: EdgeInsets.only(top: 80),
                   padding: EdgeInsets.symmetric(horizontal: SizePage.width/15),
                   child: Column(
                       children:[
 
                         ///EMAIL
-                        Container(height: 112,
-                            child: Column(children:[
+                        Container(child: Column(children:[
                               Container(width: double.infinity,
                                 margin: EdgeInsets.fromLTRB(10, 0, 0, 5),
                                 child: Text("email".tr(), style: Montserrat(color:Blue,style: SemiBold)),
@@ -114,8 +123,7 @@ String password = '';
                         ),
 
                         ///PASSWORD
-                        Container(height: 128,
-                            child: Column(children:[
+                        Container(child: Column(children:[
                               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children:[
@@ -145,14 +153,14 @@ String password = '';
                                     });},
                                     decoration: InputDecoration(
                                       //ИКОНКА
-                                      prefixIcon: Container(margin: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
-                                          decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)),
-                                            color: Color(0xFF00f069),
-                                          ),
-                                          width: 40,
-                                          padding: EdgeInsets.all(6),
-                                          child: iconPassword
-                                      ),
+                                        prefixIcon: Container(margin: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
+                                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)),
+                                              color: Color(0xFF00f069),
+                                            ),
+                                            width: 40,
+                                            padding: EdgeInsets.all(6),
+                                            child: iconPassword
+                                        ),
 
                                         //СКРЫТЬ/ПОКАЗАТЬ
                                         suffixIcon: Container(margin: EdgeInsets.only(right: 10),
@@ -190,7 +198,7 @@ String password = '';
             ),
 
             Container(
-              height: SizePage.height/3-60,
+                height: SizePage.height/4,
                 child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ///КНОПКА ВОЙТИ
@@ -208,104 +216,81 @@ String password = '';
                     ///ТЕКСТ
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: SizePage.width/5),
-                        child: RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "terms".tr(),
-                                style: Montserrat(style: SemiBold,size: 13, color:Blue),
-                              ),
-                              TextSpan(
-                                text: "more".tr(), style: Montserrat(style: SemiBold,size: 13, color:Red),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    showModalBottomSheet(
-                                        backgroundColor:White.withOpacity(0),
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return ShowDialog();
-                                        });
-                                  },
-                              ),
-                            ],
-                          ),
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "terms".tr(),
+                              style: Montserrat(style: SemiBold,size: 13, color:Blue),
+                            ),
+                            TextSpan(
+                              text: "more".tr(), style: Montserrat(style: SemiBold,size: 13, color:Red),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  showModalBottomSheet(
+                                      backgroundColor:White.withOpacity(0),
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return ShowDialog();
+                                      });
+                                },
+                            ),
+                          ],
                         ),
+                      ),
                     ),
                   ],
                 )
             ),
           ],
         )
-    );
-  }
+    ),
 
-  void Validation()
-  {
-    setState(() {
-      bool check = true;
-      if(email == '')
-      {
-        check = false;
-        errorEmail[0] = true;
-        errorEmail[1] = "errorEmptyEmail".tr();
-      }
-
-      if(password == '')
-      {
-        check = false;
-        errorPassword[0] = true;
-        errorPassword[1] = "errorEmptyPassword".tr();
-      }
-
-      ///проверка в бд
-      if(check == true)
-        {
-        }
-    });
-  }
-
-  
-
-}
-
-class ShowDialog extends StatelessWidget {
-  const ShowDialog({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-
-    List<Widget> Conditions = [
-      TextDialogWindows("termsOneTitle".tr(),"termsOneText".tr()),
-      TextDialogWindows("termsTwoTitle".tr(),"termsTwoText".tr())
-    ];
-
-    return DraggableScrollableSheet(
-      builder: (BuildContext context, ScrollController scrollController) {
-        return Stack(alignment: Alignment.topCenter,
-          children: [
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.only(top:25,left: 30,right: 30),
-              decoration: BoxDecoration(color: Blue,
-                  borderRadius: BorderRadius.only(topRight: Radius.circular(50),topLeft: Radius.circular(50))
-              ),
-              child: ListView.builder(
-                controller: scrollController,
-                itemCount: Conditions.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Conditions[index];
-                },
+        Positioned(
+          child: isLoading
+              ? Container(
+            child: Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Blue),
               ),
             ),
-
-            Container(width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/2.3,vertical: 10),
-              height: 4,
-              decoration: BoxDecoration(color: White,borderRadius: BorderRadius.all(Radius.circular(500))),
-            )
-          ],
-        );
-      },
+            color: Colors.white.withOpacity(0.8),
+          ) : Container(),
+        ),
+      ],
     );
+  }
+
+  void Validation() async {
+    bool check = true;
+    bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+"
+    r"@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(this.email);
+    if(email == '') {
+      check = false;
+      setState(() => errorEmail = [true,"errorEmptyEmail".tr()]);
+    }
+    else if (emailValid == false) {
+      setState(()=>errorEmail = [true,"errorValidEmail".tr()]);
+      check = false;
+    }
+
+    if(password == '') {
+      check = false;
+      setState(() => errorPassword = [true,"errorEmptyPassword".tr()]);
+    }
+
+    if(check == true) {
+      setState(() => isLoading = true);
+      QuerySnapshot user = await FirebaseFirestore.instance.collection('user').where("email",isEqualTo:this.email).get();
+      if(user.docs.isEmpty) setState(()=>errorEmail = [true, "errorDontHaveEmail".tr()]);
+      else{
+        if(this.password != user.docs.first['password']) setState(() {
+          errorEmail = [true, "emailDontTrue".tr()];
+          errorPassword = [true, ""];
+        });
+        else Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> LocaleNavigation(index: 3)), (route) => false);
+      }
+      setState(() => isLoading = false);
+    }
   }
 }

@@ -5,6 +5,9 @@
   "errorNet": "Oops. No internet connection.",
   "textLoading": "Please wait loading...",
   "repeat": "Repeat",
+  "profil": "Profil",
+  "excursion": "Excursion",
+  "loading": "Loading...",
 
   "1": "ПРОФИЛЬ",
   "not_autorization": "Login to use all features.",
@@ -22,6 +25,7 @@
   "more": " More.",
   "errorEmptyEmail": "Enter email",
   "errorEmptyPassword": "Enter password",
+  "emailDontTrue": "You entered incorrect data",
 
   "2.1": "///PASSWORD RECOVERY",
   "pswRec": "Password recovery",
@@ -35,6 +39,7 @@
   "sentCode": "We sent you a code",
   "resendWillBe": "Resend will be available via - second",
   "errorPasswordMatch": "Passwords do not match",
+  "errorPasswordLast": "You have used the old password",
 
 
   "3": "///REGISTRATION",

@@ -10,7 +10,7 @@ class Excursion extends StatefulWidget
 {
   const Excursion({
     Key? key,
-    this.id = -1,
+    this.id = '//',
     this.name = 'null',
     this.photo = '////',
     this.author = '////',
@@ -22,7 +22,7 @@ class Excursion extends StatefulWidget
     this.price = 0,
   }) : super(key: key);
 
-  final int? id;
+  final String? id;
   final String? name;
   final String? photo;
   final String? author;
@@ -39,6 +39,50 @@ class Excursion extends StatefulWidget
 
 class _ExcursionState extends State<Excursion>{
 
+  Widget getPhotoExcursion(){
+    if(widget.photo == 'null'){
+      return Image.asset(excursionDef,
+          fit: BoxFit.cover,
+          width: double.infinity, height: MediaQuery.of(context).size.height/10+20
+      );
+    }else{
+      return Image.network(widget.photo.toString(),
+        fit: BoxFit.cover,
+        width: double.infinity, height: MediaQuery.of(context).size.height/10+20,
+        loadingBuilder: (BuildContext context, Widget child,
+            ImageChunkEvent? loadingProgress) {
+          if (loadingProgress == null) return child;
+          return Placholder(double.infinity,MediaQuery.of(context).size.height/10+20);
+        },
+        errorBuilder: (context, error, stackTrace) {
+          return Image.asset(excursionDef,
+              fit: BoxFit.cover,
+              width: double.infinity, height: MediaQuery.of(context).size.height/10+20
+          );
+        },
+      );
+    }
+  }
+
+  Widget getPhotoAuthor(){
+    if(widget.author == 'null'){
+      return Image.asset(avatarDef,
+        fit: BoxFit.cover,
+        width: 40, height: 40,
+      );
+    }else{
+      return Image.network(widget.author.toString(),
+        fit: BoxFit.cover,
+        width: 40, height: 40,
+        errorBuilder: (context, error, stackTrace) {
+          return Image.asset(avatarDef,
+            fit: BoxFit.cover,
+            width: 40, height: 40,
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,15 +99,7 @@ class _ExcursionState extends State<Excursion>{
                     children: [
                       //КАРТИНКА
                       ClipRRect(borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                        child: Image.network(widget.photo.toString(),
-                          fit: BoxFit.cover,
-                          width: double.infinity, height: MediaQuery.of(context).size.height/10+20,
-                          loadingBuilder: (BuildContext context, Widget child,
-                              ImageChunkEvent? loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Placholder(double.infinity,MediaQuery.of(context).size.height/10+20);
-                          },
-                        ),
+                        child: getPhotoExcursion()
                       ),
 
                       Container(height: 50,
@@ -80,10 +116,7 @@ class _ExcursionState extends State<Excursion>{
                               Container(padding: EdgeInsets.symmetric(horizontal: 10),
                                   child: Stack(children: [
                                     ClipRRect(borderRadius: BorderRadius.all(Radius.circular(500)),
-                                      child: Image.network(widget.author.toString(),
-                                        fit: BoxFit.cover,
-                                        width: 40, height: 40,
-                                      ),
+                                      child: getPhotoAuthor()
                                     ),
 
                                     GuideCheck(widget.authorCheck??false)

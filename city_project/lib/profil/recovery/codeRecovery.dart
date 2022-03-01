@@ -12,8 +12,8 @@ import '../../assets/finally.dart';
 
 class codeRecovery extends StatefulWidget
 {
-  const codeRecovery({Key? key}) : super(key: key);
-
+  const codeRecovery(this.email,{Key? key}) : super(key: key);
+  final String? email;
   @override
   State<codeRecovery> createState() => _codeRecoveryState();
 }
@@ -47,38 +47,42 @@ class _codeRecoveryState extends State<codeRecovery> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-
     Size SizePage = MediaQuery.of(context).size;
     return Scaffold(backgroundColor: Grey,
 
         ///ШАПКА
-        appBar: PreferredSize(preferredSize: Size.fromHeight(50),
+        appBar: PreferredSize(preferredSize: Size.fromHeight(SizePage.height/8),
             child: AppBar(backgroundColor:Grey, elevation: 0.0,
-                leading: Container(
-                  width: 70,
-                  decoration: BoxDecoration(color: Blue,borderRadius: BorderRadius.only(bottomRight: Radius.circular(40))),
-                  child: Transform.rotate(angle: 45*3.14/90,
-                    child: IconButton(icon: iconArrowBottomWhite,
-                      onPressed: (){
-                        Navigator.pop(context);
-                      },),
-                  ),
-                )
+                leading: Container(),
+                flexibleSpace:Stack(alignment: Alignment.topLeft,
+                    children: [
+                      Column(children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 70),
+                          alignment: Alignment.center,
+                          child: Text("codeRec".tr(),style: Montserrat(color:Blue,size: 35,style: Bold)),
+                          padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
+                        ),
+                      ]),
+                      Container(
+                          height: 70,width: 50,
+                          decoration: BoxDecoration(color: Blue,borderRadius: BorderRadius.only(bottomRight: Radius.circular(40))),
+                          child: IconButton(icon: Icon(Icons.arrow_back_ios,size: 20,color: White,),
+                              onPressed: (){
+                                Navigator.pop(context);
+                              })
+                      ),
+
+                    ])
             )
         ),
 
         body:ListView(shrinkWrap: true,
           children: [
             Container(
-              height: SizePage.height/5-70,
-              child: Container(alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(left: SizePage.width/15),
-                  child:Text("codeRec".tr(), style: Montserrat(style:Bold,color:Blue, size: 30))
-              ),
-            ),
-            Container(
-                height: SizePage.height/2,
+                height: SizePage.height/20*11,
                 child: Container(
+                  margin: EdgeInsets.only(top: 80),
                   padding: EdgeInsets.symmetric(horizontal: SizePage.width/15),
                   child: Column(
                       children:[
@@ -168,7 +172,7 @@ class _codeRecoveryState extends State<codeRecovery> {
     } else {
       setState(() {
           hasError = false;
-          Navigator.push(context, MaterialPageRoute(builder: (_)=> doublePsw()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> doublePsw(widget.email)));
         },
       );
     }
