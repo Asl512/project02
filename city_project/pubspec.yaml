@@ -27,9 +27,10 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  provider: ^6.0.2
   shared_preferences: ^2.0.9
   localize_and_translate: ^4.1.1
-  firebase_auth: <3.0.0
+  firebase_auth: ^3.3.9
   bubble_bottom_bar: ^2.0.0
   flutter_pw_validator: ^1.4.1
   pin_code_fields: ^7.3.0

@@ -6,20 +6,24 @@ class AuthService{
 
   Future signIn(String email, String password) async {
     try{
-      dynamic result = await fauth.signInWithEmailAndPassword(email: email, password: password);
-      dynamic user = result.user;
-      return User.fromFirebase(user);
+      UserCredential result = await fauth.signInWithEmailAndPassword(email: email, password: password);
+      User? user = result.user;
+      return UserMeth.fromFirebase(user);
     }catch(e){
+      print("Sing Error ============");
+      print(e);
       return null;
     }
   }
 
   Future register(String email, String password) async {
     try{
-      dynamic result = await fauth.createUserWithEmailAndPassword(email: email, password: password);
-      dynamic user = result.user;
-      return User.fromFirebase(user);
+      UserCredential result = await fauth.createUserWithEmailAndPassword(email: email, password: password);
+      User? user = result.user;
+      return UserMeth.fromFirebase(user);
     }catch(e){
+      print("Register Error ============");
+      print(e);
       return null;
     }
   }
@@ -28,15 +32,14 @@ class AuthService{
     await fauth.signOut();
   }
 
-  /*Stream get currentUser{
-    return fauth.onAuthStateChanged.map((dynamic user)=> user != null ? User.fromFirebase(user):null);
-  }*/
+  Stream<UserMeth?> get currentUser{
+    return fauth.authStateChanges().map((dynamic user)=> user != null ? UserMeth.fromFirebase(user):null);
+  }
 }
 
-class User{
+class UserMeth{
   String? id;
-  User.fromFirebase(dynamic user){
+  UserMeth.fromFirebase(dynamic user){
     this.id = user.uid;
-
   }
 }

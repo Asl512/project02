@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import '../assets/style.dart';
 import '../assets/finally.dart';
 import 'recovery/passwRecovery.dart';
 import '../navigation.dart';
+import '../service.dart';
 
 class Authorization extends StatefulWidget
 {
@@ -28,6 +30,8 @@ List errorEmail = [false,'errorEmail'];
 String email = '';
 String password = '';
 bool isLoading = false;
+
+AuthService authService = AuthService();
 
   @override
   Widget build(BuildContext context)
@@ -281,14 +285,12 @@ bool isLoading = false;
 
     if(check == true) {
       setState(() => isLoading = true);
-      QuerySnapshot user = await FirebaseFirestore.instance.collection('user').where("email",isEqualTo:this.email).get();
-      if(user.docs.isEmpty) setState(()=>errorEmail = [true, "errorDontHaveEmail".tr()]);
-      else{
-        if(this.password != user.docs.first['password']) setState(() {
-          errorEmail = [true, "emailDontTrue".tr()];
-          errorPassword = [true, ""];
-        });
-        else Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> LocaleNavigation(index: 3)), (route) => false);
+
+      dynamic user = await authService.signIn(email.trim(), password.trim());
+      if(user == null){
+        setState(()=>errorEmail = [true,"emailDontTrue".tr()]);
+      }else{
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> LocaleNavigation(index: 3)), (route) => false);
       }
       setState(() => isLoading = false);
     }

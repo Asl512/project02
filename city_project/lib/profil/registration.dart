@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lan_code/service.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
@@ -34,6 +35,7 @@ class _RegistrationState extends State<Registration> {
   String password = '';
   bool isLoading = false;
   final TextEditingController controllerValidPassword = new TextEditingController();
+  AuthService authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -287,7 +289,7 @@ class _RegistrationState extends State<Registration> {
                               minLength: 6,
                               numericCharCount: 1,
                               width: SizePage.width,
-                              height: SizePage.height/15,
+                              height: SizePage.height/13,
                               onSuccess: (){
                                 setState(() {
                                   errorPassword[0] = false;
@@ -388,20 +390,6 @@ class _RegistrationState extends State<Registration> {
         setState(()=>errorEmail = [true,"errorValidEmail".tr()]);
         countError++;
       }
-      else{
-        setState(() {isLoading = true;});
-        List emails = [];
-        await FirebaseFirestore.instance.collection('user').where("email",isEqualTo:this.email).get().then((snapshot) => {
-            emails = snapshot.docs
-        });
-        if(!emails.isEmpty){
-          setState(() {
-            errorEmail = [true,"errorEmailHave".tr()];
-          });
-          countError++;
-        }
-        setState(() {isLoading = false;});
-      }
 
       if (name == '') {
         setState(() {
@@ -418,18 +406,20 @@ class _RegistrationState extends State<Registration> {
 
       if(countError == 0 && !errorPassword[0])
         {
-          print(password);
-          String hp = md5.convert(utf8.encode(password)).toString();
-          print(hp);
           setState(() {isLoading = true;});
-          await FirebaseFirestore.instance.collection('user').add({
-            "name":this.name,
-            "email":this.email,
-            "password":this.password,
-            "verified": false,
-            "photo": 'null'
-          });
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> LocaleNavigation(index: 3)), (route) => false);
+
+          dynamic user = await authService.register(email.trim(), password.trim());
+          if(user == null){
+            setState(()=>errorEmail = [true,"123".tr()]);
+          }else{
+            await FirebaseFirestore.instance.collection('user').add({
+              "id": user.id,
+              "name":this.name,
+              "verified": false,
+              "photo": 'null'
+            });
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> LocaleNavigation(index: 3)), (route) => false);
+          }
           setState(() {isLoading = false;});
         }
     }
