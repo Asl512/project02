@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'codeRecovery.dart';
@@ -46,7 +45,7 @@ class _passwRecoveryState extends State<passwRecovery> {
                             Container(
                               margin: EdgeInsets.only(top: 70),
                               alignment: Alignment.center,
-                              child: Text("pswRec".tr(),style: Montserrat(color:Blue,size: 35,style: Bold)),
+                              child: Text("Восстановление пароля",style: Montserrat(color:Blue,size: 35,style: Bold)),
                               padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
                             ),
                           ]),
@@ -78,7 +77,7 @@ class _passwRecoveryState extends State<passwRecovery> {
                             child: Column(children:[
                               Container(width: double.infinity,
                                 margin: EdgeInsets.fromLTRB(10, 0, 0, 5),
-                                child: Text("email".tr(), style: Montserrat(color:Blue,style: SemiBold)),
+                                child: Text("Почта:", style: Montserrat(color:Blue,style: SemiBold)),
                               ),
 
                               Stack(children: [
@@ -119,7 +118,7 @@ class _passwRecoveryState extends State<passwRecovery> {
                         ///ТЕКСТ
                         Container(
                             padding: EdgeInsets.symmetric(horizontal: SizePage.width/10),
-                            child: Text("discriptionEnterEmail".tr(), textAlign: TextAlign.center,
+                            child: Text("Введите почту с которой вы регистрировались в приложении", textAlign: TextAlign.center,
                               style: Montserrat(style: SemiBold,size: 13, color:Blue),)
                         ),
 
@@ -141,7 +140,7 @@ class _passwRecoveryState extends State<passwRecovery> {
                             height: 50,
                             decoration: BoxDecoration(color: Blue,
                                 borderRadius: BorderRadius.all(Radius.circular(500))),
-                            child: Center(child: Text("next".tr(), style: Montserrat(style: SemiBold,size: 19)),)
+                            child: Center(child: Text("Далее", style: Montserrat(style: SemiBold,size: 19)),)
                         )
                     ),
 
@@ -171,12 +170,12 @@ class _passwRecoveryState extends State<passwRecovery> {
     r"@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
     if(email == '') {
       setState(() {
-        errorEmail = [true,"errorEmptyEmail".tr()];
+        errorEmail = [true,"Введите почту"];
       });
     }
     else if (emailValid == false) {
       setState(() {
-        errorEmail = [true,"errorValidEmail".tr()];
+        errorEmail = [true,"Неверный формат почты"];
       });
     }
     else{
@@ -192,7 +191,7 @@ class _passwRecoveryState extends State<passwRecovery> {
     });
     if(emails.isEmpty) {
       setState(() {
-        errorEmail = [true, "errorDontHaveEmail".tr()];
+        errorEmail = [true, "Данная почта не зарегистрирована"];
       });
     }
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> codeRecovery(this.email)));

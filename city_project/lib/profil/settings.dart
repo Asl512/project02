@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:lan_code/assets/style.dart';
 
 import '../assets/finally.dart';
@@ -36,7 +35,7 @@ class Local extends StatelessWidget {
                 return Language();
               });
         },
-          child: Text("change_language".tr(),style: Montserrat(color: Blue)),
+          child: Text("...",style: Montserrat(color: Blue)),
         )
       )
     );
@@ -51,11 +50,8 @@ class Language extends StatelessWidget {
 
     List<Widget> Lang = [
       Container(alignment: Alignment.topCenter,
-        child: Text("choose_language".tr(),style: Montserrat(color:White,size: 13,style: SemiBold),)
+        child: Text("Заголовок",style: Montserrat(color:White,size: 13,style: SemiBold),)
       ),
-
-      SelectLanguage('Русский',"image/flags/flagRussia.png",'ru'),
-      SelectLanguage('English',"image/flags/flagUsa.png",'en'),
     ];
 
     double MaxHength()

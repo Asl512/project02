@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lan_code/service.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:provider/provider.dart';
 
 import '../assets/style.dart';
@@ -47,16 +46,7 @@ class _ProfilState extends State<Profil> {
     if(isLoggedIn){
       getUser(user.id?.trim());
       if(isLoading){
-        return Center(
-          child: Column(children: [
-            WaitDialog(iLoading,"textLoading".tr()),
-            Container(padding: EdgeInsets.all(20),
-                child: CircularProgressIndicator(color: Blue)
-            )
-          ],
-            mainAxisAlignment: MainAxisAlignment.center,
-          ),
-        );
+        return Center(child: Center(child: CircularProgressIndicator(color: Blue)));
       }
       return personalArea(this.user.first);
     }else{
@@ -90,7 +80,9 @@ class NotAutorization extends StatelessWidget{
             children: [
               Image.asset(iProfil, width: SizePage.width/1.3, height: SizePage.width/1.3, fit:BoxFit.fill),
               Container( padding: EdgeInsets.symmetric(horizontal: SizePage.width/6),
-                child:Text("not_autorization".tr(), style: Montserrat(style: SemiBold,size: 16,color:Blue)),
+                child:Text("Авторизуйтесь что бы пользоваться всеми функциями TripTeam.",
+                    textAlign: TextAlign.center,
+                    style: Montserrat(style: SemiBold,size: 16,color:Blue)),
               ),
               Container(margin: EdgeInsets.only(top: 20),
                   child: TextButton(onPressed: (){
@@ -105,7 +97,7 @@ class NotAutorization extends StatelessWidget{
                           height: 50,
                           decoration: BoxDecoration(color: Blue,
                               borderRadius: BorderRadius.all(Radius.circular(500))),
-                          child: Center(child: Text("autorization".tr(), style: Montserrat(style: SemiBold,size: 19)),)))
+                          child: Center(child: Text("Авторизоваться", style: Montserrat(style: SemiBold,size: 19)),)))
               ),
             ]),)
     );
@@ -125,7 +117,7 @@ class ShowDialog extends StatelessWidget {
           decoration: BoxDecoration(color: Blue,
               borderRadius: BorderRadius.only(topRight: Radius.circular(50),topLeft: Radius.circular(50))),
           child: Column(children: [
-            Text("autorization".tr(),style: Montserrat(color:White,style: SemiBold,size: 15)),
+            Text("Авторизоваться",style: Montserrat(color:White,style: SemiBold,size: 15)),
             Container(padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/4),
               margin: EdgeInsets.only(top: 10,bottom: 5),
               child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -166,7 +158,7 @@ class ShowDialog extends StatelessWidget {
                         child: Container(
                             alignment: Alignment.center,
                             padding: EdgeInsets.symmetric(horizontal: 25),
-                            child: Text("come".tr(), style: Montserrat(style: SemiBold,size: 18,color:Blue))
+                            child: Text("Войти", style: Montserrat(style: SemiBold,size: 18,color:Blue))
                         )
                     )
                 ),
@@ -181,7 +173,7 @@ class ShowDialog extends StatelessWidget {
                         child: Container(
                             alignment: Alignment.center,
                             padding: EdgeInsets.symmetric(horizontal: 25),
-                            child: Text("registration".tr(), style: Montserrat(style: SemiBold,size: 18,color:Blue))
+                            child: Text("Регистрация", style: Montserrat(style: SemiBold,size: 18,color:Blue))
                         )
                     )
                 ),

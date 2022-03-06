@@ -1,9 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -56,7 +54,7 @@ class _doublePswState extends State<doublePsw> {
                             Container(
                               margin: EdgeInsets.only(top: 70),
                               alignment: Alignment.center,
-                              child: Text("newPsw".tr(),style: Montserrat(color:Blue,size: 35,style: Bold)),
+                              child: Text("Введите новый пароль",style: Montserrat(color:Blue,size: 35,style: Bold)),
                               padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
                             ),
                           ]),
@@ -91,7 +89,7 @@ class _doublePswState extends State<doublePsw> {
                                     child: Column(children: [
                                       Container(width: double.infinity,
                                         margin: EdgeInsets.fromLTRB(10, 0, 0, 5),
-                                        child: Text("password".tr(), style: Montserrat(
+                                        child: Text("Пароль:", style: Montserrat(
                                             color: Blue, style: SemiBold)),
                                       ),
 
@@ -169,12 +167,16 @@ class _doublePswState extends State<doublePsw> {
                                   minLength: 6,
                                   numericCharCount: 1,
                                   width: SizePage.width,
-                                  height: SizePage.height/15,
+                                  height: SizePage.height/13,
                                   onSuccess: (){
-                                    setState(()=>errorPassword[0] = false);
+                                    setState(() {
+                                      errorPassword[0] = false;
+                                    });
                                   },
                                   onFail: (){
-                                    setState(()=>errorPassword[0] = true);
+                                    setState(() {
+                                      errorPassword[0] = true;
+                                    });
                                   },
                                 )
                               ],
@@ -186,7 +188,7 @@ class _doublePswState extends State<doublePsw> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children:[
                                 Container(margin: EdgeInsets.only(left: 10),
-                                  child: Text("passwordAgain".tr(), style: Montserrat(color:Blue,style: SemiBold)),
+                                  child: Text("Повторите пароль:", style: Montserrat(color:Blue,style: SemiBold)),
                                 ),
 
                               ]
@@ -260,7 +262,7 @@ class _doublePswState extends State<doublePsw> {
                             height: 50,
                             decoration: BoxDecoration(color: Blue,
                                 borderRadius: BorderRadius.all(Radius.circular(500))),
-                            child: Center(child: Text("next".tr(), style: Montserrat(style: SemiBold,size: 19)),)
+                            child: Center(child: Text("Далее", style: Montserrat(style: SemiBold,size: 19)),)
                         )
                     ),
                   ],
@@ -312,7 +314,7 @@ class _doublePswState extends State<doublePsw> {
           QuerySnapshot user = await FirebaseFirestore.instance.collection('user').where("email",isEqualTo:widget.email).get();
           if (user.docs.isNotEmpty) {
             if(user.docs.first['password'] == password)  setState((){
-              errorPasswordTwo = [true,'errorPasswordLast'.tr()];
+              errorPasswordTwo = [true,'Вы использовали старый пароль'];
               errorPassword = [true,''];
             });
             else {
@@ -327,7 +329,7 @@ class _doublePswState extends State<doublePsw> {
           }
           setState(()=>isLoading = false);
         }
-        else setState(()=>errorPasswordTwo = [true,'errorPasswordMatch'.tr()]);
+        else setState(()=>errorPasswordTwo = [true,'Пароли не совпадают']);
       }
   }
 

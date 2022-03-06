@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import 'doublePsw.dart';
 import 'dart:async';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -60,7 +59,7 @@ class _codeRecoveryState extends State<codeRecovery> {
                         Container(
                           margin: EdgeInsets.only(top: 70),
                           alignment: Alignment.center,
-                          child: Text("codeRec".tr(),style: Montserrat(color:Blue,size: 35,style: Bold)),
+                          child: Text("Проверочный код",style: Montserrat(color:Blue,size: 35,style: Bold)),
                           padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
                         ),
                       ]),
@@ -123,7 +122,7 @@ class _codeRecoveryState extends State<codeRecovery> {
                         ),
 
                         ///ВЫВОД ОШИБКИ
-                        Container(child: Text(hasError ? "errorEnterCode".tr() : "", style: Montserrat(size: 15, color: Red)),
+                        Container(child: Text(hasError ? "Вы ввели неверный код" : "", style: Montserrat(size: 15, color: Red)),
                           margin: EdgeInsets.only(bottom: 20),
                         ),
 
@@ -131,7 +130,7 @@ class _codeRecoveryState extends State<codeRecovery> {
                         ///ТЕКСТ
                         Container(
                             padding: EdgeInsets.symmetric(horizontal: SizePage.width/10),
-                            child: Text("discriptionEnterCode".tr(), textAlign: TextAlign.center,
+                            child: Text("Мы отправили вам код на указанную почту, вам остается только ввести его", textAlign: TextAlign.center,
                               style: Montserrat(style: SemiBold,size: 13, color:Blue),)
                         ),
 
@@ -150,7 +149,7 @@ class _codeRecoveryState extends State<codeRecovery> {
                             height: 50,
                             decoration: BoxDecoration(color: Blue,
                                 borderRadius: BorderRadius.all(Radius.circular(500))),
-                            child: Center(child: Text("next".tr(), style: Montserrat(style: SemiBold,size: 19)),)
+                            child: Center(child: Text("Далее", style: Montserrat(style: SemiBold,size: 19)),)
                         )
                     ),
 
@@ -205,14 +204,14 @@ class _ButtonRetryState extends State<ButtonRetry> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("dontReceiveCode".tr(), style: Montserrat(color:Blue, size: 16)),
+            Text("Вы не получили код? ", style: Montserrat(color:Blue, size: 16)),
             TextButton(
                 onPressed: () {
                   setState(() {
                     count = 15;
                   });
                 },
-                child: Text("repeat".tr(), style: Montserrat(color:Red,style: SemiBold, size: 16))
+                child: Text("Повторить.", style: Montserrat(color:Red,style: SemiBold, size: 16))
             )
           ],
         );
@@ -222,10 +221,10 @@ class _ButtonRetryState extends State<ButtonRetry> {
       return Container(margin: EdgeInsets.only(top: 10),
       child: Column(
         children: [
-          Text("sentCode".tr(), style: Montserrat(color:Blue, size: 16)),
+          Text("Мы отправили вам код", style: Montserrat(color:Blue, size: 16)),
           Container(padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/5),
               alignment: Alignment.center,
-              child: Text('resendWillBe'.tr().replaceFirst("-", count.toString()),
+              child: Text('Повторное отправление будет доступно через - секунд '.replaceFirst("-", count.toString()),
                 style: Montserrat(color:Red, size: 13),
                 textAlign: TextAlign.center,
               )

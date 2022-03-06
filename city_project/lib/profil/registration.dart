@@ -4,16 +4,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lan_code/service.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
-import 'dart:convert';
-import 'package:crypto/crypto.dart';
 
 
 import '../assets/style.dart';
 import '../assets/finally.dart';
-import 'authorization.dart';
 import '../navigation.dart';
 
 class Registration extends StatefulWidget
@@ -59,7 +55,7 @@ class _RegistrationState extends State<Registration> {
                             Container(
                               margin: EdgeInsets.only(top: 40),
                               alignment: Alignment.center,
-                              child: Text("registration".tr(),style: Montserrat(color:Blue,size: 35,style: Bold)),
+                              child: Text("Регистрация",style: Montserrat(color:Blue,size: 35,style: Bold)),
                               padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
                             ),
                           ]),
@@ -92,7 +88,7 @@ class _RegistrationState extends State<Registration> {
                             child: Column(children: [
                               Container(width: double.infinity,
                                 margin: EdgeInsets.fromLTRB(10, 0, 0, 5),
-                                child: Text("nameSurname".tr(),
+                                child: Text("Имя Фамилия:",
                                     style: Montserrat(
                                         color: Blue, style: SemiBold)),
                               ),
@@ -153,7 +149,7 @@ class _RegistrationState extends State<Registration> {
                             child: Column(children: [
                               Container(width: double.infinity,
                                 margin: EdgeInsets.fromLTRB(10, 0, 0, 5),
-                                child: Text("email".tr(), style: Montserrat(
+                                child: Text("Почта:", style: Montserrat(
                                     color: Blue, style: SemiBold)),
                               ),
 
@@ -215,7 +211,7 @@ class _RegistrationState extends State<Registration> {
                                 child: Column(children: [
                                   Container(width: double.infinity,
                                     margin: EdgeInsets.fromLTRB(10, 0, 0, 5),
-                                    child: Text("password".tr(), style: Montserrat(
+                                    child: Text("Пароль:", style: Montserrat(
                                         color: Blue, style: SemiBold)),
                                   ),
 
@@ -322,7 +318,7 @@ class _RegistrationState extends State<Registration> {
                             decoration: BoxDecoration(color: Blue,
                                 borderRadius: BorderRadius.all(
                                     Radius.circular(500))),
-                            child: Center(child: Text("registration2".tr(),
+                            child: Center(child: Text("Зарегестрироваться",
                                 style: Montserrat(style: SemiBold, size: 19)),)
                         )
                     ),
@@ -335,12 +331,12 @@ class _RegistrationState extends State<Registration> {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: "terms".tr(),
+                              text: "При входе, вы принимаете условия пользования сервисом. ",
                               style: Montserrat(
                                   style: SemiBold, size: 13, color: Blue),
                             ),
                             TextSpan(
-                              text: "more".tr(),
+                              text: "Подробнее.",
                               style: Montserrat(
                                   style: SemiBold, size: 13, color: Red),
                               recognizer: TapGestureRecognizer()
@@ -383,23 +379,23 @@ class _RegistrationState extends State<Registration> {
       bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+"
       r"@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
       if(email == '') {
-          setState(()=>errorEmail = [true,"errorEmptyEmail".tr()]);
+          setState(()=>errorEmail = [true,"Введите почту"]);
           countError++;
         }
       else if (emailValid == false) {
-        setState(()=>errorEmail = [true,"errorValidEmail".tr()]);
+        setState(()=>errorEmail = [true,"Неверный формат почты"]);
         countError++;
       }
 
       if (name == '') {
         setState(() {
-          errorName = [true,"errorEmptyName".tr()];
+          errorName = [true,"Введите имя"];
         });
         countError++;
       }
       else if(name.length < 5){
         setState(() {
-          errorName = [true,"errorMiniName".tr()];
+          errorName = [true,"Слишком короткое имя"];
         });
         countError++;
       }
@@ -410,15 +406,16 @@ class _RegistrationState extends State<Registration> {
 
           dynamic user = await authService.register(email.trim(), password.trim());
           if(user == null){
-            setState(()=>errorEmail = [true,"123".tr()]);
+            setState(()=>errorEmail = [true,"123"]);
           }else{
             await FirebaseFirestore.instance.collection('user').add({
               "id": user.id,
               "name":this.name,
               "verified": false,
-              "photo": 'null'
+              "photo": 'null',
+              "guidePermit":false
             });
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> LocaleNavigation(index: 3)), (route) => false);
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> Navigation(index: 3)), (route) => false);
           }
           setState(() {isLoading = false;});
         }

@@ -1,20 +1,21 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:very_good_infinite_list/very_good_infinite_list.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../assets/style.dart';
 import '../assets/finally.dart';
-import 'serch.dart';
+import 'search.dart';
 import 'excursionClass.dart';
 
 
 class City extends StatefulWidget
 {
-  const City({Key? key}) : super(key: key);
+  const City(this.idCity, this.data, this.types,{Key? key}) : super(key: key);
+  final String? idCity;
+  final DocumentSnapshot? data;
+  final List? types;
 
   @override
   State<City> createState() => _CityState();
@@ -29,51 +30,17 @@ class _CityState extends State<City> with TickerProviderStateMixin {
     _tabController = TabController(length: 3, vsync: this);
   }
 
-  String idCity = '';
-  DocumentSnapshot? data;
-  bool isLoading = false;
-  List types = [];
-
-  void getStringValuesSF() async {
-    if(this.idCity == '') {
-      setState(() {isLoading = true;});
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-        setState(() {
-          this.idCity = prefs.getString('city') ?? 'EZbunvBvO0EJEVg29Qt9';
-        });
-        this.data = await FirebaseFirestore.instance.collection('city').doc(idCity).get();
-        await FirebaseFirestore.instance.collection('typeExcursion').get().then((snapshot) => {
-          setState(() {this.types = snapshot.docs;})
-        });
-      setState(() {isLoading = false;});
-      }
-  }
-
   @override
   Widget build(BuildContext context) {
     Size SizePage = MediaQuery.of(context).size;
-    getStringValuesSF();
 
-    if (this.isLoading){
-      return Center(
-        child: Column(children: [
-          WaitDialog(iLoading,"textLoading".tr()),
-          Container(padding: EdgeInsets.all(20),
-              child: CircularProgressIndicator(color: Blue)
-          )
-        ],
-          mainAxisAlignment: MainAxisAlignment.center,
-        ),
-      );
-    }
-    else{
       return Scaffold(backgroundColor: Grey,
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(SizePage.height / 5),
 
             ///ШАПКА
             child: AppBar(flexibleSpace: Stack(children: [
-              Image.network(this.data!['photo'],
+              Image.network(widget.data!['photo'],
                 fit: BoxFit.cover,
                 width: double.infinity,
                 loadingBuilder: (BuildContext context, Widget child,
@@ -91,12 +58,11 @@ class _CityState extends State<City> with TickerProviderStateMixin {
                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Flexible(child: Text(
-                          this.data!['name'].toString().toUpperCase(),
+                          widget.data!['name'].toString().toUpperCase(),
                           style: Montserrat(
                               color: White, size: 35, style: SemiBold)),),
                       TextButton(onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (_) => Serch()));
-                        //Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> Serch()), (route) => false);
                       },
                           child: Container(
                             padding: EdgeInsets.all(12),
@@ -128,12 +94,11 @@ class _CityState extends State<City> with TickerProviderStateMixin {
         ),
       );
   }
-  }
 
   List<Widget> RequestExcursion(){
     List<Widget> widgets = [];
-    for(int i = 0; i < types.length; i++){
-      widgets.add(ExcursionPagination(types[i].id,this.idCity));
+    for(int i = 0; i < widget.types!.length; i++){
+      widgets.add(ExcursionPagination(widget.types![i].id,widget.idCity!));
     }
     return widgets;
   }
@@ -142,8 +107,8 @@ class _CityState extends State<City> with TickerProviderStateMixin {
   List<Widget> Tabs()
   {
     List<Widget> tabs = [];
-    for(int i = 0; i < types.length; i++) {
-        tabs.add(Tab(child: Text(types[i]['name'].toString(),style: Montserrat(color:White,size: 15))),);
+    for(int i = 0; i < widget.types!.length; i++) {
+        tabs.add(Tab(child: Text(widget.types![i]['name'].toString(),style: Montserrat(color:White,size: 15))),);
       }
     return tabs;
   }
@@ -167,7 +132,7 @@ class ExcursionPagination extends StatelessWidget {
         padding: const EdgeInsets.all(0),
         itemLoader: itemLoader,
         builder: InfiniteListBuilder<Widget>(
-          empty: (context) => WaitDialog(iLoading,"dontMero".tr()),
+          empty: (context) => WaitDialog(iLoading,"В данном городе пока что нет активных мероприятий"),
           loading: (context) => Center(child: CircularProgressIndicator(color: Blue,)),
           success: (context, item) => item,
           error: (context, retry, error) {
@@ -176,13 +141,13 @@ class ExcursionPagination extends StatelessWidget {
               children: [
                 Text(error.toString(),style: Montserrat(color: Blue,size: 15,style: SemiBold),),
                 TextButton(onPressed: retry,
-                    child: Text('repeat'.tr(),style: Montserrat(color: Red,size: 17,style: SemiBold),))
+                    child: Text('Повторить',style: Montserrat(color: Red,size: 17,style: SemiBold),))
               ],
             ));
           },
         ),
           errorLoader: (context, retry, error) => TextButton(onPressed: retry,
-              child: Text('repeat'.tr(),style: Montserrat(color: Red,size: 17,style: SemiBold),)),
+              child: Text('Повторить',style: Montserrat(color: Red,size: 17,style: SemiBold),)),
 
         bottomLoader: (context) => Center(child: Container(padding: EdgeInsets.all(20),
           child: CircularProgressIndicator(color: Blue))
@@ -194,6 +159,7 @@ class ExcursionPagination extends StatelessWidget {
 
 
   Future<List<Widget>?> itemLoader(int limit, {int start = 0}) async {
+
     if(idType == '000'){
       await FirebaseFirestore.instance.collection('excursion').where("idCity",isEqualTo:this.idCity).get().then((snapshot) => {
         this.dataExcursion = snapshot.docs
@@ -214,15 +180,9 @@ class ExcursionPagination extends StatelessWidget {
         entertainmentWidgets.add(
             Excursion(
               id: this.dataExcursion[i].id,
-              name: this.dataExcursion[i]['name'],
-              photo: this.dataExcursion[i]['photo'],
-              author: this.dataGid[i]['photo'],
-              description: this.dataExcursion[i]['description'],
-              type: this.dataType[i]['name'],
-              price: this.dataExcursion[i]['price'],
-              time: this.dataExcursion[i]['time'],
-              authorCheck: this.dataGid[i]['verified'],
-              moment: this.dataExcursion[i]['moment'],
+              data: this.dataExcursion[i],
+              gid: this.dataGid[i],
+              type: this.dataType[i],
             )
         );
       }

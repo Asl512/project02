@@ -1,9 +1,11 @@
 import 'dart:ui';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../assets/style.dart';
 import '../assets/finally.dart';
+import 'excursion.dart';
 
 
 class Excursion extends StatefulWidget
@@ -11,27 +13,15 @@ class Excursion extends StatefulWidget
   const Excursion({
     Key? key,
     this.id = '//',
-    this.name = 'null',
-    this.photo = '////',
-    this.author = '////',
-    this.type = 'nullType',
-    this.time = 0,
-    this.moment = false,
-    this.authorCheck = false,
-    this.description = 'null',
-    this.price = 0,
+    this.data,
+    this.gid,
+    this.type,
   }) : super(key: key);
 
   final String? id;
-  final String? name;
-  final String? photo;
-  final String? author;
-  final String? type;
-  final dynamic? time;
-  final bool? moment;
-  final bool? authorCheck;
-  final String? description;
-  final int? price;
+  final DocumentSnapshot? data;
+  final DocumentSnapshot? gid;
+  final DocumentSnapshot? type;
 
   @override
   State<Excursion> createState() => _ExcursionState();
@@ -40,13 +30,13 @@ class Excursion extends StatefulWidget
 class _ExcursionState extends State<Excursion>{
 
   Widget getPhotoExcursion(){
-    if(widget.photo == 'null'){
+    if(widget.data!["photo"] == 'null'){
       return Image.asset(excursionDef,
           fit: BoxFit.cover,
           width: double.infinity, height: MediaQuery.of(context).size.height/10+20
       );
     }else{
-      return Image.network(widget.photo.toString(),
+      return Image.network(widget.data!["photo"].toString(),
         fit: BoxFit.cover,
         width: double.infinity, height: MediaQuery.of(context).size.height/10+20,
         loadingBuilder: (BuildContext context, Widget child,
@@ -64,23 +54,13 @@ class _ExcursionState extends State<Excursion>{
     }
   }
 
-  Widget getPhotoAuthor(){
-    if(widget.author == 'null'){
-      return Image.asset(avatarDef,
-        fit: BoxFit.cover,
-        width: 40, height: 40,
-      );
+  Widget IconMoment(){
+    if(widget.data!["moment"]!){
+      return Container(width: 17,height: 17,
+        margin: EdgeInsets.only(left: 5),
+        child: iconLightning,);
     }else{
-      return Image.network(widget.author.toString(),
-        fit: BoxFit.cover,
-        width: 40, height: 40,
-        errorBuilder: (context, error, stackTrace) {
-          return Image.asset(avatarDef,
-            fit: BoxFit.cover,
-            width: 40, height: 40,
-          );
-        },
-      );
+      return Container();
     }
   }
 
@@ -89,7 +69,7 @@ class _ExcursionState extends State<Excursion>{
     return Container(margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/60),
       child: TextButton(onPressed:()
       {
-        ///Navigator.push(context, MaterialPageRoute(builder: (context) => Excursion(IndexExcursion: widget.id??-1),));///передаем index экскурсии
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ExcursionPage(widget.id,widget.data,widget.gid,widget.type)));///передаем index экскурсии
       },
         child: Column(
             children: [
@@ -99,11 +79,11 @@ class _ExcursionState extends State<Excursion>{
                     children: [
                       //КАРТИНКА
                       ClipRRect(borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                        child: getPhotoExcursion()
+                          child: getPhotoExcursion()
                       ),
 
                       Container(height: 50,
-                          width: widget.name.toString().length.toDouble()*14 +50 >= MediaQuery.of(context).size.width/1.4 ? MediaQuery.of(context).size.width/1.4 : widget.name.toString().length.toDouble()*14 + 50,
+                          width: widget.data!["name"].toString().length.toDouble()*14 +50 >= MediaQuery.of(context).size.width/1.4 ? MediaQuery.of(context).size.width/1.4 : widget.data!["name"].toString().length.toDouble()*14 + 50,
                           decoration: BoxDecoration(color: Colors.black.withOpacity(0.6),
                               borderRadius: BorderRadius.only(topRight: Radius.circular(30)))
                       ),
@@ -116,14 +96,14 @@ class _ExcursionState extends State<Excursion>{
                               Container(padding: EdgeInsets.symmetric(horizontal: 10),
                                   child: Stack(children: [
                                     ClipRRect(borderRadius: BorderRadius.all(Radius.circular(500)),
-                                      child: getPhotoAuthor()
+                                        child: PhotoAuthor(widget.gid!["photo"])
                                     ),
 
-                                    GuideCheck(widget.authorCheck??false)
+                                    GuideCheck(widget.gid!["verified"]??false)
 
                                   ])),
 
-                              Flexible(child: Text(widget.name.toString(),style: Montserrat(size: 15,style: SemiBold)))
+                              Flexible(child: Text(widget.data!["name"].toString(),style: Montserrat(size: 15,style: SemiBold)))
                             ],
                           )
                       )
@@ -143,19 +123,14 @@ class _ExcursionState extends State<Excursion>{
               //ОПИСАНИЕ
               Stack(alignment:Alignment.center,
                   children: [
-                    Stack(children: [
-                      Shadow(68,20),
-                      Container(height: 68,width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(color: White,
-                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(20),bottomLeft: Radius.circular(20))
-                          )
-                      )
-                    ]),
 
                     Container(padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                      height: 68,
+                      height: 68,width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(color: White,
+                          boxShadow: [ShadowForContainer()],
+                          borderRadius: BorderRadius.only(bottomRight: Radius.circular(20),bottomLeft: Radius.circular(20))
+                      ),
                       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
 
                           Container(
@@ -164,13 +139,10 @@ class _ExcursionState extends State<Excursion>{
                                 children: [
                                   Row(crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
-                                        Text(widget.type.toString(),style: Montserrat(size: 17,style: SemiBold, color: Color(0xFF55596A))),
-                                        ///МОЛНИЯ, СДЕЛАТЬ ПРОВРКУ
-                                        Container(width: 17,height: 17,
-                                          margin: EdgeInsets.only(left: 5),
-                                          child: iconLightning,)
+                                        Text(widget.type!["name"].toString(),style: Montserrat(size: 17,style: SemiBold, color: Color(0xFF55596A))),
+                                        IconMoment()
                                       ]),
-                                  Flexible(child: Text(widget.description.toString(),style: Montserrat(size: 14, color: Blue)),)
+                                  Flexible(child: Text(widget.data!["description"].toString(),style: Montserrat(size: 14, color: Blue)),)
                                 ]
                             ),
                           ),
@@ -178,8 +150,8 @@ class _ExcursionState extends State<Excursion>{
                           Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Text(widget.time.toString() + ' часа',style: Montserrat(size: 13, style: Regular,color: Blue)),
-                                Text('₽ '+ widget.price.toString(),style: Montserrat(size: 16, style: Bold,color: Blue)),
+                                Text(widget.data!["time"].toString() + " часа",style: Montserrat(size: 13, style: Regular,color: Blue)),
+                                Text('₽ '+ widget.data!["price"].toString(),style: Montserrat(size: 16, style: Bold,color: Blue)),
                               ]
                           )
                         ],

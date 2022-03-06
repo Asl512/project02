@@ -1,11 +1,8 @@
 import 'dart:ui';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 import '../assets/style.dart';
@@ -56,7 +53,7 @@ AuthService authService = AuthService();
                         Container(
                           margin: EdgeInsets.only(top: 40),
                           alignment: Alignment.center,
-                          child: Text("autorization2".tr(),style: Montserrat(color:Blue,size: 35,style: Bold)),
+                          child: Text("Авторизация",style: Montserrat(color:Blue,size: 35,style: Bold)),
                           padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
                         ),
                       ]),
@@ -87,7 +84,7 @@ AuthService authService = AuthService();
                         Container(child: Column(children:[
                               Container(width: double.infinity,
                                 margin: EdgeInsets.fromLTRB(10, 0, 0, 5),
-                                child: Text("email".tr(), style: Montserrat(color:Blue,style: SemiBold)),
+                                child: Text("Почта:", style: Montserrat(color:Blue,style: SemiBold)),
                               ),
 
                               Stack(children: [
@@ -132,12 +129,12 @@ AuthService authService = AuthService();
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children:[
                                     Container(margin: EdgeInsets.only(left: 10),
-                                      child: Text("password".tr(), style: Montserrat(color:Blue,style: SemiBold)),
+                                      child: Text("Пароль:", style: Montserrat(color:Blue,style: SemiBold)),
                                     ),
 
                                     //КНОПКА "напомнить?"
                                     TextButton(
-                                      child: Text("remind".tr(), style: Montserrat(color:Blue,style: SemiBold)),
+                                      child: Text("Напомнить", style: Montserrat(color:Blue,style: SemiBold)),
                                       onPressed: () {
                                         Navigator.push(context, MaterialPageRoute(builder: (_)=> passwRecovery()));
                                       },
@@ -213,7 +210,7 @@ AuthService authService = AuthService();
                             height: 50,
                             decoration: BoxDecoration(color: Blue,
                                 borderRadius: BorderRadius.all(Radius.circular(500))),
-                            child: Center(child: Text("come".tr(), style: Montserrat(style: SemiBold,size: 19)),)
+                            child: Center(child: Text("Войти", style: Montserrat(style: SemiBold,size: 19)),)
                         )
                     ),
 
@@ -224,11 +221,11 @@ AuthService authService = AuthService();
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: "terms".tr(),
+                              text: "При входе, вы принимаете условия пользования сервисом. ",
                               style: Montserrat(style: SemiBold,size: 13, color:Blue),
                             ),
                             TextSpan(
-                              text: "more".tr(), style: Montserrat(style: SemiBold,size: 13, color:Red),
+                              text: "Подробнее.", style: Montserrat(style: SemiBold,size: 13, color:Red),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   showModalBottomSheet(
@@ -271,16 +268,16 @@ AuthService authService = AuthService();
     r"@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(this.email);
     if(email == '') {
       check = false;
-      setState(() => errorEmail = [true,"errorEmptyEmail".tr()]);
+      setState(() => errorEmail = [true,"Введите почту"]);
     }
     else if (emailValid == false) {
-      setState(()=>errorEmail = [true,"errorValidEmail".tr()]);
+      setState(()=>errorEmail = [true,"Неверный формат почты"]);
       check = false;
     }
 
     if(password == '') {
       check = false;
-      setState(() => errorPassword = [true,"errorEmptyPassword".tr()]);
+      setState(() => errorPassword = [true,"Введите пароль"]);
     }
 
     if(check == true) {
@@ -288,9 +285,9 @@ AuthService authService = AuthService();
 
       dynamic user = await authService.signIn(email.trim(), password.trim());
       if(user == null){
-        setState(()=>errorEmail = [true,"emailDontTrue".tr()]);
+        setState(()=>errorEmail = [true,"Вы ввели не правильные данные"]);
       }else{
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> LocaleNavigation(index: 3)), (route) => false);
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> Navigation(index: 3)), (route) => false);
       }
       setState(() => isLoading = false);
     }
