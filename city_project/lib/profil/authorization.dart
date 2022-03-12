@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 
 import '../assets/style.dart';
@@ -22,8 +24,8 @@ class Authorization extends StatefulWidget
 class _AuthorizationState extends State<Authorization> {
 bool passwordVisible = true;
 bool isChecked = false;
-List errorPassword = [false,'errorPassword'];
-List errorEmail = [false,'errorEmail'];
+bool errorPassword = false;
+bool errorEmail = false;
 String email = '';
 String password = '';
 bool isLoading = false;
@@ -44,7 +46,7 @@ AuthService authService = AuthService();
         Scaffold(backgroundColor: Grey,
 
         ///ШАПКА
-        appBar: PreferredSize(preferredSize: Size.fromHeight(SizePage.height/10),
+        appBar: PreferredSize(preferredSize: Size.fromHeight(SizePage.height/9),
             child: AppBar(backgroundColor:Grey, elevation: 0.0,
                 leading: Container(),
                 flexibleSpace:Stack(alignment: Alignment.topLeft,
@@ -93,7 +95,7 @@ AuthService authService = AuthService();
                                     onChanged: (String value)
                                     {setState(() {
                                       email = value;
-                                      errorEmail[0] = false;
+                                      errorEmail = false;
                                     });},
                                     decoration: InputDecoration(
                                       //ИКОНКА
@@ -105,14 +107,11 @@ AuthService authService = AuthService();
                                             padding: EdgeInsets.all(6),
                                             child: iconEmail
                                         ),
-
-                                        //ВЫВОД ОШИБКИ
-                                        errorText: errorEmail[0] == true ? errorEmail[1] : null,
-                                        errorStyle: Montserrat(style:Medium,color: Red,size: 15),
+                                        errorText: '',
 
                                         //СТИЛЬ
                                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(500),
-                                            borderSide: BorderSide(width: 0, style: errorEmail[0] == true ? BorderStyle.solid : BorderStyle.none)
+                                            borderSide: BorderSide(width: 0, style: errorEmail == true ? BorderStyle.solid : BorderStyle.none)
                                         ),
                                         fillColor: White,
                                         isDense: true,
@@ -150,7 +149,7 @@ AuthService authService = AuthService();
                                     onChanged: (String value)
                                     {setState(() {
                                       password = value;
-                                      errorPassword[0] = false;
+                                      errorPassword = false;
                                     });},
                                     decoration: InputDecoration(
                                       //ИКОНКА
@@ -176,14 +175,11 @@ AuthService authService = AuthService();
                                               },
                                             )
                                         ),
-
-                                        //ВЫВОД ОШИБКИ
-                                        errorText: errorPassword[0] == true ? errorPassword[1] : null,
-                                        errorStyle: Montserrat(style:Medium,color: Red,size: 15),
+                                        errorText: '',
 
                                         //СТИЛЬ
                                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(500),
-                                            borderSide: BorderSide(width: 0, style: errorPassword[0] == true ? BorderStyle.solid : BorderStyle.none)
+                                            borderSide: BorderSide(width: 0, style: errorPassword == true ? BorderStyle.solid : BorderStyle.none)
                                         ),
                                         fillColor: White,
                                         isDense: true,
@@ -199,7 +195,7 @@ AuthService authService = AuthService();
             ),
 
             Container(
-                height: SizePage.height/4,
+                height: SizePage.height/4.2,
                 child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ///КНОПКА ВОЙТИ
@@ -263,33 +259,38 @@ AuthService authService = AuthService();
   }
 
   void Validation() async {
-    bool check = true;
+    String errorStr = '';
     bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+"
     r"@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(this.email);
     if(email == '') {
-      check = false;
-      setState(() => errorEmail = [true,"Введите почту"]);
+      setState(() => errorEmail = true);
+      errorStr += "Введите почту\n";
     }
     else if (emailValid == false) {
-      setState(()=>errorEmail = [true,"Неверный формат почты"]);
-      check = false;
+      setState(()=>errorEmail = true);
+      errorStr += "Неверный формат почты\n";
     }
 
     if(password == '') {
-      check = false;
-      setState(() => errorPassword = [true,"Введите пароль"]);
+      setState(() => errorPassword = true);
+      errorStr += "Введите пароль\n";
     }
 
-    if(check == true) {
+    if(errorStr == '') {
       setState(() => isLoading = true);
 
       dynamic user = await authService.signIn(email.trim(), password.trim());
       if(user == null){
-        setState(()=>errorEmail = [true,"Вы ввели не правильные данные"]);
+        setState((){
+          errorEmail = true;
+          errorPassword = true;
+        });
+        showTopSnackBar(context, CustomSnackBar.error(message:"Вы ввели не правильные данные",textStyle: Montserrat(size: 15)));
       }else{
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> Navigation(index: 3)), (route) => false);
       }
       setState(() => isLoading = false);
     }
+    else showTopSnackBar(context, CustomSnackBar.error(message:errorStr,textStyle: Montserrat(size: 15)));
   }
 }

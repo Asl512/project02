@@ -1,9 +1,6 @@
 import 'dart:ui';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lan_code/service.dart';
-import 'package:provider/provider.dart';
 
 import '../assets/style.dart';
 import '../assets/finally.dart';
@@ -11,52 +8,8 @@ import '../assets/finally.dart';
 import 'settings.dart';
 import 'authorization.dart';
 import 'registration.dart';
-import 'personalArea.dart';
 
-
-///ПРОВЕРКА НА АВТОРИЗАЦИЮ
-class Profil extends StatefulWidget
-{
-  const Profil({Key? key}) : super(key: key);
-
-  @override
-  State<Profil> createState() => _ProfilState();
-}
-
-class _ProfilState extends State<Profil> {
-
-  bool isLoading = false;
-  List user = [];
-
-
-  void getUser(String? idUser) async {
-    if(this.user.isEmpty) {
-      setState(() {isLoading = true;});
-      await FirebaseFirestore.instance.collection('user').where('id',isEqualTo:idUser).get().then((snapshot) => {
-        setState(() {this.user = snapshot.docs;})
-      });
-      setState(() {isLoading = false;});
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final UserMeth? user = Provider.of<UserMeth?>(context);
-    final bool isLoggedIn = user != null;
-    if(isLoggedIn){
-      getUser(user.id?.trim());
-      if(isLoading){
-        return Center(child: Center(child: CircularProgressIndicator(color: Blue)));
-      }
-      return personalArea(this.user.first);
-    }else{
-      return NotAutorization();
-    }
-  }
-}
-
-///ПРИ НЕАВТОРИЗОВАННОМ ПОЛЬЗОВАТЕЛЕ
-class NotAutorization extends StatelessWidget{
+class NotAuthProfil extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {

@@ -28,65 +28,59 @@ class _SerchState extends State<Serch> {
     Size SizePage = MediaQuery.of(context).size;
     return Scaffold(backgroundColor: Grey,
 
-      ///ШАПКА
-      appBar: PreferredSize(preferredSize: Size.fromHeight(SizePage.height/5),
-          child: AppBar(backgroundColor:Grey,
-              leading: Container(),
-              flexibleSpace:Stack(alignment: Alignment.topLeft,
-                  children: [
-                Column(children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 40),
-                    alignment: Alignment.center,
-                    child: Text("Поиск",style: Montserrat(color:Blue,size: 40,style: Bold)),
-                    padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
-                  ),
+        ///ШАПКА
+        appBar: PreferredSize(preferredSize: Size.fromHeight(SizePage.height/5),
+            child: AppBar(backgroundColor:Grey,
+                leading: Container(),
+                flexibleSpace:Stack(alignment: Alignment.topLeft,
+                    children: [
+                      Column(children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 40),
+                          alignment: Alignment.center,
+                          child: Text("Поиск",style: Montserrat(color:Blue,size: 40,style: Bold)),
+                          padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
+                        ),
 
-                  Container(padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
-                      margin: EdgeInsets.only(top: 30),
-                      child: Stack(children: [
-                        Shadow(38,15), // ТЕНЬ
-                        ///Поисковая строка
-                        Container(height: 40,
-                            child:  TextField(style: Montserrat(color:Blue,size: 15),
-                              decoration: InputDecoration(hintText: "Введите название города",
+                        Container(padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
+                            margin: EdgeInsets.only(top: 20),
+                            child: TextFieldWithShadow(
+                                TextField(style: Montserrat(color:Blue,size: 15),
+                                  decoration: TextFieldDecoration(
+                                    hintText: 'Введите название города',
+                                    prefixIcon: Container(
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 15, vertical: 5),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)),
+                                          color: Blue,
+                                        ),
+                                        width: 40,
+                                        padding: EdgeInsets.all(6),
+                                        child: iconMagnifier
+                                    ),
+                                  ).InputDecor(),
+                                  onChanged: (String value)
+                                  {
+                                    setState(()=>this.serchCity = value);
+                                  },
+                                )
+                            ),
+                        ),
+                      ]),
+                      Container(
+                          height: 70,width: 50,
+                          decoration: BoxDecoration(color: Blue,borderRadius: BorderRadius.only(bottomRight: Radius.circular(40))),
+                          child: IconButton(icon: Icon(Icons.arrow_back_ios,size: 20,color: White,),
+                              onPressed: (){
+                                Navigator.pop(context);
+                              })
+                      ),
 
-                                prefixIcon: Container(margin: EdgeInsets.fromLTRB(5, 5, 10, 5),
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),
-                                      color: Blue,),
-                                    child: iconMagnifier
-                                ),
-
-                                //СТИЛЬ
-                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(15),
-                                    borderSide: BorderSide(width: 0, style: BorderStyle.none)
-                                ),
-                                fillColor: White,
-                                isDense: true,
-                                filled: true,
-                              ),
-                              onChanged: (String value)
-                              {
-                                setState((){this.serchCity = value;});
-                              },
-                            )
-                        )
-                      ])
-                  ),
-                ]),
-                    Container(
-                        height: 70,width: 50,
-                        decoration: BoxDecoration(color: Blue,borderRadius: BorderRadius.only(bottomRight: Radius.circular(40))),
-                        child: IconButton(icon: Icon(Icons.arrow_back_ios,size: 20,color: White,),
-                            onPressed: (){
-                              Navigator.pop(context);
-                            })
-                    ),
-
-              ])
-          )
-      ),
+                    ])
+            )
+        ),
 
 
         ///ТЕЛО
@@ -95,12 +89,17 @@ class _SerchState extends State<Serch> {
   }
 }
 
-class CityPagination extends StatelessWidget {
+class CityPagination extends StatefulWidget {
 
   String request = '';
-  List data = [];
   CityPagination(this.request);
 
+  @override
+  State<CityPagination> createState() => _CityPaginationState();
+}
+
+class _CityPaginationState extends State<CityPagination> {
+  List data = [];
 
   @override
   Widget build(BuildContext context) {
@@ -132,11 +131,12 @@ class CityPagination extends StatelessWidget {
     );
   }
 
-
   Future<List<Widget>?> itemLoader(int limit, {int start = 0}) async {
     await FirebaseFirestore.instance.collection('city').get().then((snapshot) => {
-      this.data = snapshot.docs
+      setState(()=>this.data = snapshot.docs)
     });
+
+    print(widget.request);
 
     List<Widget> city = [];
     for (int i = 0; i < this.data.length; i++) {

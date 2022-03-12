@@ -57,7 +57,10 @@ final Widget iconLocation = SvgPicture.asset('image/icon/location.svg', height: 
 final Widget iconRuble = SvgPicture.asset('image/icon/ruble.svg', height: 15, width: 15,allowDrawingOutsideViewBox: true);
 
 final Widget iconVK = SvgPicture.asset('image/icon/vk.svg', height: 80, width: 80, allowDrawingOutsideViewBox: true, color: Color(0xFF5181B8));
+final Widget iconInstagram = SvgPicture.asset('image/icon/instagram.svg', height: 80, width: 80, allowDrawingOutsideViewBox: true, color: Color(0xFFf23b70));
+final Widget iconTelegram = SvgPicture.asset('image/icon/telegram.svg', height: 80, width: 80, allowDrawingOutsideViewBox: true, color: Color(0xFF34aadf));
 final Widget iconGoogle = SvgPicture.asset('image/icon/google.svg', height: 80, width: 80, allowDrawingOutsideViewBox: true, color: Color(0xFFEB4335));
+final Widget iconWhatsapp = SvgPicture.asset('image/icon/whatsapp.svg', height: 80, width: 80, allowDrawingOutsideViewBox: true, color: Color(0xFF4de35d));
 final Widget iconFacebook = SvgPicture.asset('image/icon/facebook.svg', height: 80, width: 80, allowDrawingOutsideViewBox: true, color: Color(0xFF3C5A9A));
 
 ///IMAGES

@@ -223,9 +223,7 @@ class Review extends StatelessWidget {
               Row(
                 children: [
                   Stack(children: [
-                    ClipRRect(borderRadius: BorderRadius.all(Radius.circular(500)),
-                        child: PhotoAuthor(this.user!["photo"])
-                    ),
+                    PhotoAuthor(this.user!["photo"]),
                     GuideCheck(this.user!["verified"]??false)
                   ]),
                   Container(margin: EdgeInsets.only(left: 15),
@@ -245,19 +243,5 @@ class Review extends StatelessWidget {
         ],
       )
     );
-  }
-  Widget GuideCheck(bool check){
-    if(check)
-    {
-      return Container(width: 40,height: 40,
-          alignment: Alignment.bottomRight,
-          child: Container(width: 15,height: 15,
-              child: iconConfirmation)
-      );
-    }
-    else
-    {
-      return Container();
-    }
   }
 }

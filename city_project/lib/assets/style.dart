@@ -198,20 +198,116 @@ class PhotoAuthor extends StatelessWidget {
   Widget build(BuildContext context) {
     if(url== 'null' || url == null){
       return Image.asset(avatarDef,
-        fit: BoxFit.cover,
         width: this.size, height: this.size,
       );
     }else{
-      return Image.network(url.toString(),
-        fit: BoxFit.cover,
-        width: this.size, height: this.size,
-        errorBuilder: (context, error, stackTrace) {
-          return Image.asset(avatarDef,
+      return ClipRRect(borderRadius: BorderRadius.all(Radius.circular(500)),
+          child: Image.network(url.toString(),
             fit: BoxFit.cover,
             width: this.size, height: this.size,
-          );
-        },
+            errorBuilder: (context, error, stackTrace) {
+              return CircleAvatar(
+                child: Image.asset(avatarDef,
+                  width: this.size, height: this.size,
+                ),
+              );
+            },
+          )
       );
     }
   }
 }
+
+class GuideCheck extends StatelessWidget {
+  final bool? check;
+  final double? size;
+  final double? mSize;
+  GuideCheck(this.check,{this.size = 40, this.mSize = 15,Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if(check == true)
+    {
+      return Container(width: this.size,height: this.size,
+          alignment: Alignment.bottomRight,
+          child: Container(width: this.mSize,height: this.mSize,
+              child: iconConfirmation)
+      );
+    }
+    else
+    {
+      return Container(width: this.size, height: this.size);
+    }
+  }
+}
+
+///Для текстовых полей с тенью
+class TextFieldWithShadow extends StatelessWidget {
+  Widget? textField;
+
+  TextFieldWithShadow(this.textField, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+        borderRadius: BorderRadius.circular(20),
+        elevation: 7.0,
+        shadowColor: Colors.black,
+        child: this.textField,
+    );
+  }
+}
+
+Widget RichTextMethod(String TextMain,[bool star = false]){
+  String starStr = '';
+  if(star){
+    starStr = ' *';
+  }
+  return
+    Container(
+      margin: EdgeInsets.only(left: 10,bottom: 5),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(text: TextMain,
+                style: Montserrat(color: Blue, style: SemiBold)),
+            TextSpan(text: starStr, style: Montserrat(color: Red)),
+          ],
+        ),
+      ),
+    );
+}
+
+class TextFieldDecoration{
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final bool? error;
+  final String? hintText;
+
+  TextFieldDecoration({this.error = false,this.hintText,this.prefixIcon,this.suffixIcon});
+
+  InputDecoration InputDecor(){
+    return
+      InputDecoration(
+        hintText: this.hintText,
+          counterText: '',
+        //ИКОНКИ
+          prefixIcon: this.prefixIcon,
+          suffixIcon: this.suffixIcon,
+
+          //СТИЛЬ
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(500),
+              borderSide: BorderSide(width: 0,
+                  style: error == true
+                      ? BorderStyle.solid
+                      : BorderStyle.none)
+          ),
+          fillColor: White,
+          isDense: true,
+          filled: true
+
+      );
+  }
+}
+

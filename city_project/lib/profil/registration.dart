@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lan_code/service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_pw_validator/flutter_pw_validator.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 
 import '../assets/style.dart';
@@ -23,9 +24,9 @@ class Registration extends StatefulWidget
 class _RegistrationState extends State<Registration> {
   bool passwordVisible = true;
   bool isChecked = false;
-  List errorName = [false, 'errorName'];
-  List errorPassword = [false, 'errorPassword'];
-  List errorEmail = [false, 'errorEmail'];
+  bool errorName = false;
+  bool errorPassword = false;
+  bool errorEmail = false;
   String name = '';
   String email = '';
   String password = '';
@@ -100,7 +101,7 @@ class _RegistrationState extends State<Registration> {
                                     onChanged: (String value) {
                                       setState(() {
                                         name = value;
-                                        errorName[0] = false;
+                                        errorName = false;
                                       });
                                     },
                                     decoration: InputDecoration(
@@ -119,19 +120,14 @@ class _RegistrationState extends State<Registration> {
                                         ),
 
                                         //ВЫВОД ОШИБКИ
-                                        errorText: errorName[0] == true
-                                            ? errorName[1]
-                                            : null,
-                                        errorStyle: Montserrat(style: Medium,
-                                            color: Red,
-                                            size: 15),
+                                        errorText: '',
 
                                         //СТИЛЬ
                                         border: OutlineInputBorder(
                                             borderRadius: BorderRadius.circular(
                                                 500),
                                             borderSide: BorderSide(width: 0,
-                                                style: errorName[0] == true
+                                                style: errorName == true
                                                     ? BorderStyle.solid
                                                     : BorderStyle.none)
                                         ),
@@ -160,7 +156,7 @@ class _RegistrationState extends State<Registration> {
                                     onChanged: (String value) {
                                       setState(() {
                                         email = value;
-                                        errorEmail[0] = false;
+                                        errorEmail = false;
                                       });
                                     },
                                     decoration: InputDecoration(
@@ -179,19 +175,14 @@ class _RegistrationState extends State<Registration> {
                                         ),
 
                                         //ВЫВОД ОШИБКИ
-                                        errorText: errorEmail[0] == true
-                                            ? errorEmail[1]
-                                            : null,
-                                        errorStyle: Montserrat(style: Medium,
-                                            color: Red,
-                                            size: 15),
+                                        errorText: '',
 
                                         //СТИЛЬ
                                         border: OutlineInputBorder(
                                             borderRadius: BorderRadius.circular(
                                                 500),
                                             borderSide: BorderSide(width: 0,
-                                                style: errorEmail[0] == true
+                                                style: errorEmail == true
                                                     ? BorderStyle.solid
                                                     : BorderStyle.none)
                                         ),
@@ -226,7 +217,7 @@ class _RegistrationState extends State<Registration> {
                                         onChanged: (String value) {
                                           setState(() {
                                             password = value;
-                                            errorPassword[0] = false;
+                                            errorPassword = false;
                                           });
                                         },
                                         decoration: InputDecoration(
@@ -243,6 +234,7 @@ class _RegistrationState extends State<Registration> {
                                                 padding: EdgeInsets.all(6),
                                                 child: iconPassword
                                             ),
+                                            errorText: '',
 
                                             //СКРЫТЬ/ПОКАЗАТЬ
                                             suffixIcon: Container(
@@ -265,7 +257,7 @@ class _RegistrationState extends State<Registration> {
                                                 borderRadius: BorderRadius.circular(
                                                     500),
                                                 borderSide: BorderSide(width: 0,
-                                                    style: errorPassword[0] == true
+                                                    style: errorPassword == true
                                                         ? BorderStyle.solid
                                                         : BorderStyle.none)
                                             ),
@@ -277,26 +269,6 @@ class _RegistrationState extends State<Registration> {
                                   ])
                                 ])
                             ),
-                            new SizedBox(
-                              height: 10,
-                            ),
-                            new FlutterPwValidator(
-                              controller: controllerValidPassword,
-                              minLength: 6,
-                              numericCharCount: 1,
-                              width: SizePage.width,
-                              height: SizePage.height/13,
-                              onSuccess: (){
-                                setState(() {
-                                  errorPassword[0] = false;
-                                });
-                              },
-                              onFail: (){
-                                setState(() {
-                                  errorPassword[0] = true;
-                                });
-                              },
-                            )
                           ],
                         )
                       ]),
@@ -375,49 +347,64 @@ class _RegistrationState extends State<Registration> {
   }
 
   void Validation()async{
-    int countError = 0;
+    String errorStr = '';
+    int count = 0;
       bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+"
       r"@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
-      if(email == '') {
-          setState(()=>errorEmail = [true,"Введите почту"]);
-          countError++;
+    if (name == '') {
+      setState(()=>errorName = true);
+      errorStr += "Введите имя\n";
+      count++;
+    }
+    else if(name.length < 5){
+      setState(()=>errorName = true);
+      errorStr += "Слишком короткое имя\n";
+      count++;
+    }
+
+    if(email == '') {
+      setState(()=>errorEmail = true);
+      errorStr += "Введите почту\n";
+      count++;
+    }
+    else if (emailValid == false) {
+      setState(()=>errorEmail = true);
+      errorStr += "Неверный формат почты\n";
+      count++;
+    }
+
+    if(password == ''){
+      setState(()=>errorPassword = true);
+      errorStr += "Введите пароль\n";
+      count++;
+    }
+    else if(password.length < 6) {
+      errorStr += "Слишком короткий пароль\n";
+      count++;
+    }
+    ///ПРОВЕРКА НА ПАРОЛЬ
+
+
+      if(errorStr == '')
+      {
+        setState(()=>isLoading = true);
+
+        dynamic user = await authService.register(email.trim(), password.trim());
+        if(user == null){
+          setState(()=>errorEmail = true);
+          showTopSnackBar(context, CustomSnackBar.error(message:'починить',textStyle: Montserrat(size: 15)));
+        }else{
+          await FirebaseFirestore.instance.collection('user').add({
+            "id": user.id,
+            "name":this.name,
+            "verified": false,
+            "photo": 'null',
+            "guidePermit":false
+          });
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> Navigation(index: 3)), (route) => false);
         }
-      else if (emailValid == false) {
-        setState(()=>errorEmail = [true,"Неверный формат почты"]);
-        countError++;
+        setState(() {isLoading = false;});
       }
-
-      if (name == '') {
-        setState(() {
-          errorName = [true,"Введите имя"];
-        });
-        countError++;
-      }
-      else if(name.length < 5){
-        setState(() {
-          errorName = [true,"Слишком короткое имя"];
-        });
-        countError++;
-      }
-
-      if(countError == 0 && !errorPassword[0])
-        {
-          setState(() {isLoading = true;});
-
-          dynamic user = await authService.register(email.trim(), password.trim());
-          if(user == null){
-            setState(()=>errorEmail = [true,"123"]);
-          }else{
-            await FirebaseFirestore.instance.collection('user').add({
-              "id": user.id,
-              "name":this.name,
-              "verified": false,
-              "photo": 'null',
-              "guidePermit":false
-            });
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> Navigation(index: 3)), (route) => false);
-          }
-          setState(() {isLoading = false;});
-        }
+      else showTopSnackBar(context, CustomSnackBar.error(message:errorStr,textStyle: Montserrat(size: 15),lines: count));
     }
 }

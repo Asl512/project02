@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'doublePsw.dart';
 import 'dart:async';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -121,11 +123,6 @@ class _codeRecoveryState extends State<codeRecovery> {
                             ])
                         ),
 
-                        ///ВЫВОД ОШИБКИ
-                        Container(child: Text(hasError ? "Вы ввели неверный код" : "", style: Montserrat(size: 15, color: Red)),
-                          margin: EdgeInsets.only(bottom: 20),
-                        ),
-
 
                         ///ТЕКСТ
                         Container(
@@ -168,12 +165,10 @@ class _codeRecoveryState extends State<codeRecovery> {
     if (currentText.length != 6 || currentText != "123456") {
       errorController!.add(ErrorAnimationType.shake);
       setState(() => hasError = true);
+      showTopSnackBar(context, CustomSnackBar.error(message:'Неверный формат почты',textStyle: Montserrat(size: 15)));
     } else {
-      setState(() {
-          hasError = false;
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> doublePsw(widget.email)));
-        },
-      );
+      setState(()=>hasError = false);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> doublePsw(widget.email)));
     }
   }
 }

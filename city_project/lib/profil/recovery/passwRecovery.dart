@@ -4,6 +4,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'dart:async';
 import 'codeRecovery.dart';
 
@@ -19,7 +21,7 @@ class passwRecovery extends StatefulWidget
 }
 
 class _passwRecoveryState extends State<passwRecovery> {
-  List errorEmail = [false,'errorEmail'];
+  bool errorEmail = false;
   String email = '';
   bool isLoading = false;
 
@@ -86,7 +88,7 @@ class _passwRecoveryState extends State<passwRecovery> {
                                     onChanged: (String value)
                                     {setState(() {
                                       email = value;
-                                      errorEmail[0] = false;
+                                      errorEmail = false;
                                     });},
                                     decoration: InputDecoration(
                                       //ИКОНКА
@@ -100,12 +102,11 @@ class _passwRecoveryState extends State<passwRecovery> {
                                         ),
 
                                         //ВЫВОД ОШИБКИ
-                                        errorText: errorEmail[0] == true ? errorEmail[1] : null,
-                                        errorStyle: Montserrat(style:Medium,color: Red,size: 15),
+                                        errorText: '',
 
                                         //СТИЛЬ
                                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(500),
-                                            borderSide: BorderSide(width: 0, style: errorEmail[0] == true ? BorderStyle.solid : BorderStyle.none)
+                                            borderSide: BorderSide(width: 0, style: errorEmail == true ? BorderStyle.solid : BorderStyle.none)
                                         ),
                                         fillColor: White,
                                         isDense: true,
@@ -169,33 +170,18 @@ class _passwRecoveryState extends State<passwRecovery> {
     bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+"
     r"@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
     if(email == '') {
-      setState(() {
-        errorEmail = [true,"Введите почту"];
-      });
+      setState(()=>errorEmail = true);
+      showTopSnackBar(context, CustomSnackBar.error(message:'Введите почту',textStyle: Montserrat(size: 15)));
     }
     else if (emailValid == false) {
-      setState(() {
-        errorEmail = [true,"Неверный формат почты"];
-      });
+      setState(()=>errorEmail = true);
+      showTopSnackBar(context, CustomSnackBar.error(message:'Неверный формат почты',textStyle: Montserrat(size: 15)));
     }
     else{
-      CheckEmail();
+      setState(() {isLoading = true;});
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> codeRecovery(this.email)));
+      setState(() {isLoading = false;});
     }
-  }
-
-  Future<Null> CheckEmail() async {
-    setState(() {isLoading = true;});
-    List emails = [];
-    await FirebaseFirestore.instance.collection('user').where("email",isEqualTo:this.email).get().then((snapshot) => {
-      emails = snapshot.docs
-    });
-    if(emails.isEmpty) {
-      setState(() {
-        errorEmail = [true, "Данная почта не зарегистрирована"];
-      });
-    }
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> codeRecovery(this.email)));
-    setState(() {isLoading = false;});
   }
 }
 

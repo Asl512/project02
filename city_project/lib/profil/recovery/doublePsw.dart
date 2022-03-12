@@ -2,14 +2,13 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 
 import '../../assets/style.dart';
 import '../../assets/finally.dart';
-import '../../navigation.dart';
-import 'codeRecovery.dart';
 
 class doublePsw extends StatefulWidget
 {
@@ -23,12 +22,11 @@ class doublePsw extends StatefulWidget
 class _doublePswState extends State<doublePsw> {
   bool passwordVisible = true;
   bool passwordVisibleTwo = true;
-  List errorPassword = [false,'errorPassword'];
-  List errorPasswordTwo = [false,'errorPasswordTwo'];
+  bool errorPassword = false;
+  bool errorPasswordTwo = false;
   String password = '';
   String passwordTwo = '';
   bool isLoading = false;
-  bool isUpdate = false;
 
   final TextEditingController controllerValidPassword = new TextEditingController();
 
@@ -104,7 +102,7 @@ class _doublePswState extends State<doublePsw> {
                                             onChanged: (String value) {
                                               setState(() {
                                                 password = value;
-                                                errorPassword[0] = false;
+                                                errorPassword = false;
                                               });
                                             },
                                             decoration: InputDecoration(
@@ -139,15 +137,14 @@ class _doublePswState extends State<doublePsw> {
                                                 ),
 
                                                 //ВЫВОД ОШИБКИ
-                                                errorText: null,
-                                                errorStyle: Montserrat(style:Medium,color: Red,size: 15),
+                                                errorText: '',
 
                                                 //СТИЛЬ
                                                 border: OutlineInputBorder(
                                                     borderRadius: BorderRadius.circular(
                                                         500),
                                                     borderSide: BorderSide(width: 0,
-                                                        style: errorPassword[0] == true
+                                                        style: errorPassword == true
                                                             ? BorderStyle.solid
                                                             : BorderStyle.none)
                                                 ),
@@ -159,26 +156,6 @@ class _doublePswState extends State<doublePsw> {
                                       ])
                                     ])
                                 ),
-                                new SizedBox(
-                                  height: 10,
-                                ),
-                                new FlutterPwValidator(
-                                  controller: controllerValidPassword,
-                                  minLength: 6,
-                                  numericCharCount: 1,
-                                  width: SizePage.width,
-                                  height: SizePage.height/13,
-                                  onSuccess: (){
-                                    setState(() {
-                                      errorPassword[0] = false;
-                                    });
-                                  },
-                                  onFail: (){
-                                    setState(() {
-                                      errorPassword[0] = true;
-                                    });
-                                  },
-                                )
                               ],
                             )),
 
@@ -202,7 +179,7 @@ class _doublePswState extends State<doublePsw> {
                                 onChanged: (String value)
                                 {setState(() {
                                   passwordTwo = value;
-                                  errorPasswordTwo[0] = false;
+                                  errorPasswordTwo = false;
                                 });},
                                 decoration: InputDecoration(
                                   //ИКОНКА
@@ -230,12 +207,11 @@ class _doublePswState extends State<doublePsw> {
                                     ),
 
                                     //ВЫВОД ОШИБКИ
-                                    errorText: errorPasswordTwo[0] == true ? errorPasswordTwo[1] : null,
-                                    errorStyle: Montserrat(style:Medium,color: Red,size: 15),
+                                    errorText: '',
 
                                     //СТИЛЬ
                                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(500),
-                                        borderSide: BorderSide(width: 0, style: errorPasswordTwo[0] == true ? BorderStyle.solid : BorderStyle.none)
+                                        borderSide: BorderSide(width: 0, style: errorPasswordTwo == true ? BorderStyle.solid : BorderStyle.none)
                                     ),
                                     fillColor: White,
                                     isDense: true,
@@ -283,54 +259,30 @@ class _doublePswState extends State<doublePsw> {
           color: Colors.white.withOpacity(0.8),
         ) : Container(),
       ),
-
-      Positioned(
-        child: isUpdate
-            ? Container(
-          child: Center(
-            child: Container(
-              width: 100, height: 100,
-              color: Blue,
-              alignment: Alignment.center,
-              child: Text('Прошло',style: Montserrat(size: 20)),
-            )
-          ),
-          color: Colors.white.withOpacity(0.8),
-        ) : Container(),
-      ),
     ]);
   }
 
   void Validation()async{
-    setState((){
-      isUpdate = true;
-    });
-    await Future<void>.delayed(const Duration(seconds: 2));
-    Navigator.pop(context);
-
-    if(!errorPassword[0]) {
-        if(password == passwordTwo){
-          setState(()=>isLoading = true);
-          QuerySnapshot user = await FirebaseFirestore.instance.collection('user').where("email",isEqualTo:widget.email).get();
-          if (user.docs.isNotEmpty) {
-            if(user.docs.first['password'] == password)  setState((){
-              errorPasswordTwo = [true,'Вы использовали старый пароль'];
-              errorPassword = [true,''];
-            });
-            else {
-              await user.docs[0].reference.update({"password": password});
-              setState((){
-                isUpdate = true;
-                isLoading = false;
-              });
-              await Future<void>.delayed(const Duration(seconds: 2));
-              Navigator.pop(context);
-            }
-          }
-          setState(()=>isLoading = false);
-        }
-        else setState(()=>errorPasswordTwo = [true,'Пароли не совпадают']);
-      }
+    if(password == '' || passwordTwo == ''){
+      setState(()=>errorPassword = true);
+      setState(()=>errorPasswordTwo = true);
+      showTopSnackBar(context, CustomSnackBar.error(message:'Введите пароль',textStyle: Montserrat(size: 15)));
+    }
+    else if(password.length < 6) {
+      setState(()=>errorPassword = true);
+      setState(()=>errorPasswordTwo = true);
+      showTopSnackBar(context, CustomSnackBar.error(message:'Слишком короткий пароль',textStyle: Montserrat(size: 15)));
+    }
+    else if(password != passwordTwo){
+      setState(()=>errorPassword = true);
+      setState(()=>errorPasswordTwo = true);
+      showTopSnackBar(context, CustomSnackBar.error(message:'Пароли не совпадают',textStyle: Montserrat(size: 15)));
+    }
+    else{
+      showTopSnackBar(context, CustomSnackBar.success(message:'Вы успешно сменили пароль',textStyle: Montserrat(size: 15)));
+      await Future<void>.delayed(const Duration(seconds: 5));
+      Navigator.pop(context);
+    }
   }
 
 }

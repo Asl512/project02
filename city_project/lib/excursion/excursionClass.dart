@@ -95,10 +95,8 @@ class _ExcursionState extends State<Excursion>{
                               //АВАТАР
                               Container(padding: EdgeInsets.symmetric(horizontal: 10),
                                   child: Stack(children: [
-                                    ClipRRect(borderRadius: BorderRadius.all(Radius.circular(500)),
-                                        child: PhotoAuthor(widget.gid!["photo"])
-                                    ),
 
+                                    PhotoAuthor(widget.gid!["photo"]),
                                     GuideCheck(widget.gid!["verified"]??false)
 
                                   ])),
@@ -162,20 +160,5 @@ class _ExcursionState extends State<Excursion>{
             ]
         ),),
     );
-  }
-
-  Widget GuideCheck(bool check){
-    if(check)
-    {
-      return Container(width: 40,height: 40,
-          alignment: Alignment.bottomRight,
-          child: Container(width: 15,height: 15,
-              child: iconConfirmation)
-      );
-    }
-    else
-    {
-      return Container();
-    }
   }
 }

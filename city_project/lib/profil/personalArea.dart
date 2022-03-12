@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../assets/style.dart';
 import '../assets/finally.dart';
@@ -47,10 +48,8 @@ class personalArea extends StatelessWidget {
                         child: Row(crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Stack(children: [
-                              ClipRRect(borderRadius: BorderRadius.all(Radius.circular(500)),
-                                child: PhotoAuthor(user!['photo'],size: MediaQuery.of(context).size.width/7),
-                              ),
-                              GuideCheck(this.user!["verified"]??false,MediaQuery.of(context).size.width/7)
+                              PhotoAuthor(user!['photo'],size: MediaQuery.of(context).size.width/7),
+                              GuideCheck(this.user!["verified"]??false,size:MediaQuery.of(context).size.width/7,mSize: MediaQuery.of(context).size.width/7/4,)
                             ]),
                             Container(margin: EdgeInsets.only(left: 20),
                                 child: Column(
@@ -86,7 +85,14 @@ class personalArea extends StatelessWidget {
                         child: ButtonProfilStyleEazy('О приложении')
                     ),
                     Container(height: 1,width: MediaQuery.of(context).size.width, color: Blue),
-                    TextButton(onPressed:(){},
+                    TextButton(onPressed:(){
+                      showModalBottomSheet(
+                          backgroundColor:White.withOpacity(0),
+                          context: context,
+                          builder: (BuildContext context) {
+                            return ShowWeContacts();
+                          });
+                    },
                         child: ButtonProfilStyleEazy('Служба поддержки')
                     ),
                     TextButton(onPressed: (){
@@ -107,17 +113,6 @@ class personalArea extends StatelessWidget {
       ],
       )
     );
-  }
-  Widget GuideCheck(bool check,double size){
-    if(check)
-    {
-      return Container(width: size,height: size,
-          alignment: Alignment.bottomRight,
-          child: Container(width: size/4,height: size/4,
-              child: iconConfirmation)
-      );
-    }
-    else return Container();
   }
 
   Widget CheckStatus(bool check){
@@ -199,3 +194,86 @@ class ButtonProfilStyleEazy extends StatelessWidget{
 }
 
 
+class ShowWeContacts extends StatelessWidget {
+  const ShowWeContacts({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: [
+      Container(
+        height: 180,
+        width: double.infinity,
+        padding: EdgeInsets.only(top:25),
+        decoration: BoxDecoration(color: Blue,
+            borderRadius: BorderRadius.only(topRight: Radius.circular(50),topLeft: Radius.circular(50))),
+        child: Column(children: [
+          Text("Служба поддержки",style: Montserrat(color:White,style: SemiBold,size: 15)),
+          Container(margin: EdgeInsets.only(top: 5),
+            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/8),
+            child: Text("Для решения вопросов, можете связаться с нами лично",style: Montserrat(size: 14),textAlign: TextAlign.center)
+          ),
+          Container(padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/8),
+            margin: EdgeInsets.only(top: 20),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+
+                Stack(alignment: Alignment.center,
+                    children: [
+                      Container(width: 45,height: 45, decoration:BoxDecoration(color: White,borderRadius: BorderRadius.all(Radius.circular(500))),),
+                      IconButton(onPressed:()async{}, icon: iconVK, iconSize: 50,),
+                    ]
+                ),
+
+
+                Stack(alignment: Alignment.center,
+                    children: [
+                      Container(width: 45,height: 45, decoration:BoxDecoration(color: White,borderRadius: BorderRadius.all(Radius.circular(500))),),
+                      IconButton(onPressed:(){
+                        launchURL('');
+                      }, icon: iconWhatsapp, iconSize: 50,),
+                    ]
+                ),
+
+                Stack(alignment: Alignment.center,
+                    children: [
+                      Container(width: 45,height: 45,decoration:BoxDecoration(color: White,borderRadius: BorderRadius.all(Radius.circular(500))),),
+                      IconButton(onPressed:(){
+                        launchURL('https://www.instagram.com/asl_astro/');
+                      }, icon: iconInstagram, iconSize: 50,),
+                    ]
+                ),
+
+                Stack(alignment: Alignment.center,
+                    children: [
+                      Container(width: 45,height: 45,decoration:BoxDecoration(color: White,borderRadius: BorderRadius.all(Radius.circular(500))),),
+                      IconButton(onPressed:(){
+                        launchURL('https://t.me/astroasl');
+                      }, icon: iconTelegram, iconSize: 50,),
+                    ]
+                )
+              ],
+            ),
+          ),
+        ]),
+      ),
+
+      Container(
+        alignment: Alignment.topCenter,
+        height: 180,
+        padding: EdgeInsets.only(top: 10),
+        child: Container(width: 50,
+          height: 4,
+          decoration: BoxDecoration(color: White,borderRadius: BorderRadius.all(Radius.circular(500))),
+        ),
+      )
+    ]);
+  }
+
+  launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+}

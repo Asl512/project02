@@ -1,12 +1,11 @@
 import 'dart:ui';
-import 'dart:math' as math;
 import 'package:card_swiper/card_swiper.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:zoom_pinch_overlay/zoom_pinch_overlay.dart';
+import 'dart:math' as math;
 
 import '../assets/style.dart';
 import '../assets/finally.dart';
@@ -41,8 +40,10 @@ class _ExcursionPageState extends State<ExcursionPage> {
     if(this.photos == null) {
       setState(() {isLoading = true;});
       await FirebaseFirestore.instance.collection('photoExcursion').where("idExcursion",isEqualTo:widget.id).get().then((snapshot) => {
-        this.photos = snapshot.docs
+        if(!snapshot.docs.isEmpty) this.photos = snapshot.docs[0]['photo']
+        else this.photos = [null]
       });
+
       await FirebaseFirestore.instance.collection('reviewsExcursion').where("idExcursion",isEqualTo:widget.id).get().then((snapshot) => {
         this.reviews = snapshot.docs
       });
@@ -113,9 +114,7 @@ class _ExcursionPageState extends State<ExcursionPage> {
                               decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(40)),
                                   color: Colors.black.withOpacity(0.5)),
                               child: Stack(children: [
-                                ClipRRect(borderRadius: BorderRadius.all(Radius.circular(500)),
-                                    child: PhotoAuthor(widget.gid!['photo'])
-                                ),
+                                PhotoAuthor(widget.gid!['photo']),
                                 GuideCheck(widget.gid!['verified'])
                               ])),
                           Container(color: Colors.black.withOpacity(0.5),height: 50,
@@ -281,14 +280,16 @@ class _ExcursionPageState extends State<ExcursionPage> {
             Container(margin: EdgeInsets.only(bottom: 15),
               child: Text("Подробнее об экскурсии", style: Montserrat(style: Bold,size: 16,color: Blue))),
 
-            Card("Что вас ожидает"),
+            Card("Что включено"),
+            Container(width: double.infinity,height: 0.5,color: Blue.withOpacity(0.5)),
+            Card("Дополнительные услуги"),
             Container(width: double.infinity,height: 0.5,color: Blue.withOpacity(0.5)),
             Card("Организационные детали"),
             Container(width: double.infinity,height: 0.5,color: Blue.withOpacity(0.5)),
             Card("Правила экскурсии"),
 
             ///ФОТОГРАФИИ
-            PhotosBlock(photos)
+            PhotosBlock(this.photos)
           ],
         ),
       );
@@ -296,7 +297,6 @@ class _ExcursionPageState extends State<ExcursionPage> {
   }
 
   Widget CheckMoment(bool moment){
-    print(moment);
     if(moment){
       return Row(
         children: [
@@ -370,8 +370,8 @@ class Card extends StatelessWidget {
                 theme: const ExpandableThemeData(
                   expandIcon: Icons.arrow_forward_ios,
                   collapseIcon: Icons.arrow_forward_ios,
-                  iconColor: Blue,
                   iconRotationAngle: math.pi / 2,
+                  iconColor: Blue,
                 ),
               ),
             ],
@@ -389,7 +389,7 @@ class PhotosBlock extends StatelessWidget {
   List? images;
   @override
   Widget build(BuildContext context) {
-    if(images == null) return Container();
+    if(images![0] == null) return Container();
     else{
       return Container(padding: EdgeInsets.all(5),
           margin: EdgeInsets.only(top: 10,bottom: 25),
@@ -411,7 +411,7 @@ class PhotosBlock extends StatelessWidget {
           children: [
             TextButton(onPressed:()=>showPhotoDialog(context),
                 child: ClipRRect(borderRadius: BorderRadius.circular(5),
-                  child: Image.network(this.images![0]["photo"],fit: BoxFit.cover,
+                  child: Image.network(this.images![0],fit: BoxFit.cover,
                     height: MediaQuery.of(context).size.width/3*1.5+15,
                     width: MediaQuery.of(context).size.width/2.5,
                     loadingBuilder: (BuildContext context, Widget child,
@@ -429,7 +429,7 @@ class PhotosBlock extends StatelessWidget {
     else{
       return TextButton(onPressed:()=>showPhotoDialog(context),
           child: ClipRRect(borderRadius: BorderRadius.circular(5),
-            child: Image.network(this.images![0]["photo"],fit: BoxFit.cover,
+            child: Image.network(this.images![0],fit: BoxFit.cover,
               height: MediaQuery.of(context).size.width/3*1.5+15,
               loadingBuilder: (BuildContext context, Widget child,
                   ImageChunkEvent? loadingProgress) {
@@ -447,7 +447,7 @@ class PhotosBlock extends StatelessWidget {
       return Column(children: [
         TextButton(onPressed:()=>showPhotoDialog(context),
             child: ClipRRect(borderRadius: BorderRadius.circular(5),
-              child: Image.network(this.images![1]["photo"],fit: BoxFit.cover,
+              child: Image.network(this.images![1],fit: BoxFit.cover,
                 height: MediaQuery.of(context).size.width/3*1.5/2,
                 width: MediaQuery.of(context).size.width/2.5,
                 loadingBuilder: (BuildContext context, Widget child,
@@ -462,7 +462,7 @@ class PhotosBlock extends StatelessWidget {
             child: Stack(
               children: [
                 ClipRRect(borderRadius: BorderRadius.circular(5),
-                  child: Image.network(this.images![2]["photo"],fit: BoxFit.cover,
+                  child: Image.network(this.images![2],fit: BoxFit.cover,
                     height: MediaQuery.of(context).size.width/3*1.5/2,
                     width: MediaQuery.of(context).size.width/2.5,
                     loadingBuilder: (BuildContext context, Widget child,
@@ -489,7 +489,7 @@ class PhotosBlock extends StatelessWidget {
     }else{
       return TextButton(onPressed:()=>showPhotoDialog(context),
           child: ClipRRect(borderRadius: BorderRadius.circular(5),
-            child: Image.network(this.images![1]["photo"],fit: BoxFit.cover,
+            child: Image.network(this.images![1],fit: BoxFit.cover,
               height: MediaQuery.of(context).size.width/3*1.5+15,
               width: MediaQuery.of(context).size.width/2.5,
               loadingBuilder: (BuildContext context, Widget child,
@@ -536,18 +536,15 @@ class _PhotoCarouselState extends State<PhotoCarousel> {
             return Container(width: double.infinity,
               height: double.infinity,
               color: Colors.black,
-              child: ZoomOverlay(
-                  minScale: 0.5,
-                  maxScale: 3.0,
-                  twoTouchOnly: true,
-                  child: Image.network(widget.images![index]["photo"],
+              child: InteractiveViewer(
+                child: Image.network(widget.images![index],
                     loadingBuilder: (BuildContext context, Widget child,
                         ImageChunkEvent? loadingProgress) {
                       if (loadingProgress == null) return child;
                       return Center(child: CircularProgressIndicator(color: White));
                     }
-                  )
-              ),
+                ),
+              )
             );
           },
           curve: Curves.decelerate,
