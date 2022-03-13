@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dropdown_plus/dropdown_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +10,7 @@ import 'dart:math' as math;
 
 import '../assets/style.dart';
 import '../assets/finally.dart';
+import '../libary/dropdown.dart';
 
 class AddExcursion extends StatefulWidget
 {

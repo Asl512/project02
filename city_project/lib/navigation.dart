@@ -52,6 +52,8 @@ class _NavigationState extends State<Navigation> {
       await FirebaseFirestore.instance.collection('user').where('id',isEqualTo:idUser).get().then((snapshot){
         setState(() {this.user = snapshot.docs;});
       });
+      await Future.delayed(const Duration(seconds: 600));
+      setState(()=>this.user = []);
     }
   }
 

@@ -31,7 +31,6 @@ dependencies:
   introduction_screen: ^3.0.0
   flutter_rating_stars: ^1.0.3+4
   expandable: ^5.0.1
-  top_snackbar_flutter: ^1.0.2
   card_swiper: ^2.0.1
   shared_preferences: ^2.0.9
   firebase_auth: ^3.3.9
@@ -44,7 +43,6 @@ dependencies:
   firebase_core:
   postgres: ^2.4.3
   url_launcher: ^6.0.17
-  dropdown_plus: ^0.0.9
   flutter_chips_input: ^1.10.0
   flutter:
     sdk: flutter
