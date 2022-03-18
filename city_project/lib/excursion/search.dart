@@ -48,18 +48,7 @@ class _SerchState extends State<Serch> {
                                 TextField(style: Montserrat(color:Blue,size: 15),
                                   decoration: TextFieldDecoration(
                                     hintText: 'Введите название города',
-                                    prefixIcon: Container(
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 15, vertical: 5),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          color: Blue,
-                                        ),
-                                        width: 40,
-                                        padding: EdgeInsets.all(6),
-                                        child: iconMagnifier
-                                    ),
+                                    prefixIcon: PrefixIconTextField(color: Blue,icon: iconMagnifier)
                                   ).InputDecor(),
                                   onChanged: (String value)
                                   {
@@ -69,14 +58,8 @@ class _SerchState extends State<Serch> {
                             ),
                         ),
                       ]),
-                      Container(
-                          height: 70,width: 50,
-                          decoration: BoxDecoration(color: Blue,borderRadius: BorderRadius.only(bottomRight: Radius.circular(40))),
-                          child: IconButton(icon: Icon(Icons.arrow_back_ios,size: 20,color: White,),
-                              onPressed: (){
-                                Navigator.pop(context);
-                              })
-                      ),
+
+                      ButtonBack()
 
                     ])
             )

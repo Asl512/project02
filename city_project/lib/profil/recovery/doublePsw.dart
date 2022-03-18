@@ -55,15 +55,7 @@ class _doublePswState extends State<doublePsw> {
                               padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
                             ),
                           ]),
-                          Container(
-                              height: 70,width: 50,
-                              decoration: BoxDecoration(color: Blue,borderRadius: BorderRadius.only(bottomRight: Radius.circular(40))),
-                              child: IconButton(icon: Icon(Icons.arrow_back_ios,size: 20,color: White,),
-                                  onPressed: (){
-                                    Navigator.pop(context);
-                                  })
-                          ),
-
+                          ButtonBack()
                         ])
                 )
             ),
@@ -78,148 +70,109 @@ class _doublePswState extends State<doublePsw> {
                       children:[
 
                         ///PASSWORD
-                        Container(margin: EdgeInsets.only(bottom: 25),
-                            child: Column(
-                              children: [
-                                ///PASSWORD
-                                Container(
-                                    child: Column(children: [
-                                      Container(width: double.infinity,
-                                        margin: EdgeInsets.fromLTRB(10, 0, 0, 5),
-                                        child: Text("Пароль:", style: Montserrat(
-                                            color: Blue, style: SemiBold)),
+                        Column(crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichTextMethod("Пароль:"),
+
+                              TextFieldWithShadow(
+                                  TextField(
+                                      controller: controllerValidPassword,
+                                      style: Montserrat(
+                                          color: Blue, size: 15),
+                                      obscureText: passwordVisible,
+                                      onChanged: (String value) {
+                                        setState(() {
+                                          password = value;
+                                          errorPassword = false;
+                                        });
+                                      },
+                                      decoration: InputDecoration(
+                                        //ИКОНКА
+                                          prefixIcon: PrefixIconTextField(color: Color(0xFF00f069),icon: iconPassword),
+
+                                          //СКРЫТЬ/ПОКАЗАТЬ
+                                          suffixIcon: Container(
+                                              margin: EdgeInsets.only(right: 10),
+                                              child: IconButton(
+                                                icon: passwordVisible == true
+                                                    ? iconShow
+                                                    : iconHide,
+                                                onPressed: () {
+                                                  setState(() {
+                                                    passwordVisible =
+                                                    !passwordVisible;
+                                                  });
+                                                },
+                                              )
+                                          ),
+
+                                          hintStyle: Montserrat(color: Colors.black26, size: 15),
+                                          hintText: "Придумайте пароль",
+
+                                          //СТИЛЬ
+                                          border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(
+                                                  500),
+                                              borderSide: BorderSide(width: 0,
+                                                  style: BorderStyle.none)
+                                          ),
+                                          fillColor: White,
+                                          isDense: true,
+                                          filled: true
                                       ),
-
-                                      Stack(children: [
-                                        Shadow(50, 500), // ТЕНЬ
-
-                                        TextField(
-                                            controller: controllerValidPassword,
-                                            style: Montserrat(
-                                                color: Blue, style: SemiBold),
-                                            obscureText: passwordVisible,
-                                            onChanged: (String value) {
-                                              setState(() {
-                                                password = value;
-                                                errorPassword = false;
-                                              });
-                                            },
-                                            decoration: InputDecoration(
-                                              //ИКОНКА
-                                                prefixIcon: Container(
-                                                    margin: EdgeInsets.symmetric(
-                                                        horizontal: 15, vertical: 5),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.all(
-                                                          Radius.circular(10)),
-                                                      color: Color(0xFF00f069),
-                                                    ),
-                                                    width: 40,
-                                                    padding: EdgeInsets.all(6),
-                                                    child: iconPassword
-                                                ),
-
-                                                //СКРЫТЬ/ПОКАЗАТЬ
-                                                suffixIcon: Container(
-                                                    margin: EdgeInsets.only(right: 10),
-                                                    child: IconButton(
-                                                      icon: passwordVisible == true
-                                                          ? iconShow
-                                                          : iconHide,
-                                                      onPressed: () {
-                                                        setState(() {
-                                                          passwordVisible =
-                                                          !passwordVisible;
-                                                        });
-                                                      },
-                                                    )
-                                                ),
-
-                                                //ВЫВОД ОШИБКИ
-                                                errorText: '',
-
-                                                //СТИЛЬ
-                                                border: OutlineInputBorder(
-                                                    borderRadius: BorderRadius.circular(
-                                                        500),
-                                                    borderSide: BorderSide(width: 0,
-                                                        style: errorPassword == true
-                                                            ? BorderStyle.solid
-                                                            : BorderStyle.none)
-                                                ),
-                                                fillColor: White,
-                                                isDense: true,
-                                                filled: true
-                                            )
-                                        ),
-                                      ])
-                                    ])
-                                ),
-                              ],
-                            )),
+                                  ),
+                                error: [errorPassword],
+                              )
+                            ]),
 
                         ///PASSWORD
-                        Container(child: Column(children:[
-                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children:[
-                                Container(margin: EdgeInsets.only(left: 10),
-                                  child: Text("Повторите пароль:", style: Montserrat(color:Blue,style: SemiBold)),
-                                ),
+                        Container(margin: EdgeInsets.only(top: 30),
+                            child:Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                children:[
+                                  RichTextMethod("Повторите пароль:"),
 
-                              ]
-                          ),
+                                  TextFieldWithShadow(
+                                      TextField(style: Montserrat(color:Blue,size: 15),
+                                          obscureText: passwordVisibleTwo,
+                                          onChanged: (String value)
+                                          {setState(() {
+                                            passwordTwo = value;
+                                            errorPasswordTwo = false;
+                                          });},
+                                          decoration: InputDecoration(
+                                            //ИКОНКА
+                                              prefixIcon: PrefixIconTextField(color: Color(0xFF00f069), icon: iconPassword),
 
-                          Stack(children:[
-                            Shadow(50,500),// ТЕНЬ
+                                              //СКРЫТЬ/ПОКАЗАТЬ
+                                              suffixIcon: Container(margin: EdgeInsets.only(right: 10),
+                                                  child: IconButton(
+                                                    icon: passwordVisibleTwo == true ? iconShow : iconHide,
+                                                    onPressed: ()
+                                                    {
+                                                      setState(()
+                                                      {
+                                                        passwordVisibleTwo = !passwordVisibleTwo;
+                                                      });
+                                                    },
+                                                  )
+                                              ),
 
-                            TextField(style: Montserrat(color:Blue,style: SemiBold),
-                                obscureText: passwordVisibleTwo,
-                                onChanged: (String value)
-                                {setState(() {
-                                  passwordTwo = value;
-                                  errorPasswordTwo = false;
-                                });},
-                                decoration: InputDecoration(
-                                  //ИКОНКА
-                                    prefixIcon: Container(margin: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
-                                        decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)),
-                                          color: Color(0xFF00f069),
-                                        ),
-                                        width: 40,
-                                        padding: EdgeInsets.all(6),
-                                        child: iconPassword
-                                    ),
+                                              hintStyle: Montserrat(color: Colors.black26, size: 15),
+                                              hintText: "Повторите пароль",
 
-                                    //СКРЫТЬ/ПОКАЗАТЬ
-                                    suffixIcon: Container(margin: EdgeInsets.only(right: 10),
-                                        child: IconButton(
-                                          icon: passwordVisibleTwo == true ? iconShow : iconHide,
-                                          onPressed: ()
-                                          {
-                                            setState(()
-                                            {
-                                              passwordVisibleTwo = !passwordVisibleTwo;
-                                            });
-                                          },
-                                        )
-                                    ),
-
-                                    //ВЫВОД ОШИБКИ
-                                    errorText: '',
-
-                                    //СТИЛЬ
-                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(500),
-                                        borderSide: BorderSide(width: 0, style: errorPasswordTwo == true ? BorderStyle.solid : BorderStyle.none)
-                                    ),
-                                    fillColor: White,
-                                    isDense: true,
-                                    filled: true
-                                )
-                            )
-                          ])
-                        ])
-                        ),
+                                              //СТИЛЬ
+                                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(500),
+                                                  borderSide: BorderSide(width: 0, style: BorderStyle.none)
+                                              ),
+                                              fillColor: White,
+                                              isDense: true,
+                                              filled: true
+                                          )
+                                      ),
+                                    error: [errorPasswordTwo],
+                                  )
+                                ])
+                        )
 
                       ]),
                 )
@@ -262,15 +215,17 @@ class _doublePswState extends State<doublePsw> {
   }
 
   void Validation()async{
-    if(password == '' || passwordTwo == ''){
+    if(password == ''){
       setState(()=>errorPassword = true);
-      setState(()=>errorPasswordTwo = true);
       showTopSnackBar(context, CustomSnackBar.error(message:'Введите пароль',textStyle: Montserrat(size: 15)));
     }
     else if(password.length < 6) {
       setState(()=>errorPassword = true);
-      setState(()=>errorPasswordTwo = true);
       showTopSnackBar(context, CustomSnackBar.error(message:'Слишком короткий пароль',textStyle: Montserrat(size: 15)));
+    }
+    else if(passwordTwo == ''){
+      setState(()=>errorPasswordTwo = true);
+      showTopSnackBar(context, CustomSnackBar.error(message:'Введите повторный пароль',textStyle: Montserrat(size: 15)));
     }
     else if(password != passwordTwo){
       setState(()=>errorPassword = true);

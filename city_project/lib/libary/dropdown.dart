@@ -5,6 +5,9 @@ import 'package:flutter/services.dart';
 
 import 'package:flutter/foundation.dart';
 
+import '../assets/finally.dart';
+import '../assets/style.dart';
+
 class DropdownEditingController<T> extends ChangeNotifier {
   T? _value;
   DropdownEditingController({T? value}) : _value = value;
@@ -54,7 +57,7 @@ class DropdownFormField<T> extends StatefulWidget {
   final Widget Function(T? item) displayItemFn;
 
   final InputDecoration? decoration;
-  final Color? dropdownColor;
+  final Color dropdownColor;
   final DropdownEditingController<T>? controller;
   final void Function(T item)? onChanged;
   final void Function(T?)? onSaved;
@@ -63,13 +66,9 @@ class DropdownFormField<T> extends StatefulWidget {
   /// height of the dropdown overlay, Default: 240
   final double? dropdownHeight;
 
-  /// Style the search box text
-  final TextStyle? searchTextStyle;
-
   /// Message to disloay if the search dows not match with any item, Default : "No matching found!"
   final String emptyText;
 
-  final TextStyle? emptyTextStyle;
 
   /// Give action text if you want handle the empty search.
   final String emptyActionText;
@@ -87,13 +86,11 @@ class DropdownFormField<T> extends StatefulWidget {
     this.controller,
     this.validator,
     this.decoration,
-    this.dropdownColor,
+    this.dropdownColor = Colors.white,
     this.onChanged,
     this.onSaved,
     this.dropdownHeight,
-    this.searchTextStyle,
     this.emptyText = "No matching found!",
-    this.emptyTextStyle,
     this.emptyActionText = 'Create new',
     this.onEmptyActionPressed,
     this.selectedFn,
@@ -201,7 +198,7 @@ class DropdownFormFieldState<T> extends State<DropdownFormField>
                 isFocused: _isFocused,
                 child: this._overlayEntry != null
                     ? EditableText(
-                  style: TextStyle(fontSize: 16, color: Colors.black87),
+                  style: Montserrat(color: Blue,size: 15),
                   controller: _searchTextController,
                   cursorColor: Colors.black87,
                   focusNode: _searchFocusNode,
@@ -247,7 +244,7 @@ class DropdownFormFieldState<T> extends State<DropdownFormField>
               child: SizedBox(
                 height: widget.dropdownHeight ?? 240,
                 child: Container(
-                    color: widget.dropdownColor ?? Colors.white70,
+                    color: widget.dropdownColor,
                     child: ValueListenableBuilder(
                         valueListenable: _listItemsValueNotifier,
                         builder: (context, List<T> items, child) {
@@ -286,7 +283,7 @@ class DropdownFormFieldState<T> extends State<DropdownFormField>
                               children: [
                                 Text(
                                   widget.emptyText,
-                                  style: widget.emptyTextStyle,
+                                  style: Montserrat(color: Blue,size: 15),
                                 ),
                                 if (widget.onEmptyActionPressed != null)
                                   TextButton(

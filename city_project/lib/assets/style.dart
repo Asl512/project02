@@ -19,32 +19,6 @@ TextStyle Montserrat({FontWeight style = Medium, Color color = White, double siz
   );
 }
 
-///Тень для текстовых полей
-class Shadow extends StatelessWidget {
-  double? height;
-  double? width;
-  double radius = 0;
-
-  Shadow(double height, double radius,[double? width]) {
-    this.height = height;
-    this.radius = radius;
-    if(width != null) this.width = width;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(height: height,width: width,
-        decoration: BoxDecoration(color:Grey,
-          borderRadius: BorderRadius.circular(radius),
-          boxShadow:const [BoxShadow(color: Colors.black38,
-              blurRadius: 5,
-              spreadRadius: 0.5,
-              offset: Offset(0, 7)
-          )],
-        )
-    );
-  }
-}
 
 ///Тень для виджетов
 BoxShadow ShadowForContainer(){
@@ -244,16 +218,36 @@ class GuideCheck extends StatelessWidget {
 ///Для текстовых полей с тенью
 class TextFieldWithShadow extends StatelessWidget {
   Widget? textField;
+  List? error;
+  bool errorText;
 
-  TextFieldWithShadow(this.textField, {Key? key}) : super(key: key);
+  TextFieldWithShadow(this.textField, {List? error,this.errorText = false}){
+    if(error != null) this.error = error;
+    else this.error = [false,null];
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-        borderRadius: BorderRadius.circular(20),
-        elevation: 7.0,
-        shadowColor: Colors.black,
-        child: this.textField,
+    return Column(crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Material(
+            borderRadius: BorderRadius.circular(20),
+            elevation: 7.0,
+            shadowColor: Colors.black,
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: error![0] ? Border.all(color: Red) : Border.all(color: White)
+              ),
+              child: this.textField,
+            ),
+          ),
+          errorText && error![0] && error?.length == 2?
+          Container(
+              margin: EdgeInsets.only(top: 10,left: 15),
+              child: RichText(text: TextSpan(text: error![1].toString(),style: Montserrat(size: 13,color: Red)),)
+          ):Container()
+        ]
     );
   }
 }
@@ -270,7 +264,7 @@ Widget RichTextMethod(String TextMain,[bool star = false]){
         text: TextSpan(
           children: [
             TextSpan(text: TextMain,
-                style: Montserrat(color: Blue, style: SemiBold)),
+                style: Montserrat(color: Blue, style: SemiBold,size: 17)),
             TextSpan(text: starStr, style: Montserrat(color: Red)),
           ],
         ),
@@ -281,14 +275,15 @@ Widget RichTextMethod(String TextMain,[bool star = false]){
 class TextFieldDecoration{
   final Widget? prefixIcon;
   final Widget? suffixIcon;
-  final bool? error;
   final String? hintText;
 
-  TextFieldDecoration({this.error = false,this.hintText,this.prefixIcon,this.suffixIcon});
+  TextFieldDecoration({this.hintText,this.prefixIcon,this.suffixIcon});
 
   InputDecoration InputDecor(){
     return
       InputDecoration(
+        hintMaxLines: 3,
+        hintStyle: Montserrat(color: Colors.black26, size: 15),
         hintText: this.hintText,
           counterText: '',
         //ИКОНКИ
@@ -297,17 +292,55 @@ class TextFieldDecoration{
 
           //СТИЛЬ
           border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(500),
+              borderRadius: BorderRadius.circular(20),
               borderSide: BorderSide(width: 0,
-                  style: error == true
-                      ? BorderStyle.solid
-                      : BorderStyle.none)
+                  style: BorderStyle.none)
           ),
           fillColor: White,
           isDense: true,
           filled: true
 
       );
+  }
+}
+
+class PrefixIconTextField extends StatelessWidget {
+  Color? color;
+  Widget icon;
+  PrefixIconTextField({required this.color,required this.icon});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: EdgeInsets.symmetric(
+            horizontal: 15, vertical: 5),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+              Radius.circular(10)),
+          color: this.color,
+        ),
+        width: 40,
+        padding: EdgeInsets.all(6),
+        child: this.icon
+    );
+  }
+}
+
+
+class ButtonBack extends StatelessWidget {
+  final Color color;
+  ButtonBack({this.color = Blue});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: 70,width: 50,
+        decoration: BoxDecoration(color: this.color,borderRadius: BorderRadius.only(bottomRight: Radius.circular(40))),
+        child: IconButton(icon: Icon(Icons.arrow_back_ios,size: 20,color: White,),
+            onPressed: (){
+              Navigator.pop(context);
+            })
+    );
   }
 }
 

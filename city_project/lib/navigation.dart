@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:lan_code/profil/personalArea.dart';
 import 'package:lan_code/service.dart';
@@ -14,6 +13,7 @@ import 'assets/finally.dart';
 import 'assets/style.dart';
 
 import 'excursion/city.dart';
+import 'guid/addExcursion.dart';
 import 'profil/notAuthProfil.dart';
 
 class Navigation extends StatefulWidget {
@@ -70,7 +70,9 @@ class _NavigationState extends State<Navigation> {
         if(this.user.first['guidePermit']){
           return Scaffold(
               floatingActionButton: FloatingActionButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => AddExcursion()));
+                },
                 child: Icon(Icons.add),
                 backgroundColor: Blue,
               ),

@@ -17,6 +17,7 @@ import 'excursion/search.dart';
 import 'test.dart';
 import 'profil/recovery/passwRecovery.dart';
 import 'IntroPage.dart';
+import 'guid/booking.dart';
 
 main() async {
 
@@ -38,11 +39,11 @@ main() async {
     initialData: null,
     child: MaterialApp(
 
-      initialRoute: checkLook!=0?'/addExcursion':'/introPage',
+      initialRoute: checkLook!=0?'/navigation':'/introPage',
       routes:
       {
         '/loading': (context) => const Loading(),
-        '/test': (context) =>  MyApp(),
+        '/test': (context) =>  MyHomePage(),
         '/navigation': (context) =>  Navigation(),
         '/introPage': (context) =>  IntroPage(),
 

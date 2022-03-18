@@ -50,23 +50,16 @@ class _RewiewPageState extends State<RewiewPage> {
 
   @override
   Widget build(BuildContext context) {
-    Size SizePage = MediaQuery.of(context).size;
     getData();
-
-    if (this.isLoading) {
-      return Container(color: Grey,
-          child: Center(
-            child: CircularProgressIndicator(color: Blue)
-          ));
-    }
-    else {
-      return Scaffold(backgroundColor: Grey,
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(SizePage.height / 5),
-
-            ///ШАПКА
-            child: AppBar(
-              flexibleSpace: Stack(alignment: AlignmentDirectional.topStart,
+    return Scaffold(
+      backgroundColor: Grey,
+      body: CustomScrollView(
+        slivers: [
+          ///ШАПКА
+          SliverAppBar(
+            floating: true,
+            collapsedHeight:MediaQuery.of(context).size.height / 5,
+            flexibleSpace: Stack(alignment: AlignmentDirectional.topStart,
                 children: [
                   Stack(alignment: AlignmentDirectional.bottomEnd,
                     children: [
@@ -137,28 +130,33 @@ class _RewiewPageState extends State<RewiewPage> {
                           ])
                     ],
                   ),
-                  Container(
-                      height: 70, width: 50,
-                      decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.5),
-                          borderRadius: BorderRadius.only(
-                              bottomRight: Radius.circular(40))),
-                      child: IconButton(icon: Icon(
-                        Icons.arrow_back_ios, size: 20, color: White,),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          })
-                  ),
-                ],),
-              leading: Container(),
+                  ButtonBack(color: Colors.black.withOpacity(0.5))
+                ]),
+            leading: Container(),
 
-              centerTitle: false,
-              titleSpacing: 0.0,
-            )
-        ),
-
-        body: ListView(shrinkWrap: true,
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            centerTitle: false,
+            titleSpacing: 0.0,
+          ),
+          SliverList(delegate:SliverChildListDelegate([
+            CheckLoading()
+          ]))
+        ],
+      ),
+    );
+  }
+  ///ТЕЛО
+  Widget CheckLoading(){
+    if(this.isLoading){
+      return Container(
+        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height/3),
+        child: Center(
+            child: CircularProgressIndicator(color: Blue)
+        )
+      );
+    }
+    else{
+      return Container(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        child: Column(
           children: [
             Container(
               margin: EdgeInsets.symmetric(vertical: 10),
@@ -177,21 +175,19 @@ class _RewiewPageState extends State<RewiewPage> {
                               builder: (BuildContext context) {
                                 return ShowDialog();
                               });
-                          },),
+                        },),
                   ],
                 ),
               ),
             ),
             Container(
-              width: SizePage.width,
+              width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                   boxShadow: [ShadowForContainer()],
                   color: White,
                   borderRadius: BorderRadius.all(Radius.circular(20))
               ),
-              child: Column(
-                children: this.reviews,
-              ),
+              child: Column(children: this.reviews,),
             )
           ],
         ),

@@ -9,6 +9,7 @@ import 'dart:math' as math;
 
 import '../assets/style.dart';
 import '../assets/finally.dart';
+import '../guid/booking.dart';
 import 'reviews.dart';
 
 
@@ -53,25 +54,16 @@ class _ExcursionPageState extends State<ExcursionPage> {
 
   @override
   Widget build(BuildContext context) {
-    Size SizePage = MediaQuery.of(context).size;
     getData();
 
-    double rating = (widget.data!["rating"][0]/widget.data!["rating"][1]);
-
-    if (this.isLoading){
-      return Container(color: Grey,
-          child: Center(
-              child: CircularProgressIndicator(color: Blue)
-          )
-      );
-    }
-    else{
-      return Scaffold(backgroundColor: Grey,
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(SizePage.height / 5),
-
-            ///ШАПКА
-            child: AppBar(flexibleSpace: Stack(alignment: AlignmentDirectional.topStart,
+    return Scaffold(
+      backgroundColor: Grey,
+      body: CustomScrollView(
+        slivers: [
+          ///ШАПКА
+          SliverAppBar(
+            collapsedHeight:MediaQuery.of(context).size.height / 5,
+            flexibleSpace: Stack(alignment: AlignmentDirectional.topStart,
               children: [
                 Stack(alignment: AlignmentDirectional.bottomEnd,
                   children: [
@@ -118,186 +110,205 @@ class _ExcursionPageState extends State<ExcursionPage> {
                                 GuideCheck(widget.gid!['verified'])
                               ])),
                           Container(color: Colors.black.withOpacity(0.5),height: 50,
-                            padding: EdgeInsets.only(right: 15),
-                            alignment: Alignment.center,
-                            child: Text(widget.gid!['name'],style: Montserrat(size: 15,style: SemiBold))
+                              padding: EdgeInsets.only(right: 15),
+                              alignment: Alignment.center,
+                              child: Text(widget.gid!['name'],style: Montserrat(size: 15,style: SemiBold))
                           )
                         ])
                   ],
                 ),
-                Container(
-                    height: 70,width: 50,
-                    decoration: BoxDecoration(color: Colors.black.withOpacity(0.5),borderRadius: BorderRadius.only(bottomRight: Radius.circular(40))),
-                    child: IconButton(icon: Icon(Icons.arrow_back_ios,size: 20,color: White,),
-                        onPressed: (){
-                          Navigator.pop(context);
-                        })
-                ),
-            ],),
-              leading: Container(),
+                ButtonBack(color: Colors.black.withOpacity(0.5))
+              ],),
+            centerTitle: false,
+            titleSpacing: 0.0,
+            leading: Container(),
+          ),
+          SliverList(delegate:SliverChildListDelegate([
+            CheckLoading()
+          ]))
+        ],
+      ),
+    );
+  }
 
-              centerTitle: false,
-              titleSpacing: 0.0,
-            )
-        ),
-
-        body: ListView(shrinkWrap: true,
-          padding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
-          children: [
-            ///РЕЙТИНГ И ОТЗЫВЫ
-            Row(crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  ///ТЕЛО
+  Widget CheckLoading(){
+    if(this.isLoading){
+      return Container(
+          margin: EdgeInsets.only(top: MediaQuery.of(context).size.height/3),
+          child: Center(
+              child: CircularProgressIndicator(color: Blue)
+          )
+      );
+    }
+    else{
+      final double rating = (widget.data!["rating"][0]/widget.data!["rating"][1]);
+      return Container(padding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                ///РЕЙТИНГ И ОТЗЫВЫ
                 Row(crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    RatingStars(
-                      value: rating,
-                      starBuilder: (index, color) => Icon(Icons.star, color: color),
-                      starSize: 23,
-                      maxValueVisibility: false,
-                      valueLabelVisibility: false,
-                      animationDuration: Duration(milliseconds: 1000),
-                      starOffColor: Colors.black.withOpacity(0.1),
-                      starColor: Red,
-                    ),
-                    Container(child: Text(rating.toStringAsFixed(1),style: Montserrat(color: Blue,size: 18,style: SemiBold)),
-                      margin: EdgeInsets.only(left: 15),
-                    )
-                  ],),
-
-                TextButton(onPressed:(){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => RewiewPage(widget.data,reviews)));
-                },
-                    child: Row(crossAxisAlignment: CrossAxisAlignment.center,
+                    Row(crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(reviews!.length.toString() + " отзыва",style: Montserrat(color: Color(0xFFF48494a),size: 16,style: Bold)),
-                        Icon(Icons.arrow_forward_ios, color: Color(0xFFF48494a))
-                      ],)
-                ),
-              ],
-            ),
+                        RatingStars(
+                          value: rating,
+                          starBuilder: (index, color) => Icon(Icons.star, color: color),
+                          starSize: 23,
+                          maxValueVisibility: false,
+                          valueLabelVisibility: false,
+                          animationDuration: Duration(milliseconds: 1000),
+                          starOffColor: Colors.black.withOpacity(0.1),
+                          starColor: Red,
+                        ),
+                        Container(child: Text(rating.toStringAsFixed(1),style: Montserrat(color: Blue,size: 18,style: SemiBold)),
+                          margin: EdgeInsets.only(left: 15),
+                        )
+                      ],),
 
-            ///ОПИСАНИЕ
-            Text(widget.data!['description'], style: Montserrat(color: Blue,size: 15)),
-
-            ///ОСНОВНАЯ ИНФОРМАЦИЯ
-            Container(margin: EdgeInsets.only(top: 20,bottom: 30),
-            child: Column(
-              children: [
-                Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        boxShadow: [ShadowForContainer()],
-                        color: White,
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(20))
-                    ),
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(widget.type!['name'], style: Montserrat(color: Blue,size: 16,style: Bold)),
-                              Text(widget.data!['time'].toString() + " часа", style: Montserrat(color: Blue,size: 16))
-                            ]),
-                            margin: EdgeInsets.only(bottom: 20)),
-                        Column(
+                    TextButton(onPressed:(){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => RewiewPage(widget.data,reviews)));
+                    },
+                        child: Row(crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Тип передвижения:', style: Montserrat(color: Blue,size: 14,style: SemiBold)),
-                                Container(child: Text(widget.data!['moveType'].join(', '), style: Montserrat(color: Blue,size: 14,)),
-                                  width: MediaQuery.of(context).size.width/2-40),
-                              ],
-                            ),
-                            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Размер группы:', style: Montserrat(color: Blue,size: 14,style: SemiBold)),
-                                Container(child: Text('до ' + widget.data!['groupSize'].toString() + " человек", style: Montserrat(color: Blue,size: 14,)),
-                                  width: MediaQuery.of(context).size.width/2-40),
-                              ],
-                            ),
-                            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Время начала:', style: Montserrat(color: Blue,size: 14,style: SemiBold)),
-                                Container(child: Text(widget.data!['startTime'], style: Montserrat(color: Blue,size: 14,)),
-                                  width: MediaQuery.of(context).size.width/2-40),
-                              ],
-                            ),
-                            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Место встречи:', style: Montserrat(color: Blue,size: 14,style: SemiBold)),
-                                Container(child: Text(widget.data!['meetPoint'], style: Montserrat(color: Blue,size: 14,)),
-                                  width: MediaQuery.of(context).size.width/2-40),
-                              ],
-                            )
-                          ],
-                        ),
-                        Container(width: double.infinity,height: 0.5,color: Blue.withOpacity(0.5),
-                          margin: EdgeInsets.symmetric(vertical: 15),
-                        ),
-                        RichText(text: TextSpan(
-                            children: [
-                              TextSpan(text: "₽ " + widget.data!['price'].toString(), style: Montserrat(style: Bold,size: 17, color:Blue)),
-                              TextSpan(text: " за человека", style: Montserrat(size: 16, color:Blue)),
-                            ])
-                        ),
+                            Text(reviews!.length.toString() + " отзыва",style: Montserrat(color: Color(0xFFF48494a),size: 16,style: Bold)),
+                            Icon(Icons.arrow_forward_ios, color: Color(0xFFF48494a))
+                          ],)
+                    ),
+                  ],
+                ),
 
-                        Container(margin: EdgeInsets.only(top: 10),
-                            child: TextButton(onPressed: (){},
-                                child: Container(
-                                    height: 50,
-                                    decoration: BoxDecoration(color: Red,
-                                        borderRadius: BorderRadius.all(Radius.circular(500))),
-                                    child: Center(child: Text("Бронировать", style: Montserrat(style: SemiBold,size: 19,color: White)))
+                ///ОПИСАНИЕ
+                Text(widget.data!['description'], style: Montserrat(color: Blue,size: 15)),
+
+                ///ОСНОВНАЯ ИНФОРМАЦИЯ
+                Container(margin: EdgeInsets.only(top: 20,bottom: 30),
+                    child: Column(
+                      children: [
+                        Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                                boxShadow: [ShadowForContainer()],
+                                color: White,
+                                borderRadius: BorderRadius.vertical(top: Radius.circular(20))
+                            ),
+                            child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(widget.type!['name'], style: Montserrat(color: Blue,size: 16,style: Bold)),
+                                      Text(widget.data!['time'].toString() + " часа", style: Montserrat(color: Blue,size: 16))
+                                    ]),
+                                    margin: EdgeInsets.only(bottom: 20)),
+                                Column(
+                                  children: [
+                                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text('Тип передвижения:', style: Montserrat(color: Blue,size: 14,style: SemiBold)),
+                                        Container(child: Text(widget.data!['moveType'].join(', '), style: Montserrat(color: Blue,size: 14,)),
+                                            width: MediaQuery.of(context).size.width/2-40),
+                                      ],
+                                    ),
+                                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text('Размер группы:', style: Montserrat(color: Blue,size: 14,style: SemiBold)),
+                                        Container(child: Text('до ' + widget.data!['groupSize'].toString() + " человек", style: Montserrat(color: Blue,size: 14,)),
+                                            width: MediaQuery.of(context).size.width/2-40),
+                                      ],
+                                    ),
+                                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text('Время начала:', style: Montserrat(color: Blue,size: 14,style: SemiBold)),
+                                        Container(child: Text(widget.data!['startTime'], style: Montserrat(color: Blue,size: 14,)),
+                                            width: MediaQuery.of(context).size.width/2-40),
+                                      ],
+                                    ),
+                                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text('Место встречи:', style: Montserrat(color: Blue,size: 14,style: SemiBold)),
+                                        Container(child: Text(widget.data!['meetPoint'], style: Montserrat(color: Blue,size: 14,)),
+                                            width: MediaQuery.of(context).size.width/2-40),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                Container(width: double.infinity,height: 0.5,color: Blue.withOpacity(0.5),
+                                  margin: EdgeInsets.symmetric(vertical: 15),
+                                ),
+                                RichText(text: TextSpan(
+                                    children: [
+                                      TextSpan(text: "₽ " + widget.data!['price'].toString(), style: Montserrat(style: Bold,size: 17, color:Blue)),
+                                      TextSpan(text: " за человека", style: Montserrat(size: 16, color:Blue)),
+                                    ])
+                                ),
+
+                                Container(margin: EdgeInsets.only(top: 10),
+                                    child: TextButton(onPressed: (){
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => Booking("dd",widget.data,widget.gid,widget.type)));
+                                    },
+                                        child: Container(
+                                            height: 50,
+                                            decoration: BoxDecoration(color: Red,
+                                                borderRadius: BorderRadius.all(Radius.circular(500))),
+                                            child: Center(child: Text("Бронировать", style: Montserrat(style: SemiBold,size: 19,color: White)))
+                                        )
+                                    )
                                 )
+                              ],
                             )
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              boxShadow: [ShadowForContainer()],
+                              color: Blue,
+                              borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))
+                          ),
+                          child: Column(
+                            children: [
+                              StatusExcursion(widget.data!['moment'])
+                            ],
+                          ),
                         )
                       ],
-                    )
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      boxShadow: [ShadowForContainer()],
-                      color: Blue,
-                      borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))
-                  ),
-                  child: Column(
-                    children: [
-                      CheckMoment(widget.data!['moment'])
-                    ],
-                  ),
-                )
-              ],
-            )),
+                    )),
 
-            ///ПОДРОБНАЯ ИНФОРМАЦИЯ
-            Container(margin: EdgeInsets.only(bottom: 15),
-              child: Text("Подробнее об экскурсии", style: Montserrat(style: Bold,size: 16,color: Blue))),
+                ///ПОДРОБНАЯ ИНФОРМАЦИЯ
+                Container(margin: EdgeInsets.only(bottom: 15),
+                    child: Text("Подробнее об экскурсии", style: Montserrat(style: Bold,size: 16,color: Blue))),
 
-            Card("Что включено"),
-            Container(width: double.infinity,height: 0.5,color: Blue.withOpacity(0.5)),
-            Card("Дополнительные услуги"),
-            Container(width: double.infinity,height: 0.5,color: Blue.withOpacity(0.5)),
-            Card("Организационные детали"),
-            Container(width: double.infinity,height: 0.5,color: Blue.withOpacity(0.5)),
-            Card("Правила экскурсии"),
+                Card("Что включено"),
+                Container(width: double.infinity,height: 0.5,color: Blue.withOpacity(0.5)),
+                Card("Дополнительные услуги"),
+                Container(width: double.infinity,height: 0.5,color: Blue.withOpacity(0.5)),
+                Card("Организационные детали"),
+                Container(width: double.infinity,height: 0.5,color: Blue.withOpacity(0.5)),
+                Card("Правила экскурсии"),
 
-            ///ФОТОГРАФИИ
-            PhotosBlock(this.photos)
-          ],
-        ),
+                ///ФОТОГРАФИИ
+                PhotosBlock(this.photos)
+              ]
+          )
       );
     }
   }
+}
 
-  Widget CheckMoment(bool moment){
-    if(moment){
+class StatusExcursion extends StatelessWidget {
+  final bool moment;
+
+  StatusExcursion(this.moment);
+
+  @override
+  Widget build(BuildContext context) {
+    if(this.moment){
       return Row(
         children: [
           Container(margin: EdgeInsets.only(right: 10),
@@ -327,23 +338,7 @@ class _ExcursionPageState extends State<ExcursionPage> {
       );
     }
   }
-
-  Widget GuideCheck(bool check){
-    if(check)
-    {
-      return Container(width: 40,height: 40,
-          alignment: Alignment.bottomRight,
-          child: Container(width: 15,height: 15,
-              child: iconConfirmation)
-      );
-    }
-    else
-    {
-      return Container();
-    }
-  }
 }
-
 
 class Card extends StatelessWidget {
   String title = 'null';

@@ -7,6 +7,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../assets/style.dart';
 import '../assets/finally.dart';
 
+import '../libary/customSnackBar.dart';
+import '../libary/topSnackBart.dart';
 import '../service.dart';
 import 'settings.dart';
 
@@ -220,7 +222,9 @@ class ShowWeContacts extends StatelessWidget {
                 Stack(alignment: Alignment.center,
                     children: [
                       Container(width: 45,height: 45, decoration:BoxDecoration(color: White,borderRadius: BorderRadius.all(Radius.circular(500))),),
-                      IconButton(onPressed:()async{}, icon: iconVK, iconSize: 50,),
+                      IconButton(onPressed:()async{
+                        launchURL('https://vk.com/astraslan',context);
+                      }, icon: iconVK, iconSize: 50,),
                     ]
                 ),
 
@@ -229,7 +233,7 @@ class ShowWeContacts extends StatelessWidget {
                     children: [
                       Container(width: 45,height: 45, decoration:BoxDecoration(color: White,borderRadius: BorderRadius.all(Radius.circular(500))),),
                       IconButton(onPressed:(){
-                        launchURL('');
+                        launchURL('',context);
                       }, icon: iconWhatsapp, iconSize: 50,),
                     ]
                 ),
@@ -238,7 +242,7 @@ class ShowWeContacts extends StatelessWidget {
                     children: [
                       Container(width: 45,height: 45,decoration:BoxDecoration(color: White,borderRadius: BorderRadius.all(Radius.circular(500))),),
                       IconButton(onPressed:(){
-                        launchURL('https://www.instagram.com/asl_astro/');
+                        launchURL('https://www.instagram.com/asl_astro/',context);
                       }, icon: iconInstagram, iconSize: 50,),
                     ]
                 ),
@@ -247,7 +251,7 @@ class ShowWeContacts extends StatelessWidget {
                     children: [
                       Container(width: 45,height: 45,decoration:BoxDecoration(color: White,borderRadius: BorderRadius.all(Radius.circular(500))),),
                       IconButton(onPressed:(){
-                        launchURL('https://t.me/astroasl');
+                        launchURL('https://t.me/astroasl',context);
                       }, icon: iconTelegram, iconSize: 50,),
                     ]
                 )
@@ -269,11 +273,11 @@ class ShowWeContacts extends StatelessWidget {
     ]);
   }
 
-  launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
+  launchURL(String url,context) async {
+      try{
+        await launch(url);
+      }catch(e){
+        showTopSnackBar(context, CustomSnackBar.error(message:e.toString(),textStyle: Montserrat(size: 15),lines: 4,));
+      }
   }
 }

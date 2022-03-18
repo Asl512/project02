@@ -24,8 +24,8 @@ class Authorization extends StatefulWidget
 class _AuthorizationState extends State<Authorization> {
 bool passwordVisible = true;
 bool isChecked = false;
-bool errorPassword = false;
-bool errorEmail = false;
+List errorPassword = [false,"errorPassword"];
+List errorEmail = [false,"errorEmail"];
 String email = '';
 String password = '';
 bool isLoading = false;
@@ -59,136 +59,102 @@ AuthService authService = AuthService();
                           padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
                         ),
                       ]),
-                      Container(
-                          height: 70,width: 50,
-                          decoration: BoxDecoration(color: Blue,borderRadius: BorderRadius.only(bottomRight: Radius.circular(40))),
-                          child: IconButton(icon: Icon(Icons.arrow_back_ios,size: 20,color: White,),
-                              onPressed: (){
-                                Navigator.pop(context);
-                              })
-                      ),
-
+                      ButtonBack()
                     ])
             )
         ),
 
-        body:ListView(shrinkWrap: true,
+        body:ListView(
           children: [
             Container(
                 height: SizePage.height/20*12,
                 child: Container(
                   margin: EdgeInsets.only(top: 80),
                   padding: EdgeInsets.symmetric(horizontal: SizePage.width/15),
-                  child: Column(
-                      children:[
+                  child: Column(children:[
 
                         ///EMAIL
-                        Container(child: Column(children:[
-                              Container(width: double.infinity,
-                                margin: EdgeInsets.fromLTRB(10, 0, 0, 5),
-                                child: Text("Почта:", style: Montserrat(color:Blue,style: SemiBold)),
-                              ),
+                        Container(margin: EdgeInsets.only(bottom: 10),
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                              children:[
+                                RichTextMethod("Почта:"),
 
-                              Stack(children: [
-                                Shadow(50,500), // ТЕНЬ
-                                TextField(style: Montserrat(color:Blue,style: SemiBold),
-                                    onChanged: (String value)
-                                    {setState(() {
-                                      email = value;
-                                      errorEmail = false;
-                                    });},
-                                    decoration: InputDecoration(
-                                      //ИКОНКА
-                                        prefixIcon: Container(margin: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
-                                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)),
-                                              color: Color(0xFF546eff),
-                                            ),
-                                            width: 40,
-                                            padding: EdgeInsets.all(6),
-                                            child: iconEmail
-                                        ),
-                                        errorText: '',
-
-                                        //СТИЛЬ
-                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(500),
-                                            borderSide: BorderSide(width: 0, style: errorEmail == true ? BorderStyle.solid : BorderStyle.none)
-                                        ),
-                                        fillColor: White,
-                                        isDense: true,
-                                        filled: true
-                                    )
+                                TextFieldWithShadow(
+                                    TextField(style: Montserrat(color:Blue,size: 15),
+                                        onChanged: (String value)
+                                        {setState(() {
+                                          email = value;
+                                          errorEmail[0] = false;
+                                        });},
+                                        decoration: TextFieldDecoration(
+                                          hintText: "Введите свою почту",
+                                            prefixIcon: PrefixIconTextField(color: Color(0xFF546eff), icon: iconEmail)
+                                        ).InputDecor()
+                                    ),
+                                  errorText: true,
+                                  error: errorEmail,
                                 )
-                              ])
-                            ])
+                              ]
+                          )
                         ),
 
                         ///PASSWORD
-                        Container(child: Column(children:[
-                              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children:[
-                                    Container(margin: EdgeInsets.only(left: 10),
-                                      child: Text("Пароль:", style: Montserrat(color:Blue,style: SemiBold)),
-                                    ),
+                        Column(children:[
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children:[
+                                Container(margin: EdgeInsets.only(left: 10),
+                                  child: Text("Пароль:", style: Montserrat(color:Blue,style: SemiBold)),
+                                ),
 
-                                    //КНОПКА "напомнить?"
-                                    TextButton(
-                                      child: Text("Напомнить", style: Montserrat(color:Blue,style: SemiBold)),
-                                      onPressed: () {
-                                        Navigator.push(context, MaterialPageRoute(builder: (_)=> passwRecovery()));
-                                      },
-                                    )
-                                  ]
-                              ),
-
-                              Stack(children:[
-                                Shadow(50,500),// ТЕНЬ
-
-                                TextField(style: Montserrat(color:Blue,style: SemiBold),
-                                    obscureText: passwordVisible,
-                                    onChanged: (String value)
-                                    {setState(() {
-                                      password = value;
-                                      errorPassword = false;
-                                    });},
-                                    decoration: InputDecoration(
-                                      //ИКОНКА
-                                        prefixIcon: Container(margin: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
-                                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)),
-                                              color: Color(0xFF00f069),
-                                            ),
-                                            width: 40,
-                                            padding: EdgeInsets.all(6),
-                                            child: iconPassword
-                                        ),
-
-                                        //СКРЫТЬ/ПОКАЗАТЬ
-                                        suffixIcon: Container(margin: EdgeInsets.only(right: 10),
-                                            child: IconButton(
-                                              icon: passwordVisible == true ? iconShow : iconHide,
-                                              onPressed: ()
-                                              {
-                                                setState(()
-                                                {
-                                                  passwordVisible = !passwordVisible;
-                                                });
-                                              },
-                                            )
-                                        ),
-                                        errorText: '',
-
-                                        //СТИЛЬ
-                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(500),
-                                            borderSide: BorderSide(width: 0, style: errorPassword == true ? BorderStyle.solid : BorderStyle.none)
-                                        ),
-                                        fillColor: White,
-                                        isDense: true,
-                                        filled: true
-                                    )
+                                //КНОПКА "напомнить?"
+                                TextButton(
+                                  child: Text("Напомнить", style: Montserrat(color:Blue,style: SemiBold)),
+                                  onPressed: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (_)=> passwRecovery()));
+                                  },
                                 )
-                              ])
-                            ])
-                        ),
+                              ]
+                          ),
+
+                          TextFieldWithShadow(
+                              TextField(style: Montserrat(color:Blue,size: 15),
+                                  obscureText: passwordVisible,
+                                  onChanged: (String value)
+                                  {setState(() {
+                                    password = value;
+                                    errorPassword[0] = false;
+                                  });},
+                                  decoration: InputDecoration(
+                                      //ИКОНКА
+                                      prefixIcon: PrefixIconTextField(color: Color(0xFF00f069), icon: iconPassword),
+
+                                      //СКРЫТЬ/ПОКАЗАТЬ
+                                      suffixIcon: Container(margin: EdgeInsets.only(right: 10),
+                                          child: IconButton(
+                                            icon: passwordVisible == true ? iconShow : iconHide,
+                                            onPressed: ()
+                                            {
+                                              setState(()=>passwordVisible = !passwordVisible);
+                                            },
+                                          )
+                                      ),
+                                      hintStyle: Montserrat(color: Colors.black26, size: 15),
+                                      hintText: "Введите ваш пароль",
+
+                                      //СТИЛЬ
+                                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(20),
+                                          borderSide: BorderSide(width: 0, style: BorderStyle.none)
+                                      ),
+                                      fillColor: White,
+                                      isDense: true,
+                                      filled: true
+                                  )
+                              ),
+                            errorText: true,
+                            error: errorPassword,
+                          )
+                        ])
 
                       ]),
                 )
@@ -213,12 +179,12 @@ AuthService authService = AuthService();
                     ///ТЕКСТ
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: SizePage.width/5),
-                      child: RichText(
+                      child: RichText(textAlign: TextAlign.center,
                         text: TextSpan(
                           children: [
                             TextSpan(
                               text: "При входе, вы принимаете условия пользования сервисом. ",
-                              style: Montserrat(style: SemiBold,size: 13, color:Blue),
+                              style: Montserrat(size: 12, color: Blue),
                             ),
                             TextSpan(
                               text: "Подробнее.", style: Montserrat(style: SemiBold,size: 13, color:Red),
@@ -259,31 +225,31 @@ AuthService authService = AuthService();
   }
 
   void Validation() async {
-    String errorStr = '';
+    int countError = 0;
     bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+"
     r"@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(this.email);
     if(email == '') {
-      setState(() => errorEmail = true);
-      errorStr += "Введите почту\n";
+      setState(() => errorEmail = [true,"Введите почту"]);
+      countError++;
     }
     else if (emailValid == false) {
-      setState(()=>errorEmail = true);
-      errorStr += "Неверный формат почты\n";
+      setState(()=>errorEmail = [true,"Неверный формат почты"]);
+      countError++;
     }
 
     if(password == '') {
-      setState(() => errorPassword = true);
-      errorStr += "Введите пароль\n";
+      setState(() => errorPassword = [true,"Введите пароль"]);
+      countError++;
     }
 
-    if(errorStr == '') {
+    if(countError == 0) {
       setState(() => isLoading = true);
 
       dynamic user = await authService.signIn(email.trim(), password.trim());
       if(user == null){
         setState((){
-          errorEmail = true;
-          errorPassword = true;
+          errorEmail = [true];
+          errorPassword = [true];
         });
         showTopSnackBar(context, CustomSnackBar.error(message:"Вы ввели не правильные данные",textStyle: Montserrat(size: 15)));
       }else{
@@ -291,6 +257,6 @@ AuthService authService = AuthService();
       }
       setState(() => isLoading = false);
     }
-    else showTopSnackBar(context, CustomSnackBar.error(message:errorStr,textStyle: Montserrat(size: 15)));
+    else showTopSnackBar(context, CustomSnackBar.error(message:"Ошибка валидации полей",textStyle: Montserrat(size: 15)));
   }
 }

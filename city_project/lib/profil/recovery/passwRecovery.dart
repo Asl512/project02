@@ -48,15 +48,7 @@ class _passwRecoveryState extends State<passwRecovery> {
                               padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
                             ),
                           ]),
-                          Container(
-                              height: 70,width: 50,
-                              decoration: BoxDecoration(color: Blue,borderRadius: BorderRadius.only(bottomRight: Radius.circular(40))),
-                              child: IconButton(icon: Icon(Icons.arrow_back_ios,size: 20,color: White,),
-                                  onPressed: (){
-                                    Navigator.pop(context);
-                                  })
-                          ),
-
+                          ButtonBack()
                         ])
                 )
             ),
@@ -72,49 +64,27 @@ class _passwRecoveryState extends State<passwRecovery> {
                       children:[
 
                         ///EMAIL
-                        Container(height: 112,
-                            child: Column(children:[
-                              Container(width: double.infinity,
-                                margin: EdgeInsets.fromLTRB(10, 0, 0, 5),
-                                child: Text("Почта:", style: Montserrat(color:Blue,style: SemiBold)),
-                              ),
+                        Column(crossAxisAlignment:CrossAxisAlignment.start,
+                            children:[
+                              RichTextMethod("Почта:"),
+                              TextFieldWithShadow(
+                                  TextField(style: Montserrat(color: Blue, size: 15),
+                                      onChanged: (String value)
+                                      {setState(() {
+                                        email = value;
+                                        errorEmail = false;
+                                      });},
+                                      decoration: TextFieldDecoration(
+                                        hintText: "Введите вашу почту",
+                                        prefixIcon: PrefixIconTextField(color: Color(0xFF546eff),icon: iconEmail)
+                                      ).InputDecor()
+                                  ),
+                                error: [errorEmail],
+                              )
+                            ]),
 
-                              Stack(children: [
-                                Shadow(50,500), // ТЕНЬ
-                                TextField(style: Montserrat(color:Blue,style: SemiBold),
-                                    onChanged: (String value)
-                                    {setState(() {
-                                      email = value;
-                                      errorEmail = false;
-                                    });},
-                                    decoration: InputDecoration(
-                                      //ИКОНКА
-                                        prefixIcon: Container(margin: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
-                                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)),
-                                              color: Color(0xFF546eff),
-                                            ),
-                                            width: 40,
-                                            padding: EdgeInsets.all(6),
-                                            child: iconEmail
-                                        ),
-
-                                        //ВЫВОД ОШИБКИ
-                                        errorText: '',
-
-                                        //СТИЛЬ
-                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(500),
-                                            borderSide: BorderSide(width: 0, style: errorEmail == true ? BorderStyle.solid : BorderStyle.none)
-                                        ),
-                                        fillColor: White,
-                                        isDense: true,
-                                        filled: true
-                                    )
-                                )
-                              ])
-                            ])
-                        ),
                         ///ТЕКСТ
-                        Container(
+                        Container(margin: EdgeInsets.only(top: 30),
                             padding: EdgeInsets.symmetric(horizontal: SizePage.width/10),
                             child: Text("Введите почту с которой вы регистрировались в приложении", textAlign: TextAlign.center,
                               style: Montserrat(style: SemiBold,size: 13, color:Blue),)

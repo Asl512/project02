@@ -65,15 +65,7 @@ class _codeRecoveryState extends State<codeRecovery> {
                           padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
                         ),
                       ]),
-                      Container(
-                          height: 70,width: 50,
-                          decoration: BoxDecoration(color: Blue,borderRadius: BorderRadius.only(bottomRight: Radius.circular(40))),
-                          child: IconButton(icon: Icon(Icons.arrow_back_ios,size: 20,color: White,),
-                              onPressed: (){
-                                Navigator.pop(context);
-                              })
-                      ),
-
+                      ButtonBack()
                     ])
             )
         ),

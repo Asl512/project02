@@ -15,14 +15,7 @@ class Local extends StatelessWidget {
       ///ШАПКА
         appBar: PreferredSize(preferredSize: Size.fromHeight(50),
             child: AppBar(backgroundColor:Grey, elevation: 0.0,
-                leading: Container(
-                  width: 70,
-                  decoration: BoxDecoration(color: Blue,borderRadius: BorderRadius.only(bottomRight: Radius.circular(40))),
-                  child: IconButton(icon: Icon(Icons.arrow_back_ios),
-                      onPressed: (){
-                        Navigator.pop(context);
-                      })
-                )
+                leading: ButtonBack()
             )
         ),
 
