@@ -33,11 +33,11 @@ dependencies:
   syncfusion_flutter_datepicker: ^19.4.55
   expandable: ^5.0.1
   card_swiper: ^2.0.1
+  dropdown_button2: ^1.2.2
   shared_preferences: ^2.0.9
   firebase_auth: ^3.3.9
   bubble_bottom_bar: ^2.0.0
   pin_code_fields: ^7.3.0
-  very_good_infinite_list: ^0.3.0
   shimmer: ^2.0.0
   cloud_firestore:
   firebase_messaging_platform_interface: ^3.2.1
@@ -45,6 +45,15 @@ dependencies:
   postgres: ^2.4.3
   url_launcher: ^6.0.17
   image_picker: ^0.8.4+11
+  firebase_storage: ^10.2.9
+  filter_list: ^1.0.1
+
+  equatable: ^2.0.3
+  dartz: ^0.10.1
+  redux: ^5.0.0
+  flutter_redux: ^0.9.0
+  redux_thunk: ^0.4.0
+
   flutter:
     sdk: flutter
 
@@ -80,45 +89,55 @@ flutter:
   # To add assets to your application, add an assets section, like this:
 
   assets:
-    - image/icon/email.svg
-    - image/icon/key.svg
-    - image/icon/password.svg
-    - image/icon/setting.svg
-    - image/icon/hide.svg
-    - image/icon/show.svg
-    - image/icon/vk.svg
-    - image/icon/telegram.svg
-    - image/icon/instagram.svg
-    - image/icon/whatsapp.svg
-    - image/icon/facebook.svg
-    - image/icon/google.svg
-    - image/icon/favorite.svg
-    - image/icon/arrowBottom.svg
-    - image/icon/reverse.svg
-    - image/icon/handbook.svg
-    - image/icon/location.svg
-    - image/icon/magnifier.svg
-    - image/icon/confirmation.svg
-    - image/icon/lightning.svg
-    - image/defoult/avatar.png
-    - image/defoult/excursion.png
-    - image/icon/settings.svg
-    - image/icon/exit.svg
-    - image/icon/myExcursion.svg
-    - image/icon/phone.svg
-    - image/icon/add.svg
-    - image/icon/time.svg
+    - assets/icon/email.svg
+    - assets/icon/key.svg
+    - assets/icon/password.svg
+    - assets/icon/setting.svg
+    - assets/icon/hide.svg
+    - assets/icon/show.svg
+    - assets/icon/favorite.svg
+    - assets/icon/reverse.svg
+    - assets/icon/handbook.svg
+    - assets/icon/location.svg
+    - assets/icon/magnifier.svg
+    - assets/icon/confirmation.svg
+    - assets/icon/lightning.svg
+    - assets/icon/settings.svg
+    - assets/icon/exit.svg
+    - assets/icon/myExcursion.svg
+    - assets/icon/phone.svg
+    - assets/icon/typeExcursion.svg
+    - assets/icon/size.svg
+    - assets/icon/move.svg
+    - assets/icon/city.svg
+    - assets/icon/choice.svg
+    - assets/icon/publication.svg
 
-    - image/illiustration/iFavorite.png
-    - image/illiustration/iErrorNet.png
-    - image/illiustration/iPerson.png
-    - image/illiustration/iTicket.png
-    - image/illiustration/iLoading.png
+    - assets/icon/social_network/vk.svg
+    - assets/icon/social_network/telegram.svg
+    - assets/icon/social_network/instagram.svg
+    - assets/icon/social_network/whatsapp.svg
+    - assets/icon/social_network/facebook.svg
+    - assets/icon/social_network/google.svg
 
-    - image/menu/MenuActivity.svg
-    - image/menu/MenuExcursion.svg
-    - image/menu/MenuProfil.svg
-    - image/menu/MenuTickets.svg
+    - assets/default_images/avatar.png
+    - assets/default_images/excursion.png
+    - assets/default_images/city.jpg
+
+    - assets/illustration/iFavorite.png
+    - assets/illustration/iErrorNet.png
+    - assets/illustration/iPerson.png
+    - assets/illustration/iTicket.png
+    - assets/illustration/iLoading.png
+
+    - assets/icon/menu/MenuActivity.svg
+    - assets/icon/menu/MenuExcursion.svg
+    - assets/icon/menu/MenuProfil.svg
+    - assets/icon/menu/MenuTickets.svg
+
+    - assets/images/loading.gif
+
+    - assets/logo/logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -135,16 +154,24 @@ flutter:
   fonts:
     - family: Montserrat
       fonts:
-        - asset: fonts/Montserrat-Bold.ttf
+        - asset: assets/fonts/Montserrat-Black.ttf
           weight: 900
-        - asset: fonts/Montserrat-SemiBold.ttf
+        - asset: assets/fonts/Montserrat-ExtraBold.ttf
           weight: 800
-        - asset: fonts/Montserrat-Medium.ttf
+        - asset: assets/fonts/Montserrat-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Montserrat-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Montserrat-Medium.ttf
           weight: 500
-        - asset: fonts/Montserrat-Regular.ttf
+        - asset: assets/fonts/Montserrat-Regular.ttf
           weight: 400
-        - asset: fonts/Montserrat-Light.ttf
+        - asset: assets/fonts/Montserrat-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Montserrat-ExtraLight.ttf
           weight: 200
+        - asset: assets/fonts/Montserrat-Thin.ttf
+          weight: 100
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

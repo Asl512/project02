@@ -1,61 +1,38 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:lan_code/feature/presentation/widgets/page_reload_widget.dart';
 import 'package:lan_code/service.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'loadingPage.dart';
-import 'navigation.dart';
-
-import 'guid/addExcursion.dart';
-import 'profil/authorization.dart';
-import 'profil/registration.dart';
-import 'profil/settings.dart';
-import 'excursion/search.dart';
-import 'test.dart';
-import 'profil/recovery/passwRecovery.dart';
-import 'IntroPage.dart';
-import 'guid/booking.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
+import 'feature/presentation/navigation.dart';
+import 'feature/presentation/redux/navigation_redux/navigation_state.dart';
+import 'feature/presentation/redux/navigation_redux/navigation_reducer.dart';
 
 main() async {
-
-  SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle(
-      systemNavigationBarColor: Color(0xFF002550)
-    )
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(systemNavigationBarColor: Color(0xFF002550)));
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  final Store<NavigationState> store = Store(
+      navigationReducer,
+      middleware: [thunkMiddleware],
+      initialState: NavigationState(
+        navigation: const PageReloadWidget("Ошибка попробуйте позже"),
+      )
   );
 
-  WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp();
-
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  int checkLook = prefs.getInt('look') ?? 0;
-
-  runApp(StreamProvider<UserMeth?>.value(
-    value: AuthService().currentUser,
-    initialData: null,
-    child: MaterialApp(
-
-      initialRoute: checkLook!=0?'/navigation':'/introPage',
-      routes:
-      {
-        '/loading': (context) => const Loading(),
-        '/test': (context) =>  MyHomePage(),
-        '/navigation': (context) =>  Navigation(),
-        '/introPage': (context) =>  IntroPage(),
-
-        '/setting': (context) => const Local(),
-
-        '/search': (context) => const Serch(),
-
-        '/authorization': (context) => const Authorization(),
-        '/addExcursion': (context) => const AddExcursion(),
-        '/pass': (context) => const passwRecovery(),
-        '/registration': (context) => const Registration(),
-      },
-    ),
-  ));
+  runApp(
+      StoreProvider(
+        store: store,
+        child: StreamProvider<UserMeth?>.value(
+          value: AuthService().currentUser,
+          initialData: null,
+          child: const MaterialApp(
+            home: Navigation()
+          ),
+        ),
+      )
+  );
 }
