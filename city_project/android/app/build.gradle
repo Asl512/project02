@@ -66,8 +66,19 @@ flutter {
     source '../..'
 }
 
-dependencies {
-    implementation 'androidx.multidex:multidex: 2.0.1'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation platform('com.google.firebase:firebase-bom:29.0.4')
+buildscript {
+    ext.kotlin_version = '1.6.20'
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+
+        classpath 'androidx.multidex:multidex:2.0.1'
+        classpath "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+        classpath platform('com.google.firebase:firebase-bom:29.0.4')
+    }
 }
+
+
