@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:lan_code/back-end/data/repositories/excursion_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/type_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/user_data_repository.dart';
@@ -31,7 +30,7 @@ class GetListExcursionsAction extends ListExcursionsAction {
 
 ThunkAction GetListExcursionsThunkAction({String? type}) => (Store store) async {
       store.dispatch(LoadListExcursionsAction());
-      dynamic responseExcursions;
+      List<ExcursionEntiti>? responseExcursions;
 
       if (type == null) {
         responseExcursions = await GetAllExcursion(ExcursionDataRepository()).call();
@@ -39,15 +38,21 @@ ThunkAction GetListExcursionsThunkAction({String? type}) => (Store store) async 
         responseExcursions = await GetExcursionByType(ExcursionDataRepository()).call(type);
       }
 
-      if (responseExcursions is Right) {
-        List<ExcursionEntiti> excursions = responseExcursions.value as List<ExcursionEntiti>;
-        Map<String, List> data = await getDataExcursion(excursions);
-        if (data["users"]!.length != excursions.length ||
-            data["types"]!.length != excursions.length) {
+      if (responseExcursions != null) {
+        if (responseExcursions.isEmpty) {
+          store.dispatch(GetListExcursionsAction(
+            excursions: [],
+            users: [],
+            types: [],
+          ));
+        }
+        Map<String, List> data = await getDataExcursion(responseExcursions);
+        if (data["users"]!.length != responseExcursions.length ||
+            data["types"]!.length != responseExcursions.length) {
           store.dispatch(ErrorListExcursionsAction());
         } else {
           store.dispatch(GetListExcursionsAction(
-            excursions: excursions,
+            excursions: responseExcursions,
             users: data["users"] as List<UserEntity>,
             types: data["types"] as List<TypeEntity>,
           ));
@@ -58,32 +63,26 @@ ThunkAction GetListExcursionsThunkAction({String? type}) => (Store store) async 
     };
 
 Future<Map<String, List>> getDataExcursion(List<ExcursionEntiti> excursions) async {
-  List<UserEntity> users = [];
-  List<TypeEntity> types = [];
 
   List<String> listIdUsers = excursions.map((e) => e.guide).toList();
-  dynamic responseUser = await GetListUsers(UserDataRepository()).call(listIdUsers);
-  if (responseUser is Right) {
-    users = responseUser.value;
-  }
-
+  List<UserEntity>? users = await GetListUsers(UserDataRepository()).call(listIdUsers);
   List<UserEntity> sortUsers = [];
-  for (var id in listIdUsers) {
-    for (var user in users) {
-      if (user.id == id) sortUsers.add(user);
+  if(users != null){
+    for (var id in listIdUsers) {
+      for (var user in users) {
+        if (user.id == id) sortUsers.add(user);
+      }
     }
   }
 
   List<String> listIdTypes = excursions.map((e) => e.type).toList();
-  dynamic responseType = await GetListType(TypeDataRepository()).call(listIdTypes);
-  if (responseUser is Right) {
-    types = responseType.value;
-  }
-
+  List<TypeEntity>? types = await GetListType(TypeDataRepository()).call(listIdTypes);
   List<TypeEntity> sortTypes = [];
-  for (var id in listIdTypes) {
-    for (var type in types) {
-      if (type.id == id) sortTypes.add(type);
+  if(types != null){
+    for (var id in listIdTypes) {
+      for (var type in types) {
+        if (type.id == id) sortTypes.add(type);
+      }
     }
   }
 

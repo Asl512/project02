@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:lan_code/back-end/data/repositories/city_data_repository.dart';
 import 'package:lan_code/back-end/domain/entities/city_entity.dart';
 import 'package:lan_code/back-end/domain/useCases/city_useCase.dart';
@@ -20,10 +19,14 @@ class GetListCitiesAction extends ListCitiesAction {
 ThunkAction GetListCitiesThunkAction() => (Store store) async {
       store.dispatch(LoadListCitiesAction());
 
-      dynamic response = await GetAllCity(CityDataRepository()).call();
-      if (response is Right) {
-        store.dispatch(GetListCitiesAction(cities: response.value as List<CityEntiti>));
-      } else {
+      List<CityEntiti>? response = await GetAllCity(CityDataRepository()).call();
+      if(response != null){
+        if(response.isEmpty){
+          store.dispatch(GetListCitiesAction(cities: []));
+        }else{
+          store.dispatch(GetListCitiesAction(cities: response));
+        }
+      }else{
         store.dispatch(ErrorListCitiesAction());
       }
     };
@@ -42,10 +45,10 @@ class GetCityAction extends CityAction {
 
 ThunkAction GetCityThunkAction() => (Store store) async {
       store.dispatch(LoadCityAction());
-      dynamic response = await GetCity(CityDataRepository()).call();
-      if (response is Right) {
-        store.dispatch(GetCityAction(city: response.value as CityEntiti));
-      } else {
+      CityEntiti? response = await GetCity(CityDataRepository()).call();
+      if(response == null){
         store.dispatch(ErrorCityAction());
+      }else{
+        store.dispatch(GetCityAction(city: response));
       }
     };

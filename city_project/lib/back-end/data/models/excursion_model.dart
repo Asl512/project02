@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:lan_code/back-end/core/exception.dart';
 import 'package:lan_code/back-end/domain/entities/excursion_entity.dart';
 
 class ExcursionModel extends ExcursionEntiti {
