@@ -22,6 +22,7 @@ main() async {
     appReducer,
     middleware: [thunkMiddleware],
     initialState: AppState(
+      excursionInfoState: const ExcursionInfoState(),
       listCitiesState: const ListCitiesState(),
       cityState: const CityState(),
       listExcursionsState: ListExcursionsState(),

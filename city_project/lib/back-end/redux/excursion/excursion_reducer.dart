@@ -8,6 +8,12 @@ Reducer<ListExcursionsState> listExcursionsReducer = combineReducers([
   TypedReducer<ListExcursionsState, GetListExcursionsAction>(_getListExcursions),
 ]);
 
+Reducer<ExcursionInfoState> excursionInfoReducer = combineReducers([
+  TypedReducer<ExcursionInfoState, LoadExcursionInfoAction>(_loadExcursionInfo),
+  TypedReducer<ExcursionInfoState, ErrorExcursionInfoAction>(_errorExcursionInfo),
+  TypedReducer<ExcursionInfoState, GetExcursionInfoAction>(_getExcursionInfo),
+]);
+
 //List cities
 
 ListExcursionsState _loadListExcursions(
@@ -36,6 +42,36 @@ ListExcursionsState _getListExcursions(
       excursions: action.excursions,
       users: action.users,
       types: action.types,
+      isLoading: false,
+      isError: false,
+    );
+
+///
+
+ExcursionInfoState _loadExcursionInfo(
+    ExcursionInfoState state,
+    LoadExcursionInfoAction action,
+    ) =>
+    state.copyWith(
+      isLoading: true,
+      isError: false,
+    );
+
+ExcursionInfoState _errorExcursionInfo(
+    ExcursionInfoState state,
+    ErrorExcursionInfoAction action,
+    ) =>
+    state.copyWith(
+      isLoading: false,
+      isError: true,
+    );
+
+ExcursionInfoState _getExcursionInfo(
+    ExcursionInfoState state,
+    GetExcursionInfoAction action,
+    ) =>
+    state.copyWith(
+      excursion: action.excursion,
       isLoading: false,
       isError: false,
     );

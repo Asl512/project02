@@ -28,14 +28,17 @@ class GetListExcursionsAction extends ListExcursionsAction {
   });
 }
 
-ThunkAction GetListExcursionsThunkAction({String? type}) => (Store store) async {
+ThunkAction GetListExcursionsThunkAction({String? type}) =>
+    (Store store) async {
       store.dispatch(LoadListExcursionsAction());
       List<ExcursionEntiti>? responseExcursions;
 
       if (type == null) {
-        responseExcursions = await GetAllExcursion(ExcursionDataRepository()).call();
+        responseExcursions =
+            await GetAllExcursion(ExcursionDataRepository()).call();
       } else {
-        responseExcursions = await GetExcursionByType(ExcursionDataRepository()).call(type);
+        responseExcursions =
+            await GetExcursionByType(ExcursionDataRepository()).call(type);
       }
 
       if (responseExcursions != null) {
@@ -62,12 +65,13 @@ ThunkAction GetListExcursionsThunkAction({String? type}) => (Store store) async 
       }
     };
 
-Future<Map<String, List>> getDataExcursion(List<ExcursionEntiti> excursions) async {
-
+Future<Map<String, List>> getDataExcursion(
+    List<ExcursionEntiti> excursions) async {
   List<String> listIdUsers = excursions.map((e) => e.guide).toList();
-  List<UserEntity>? users = await GetListUsers(UserDataRepository()).call(listIdUsers);
+  List<UserEntity>? users =
+      await GetListUsers(UserDataRepository()).call(listIdUsers);
   List<UserEntity> sortUsers = [];
-  if(users != null){
+  if (users != null) {
     for (var id in listIdUsers) {
       for (var user in users) {
         if (user.id == id) sortUsers.add(user);
@@ -76,9 +80,10 @@ Future<Map<String, List>> getDataExcursion(List<ExcursionEntiti> excursions) asy
   }
 
   List<String> listIdTypes = excursions.map((e) => e.type).toList();
-  List<TypeEntity>? types = await GetListType(TypeDataRepository()).call(listIdTypes);
+  List<TypeEntity>? types =
+      await GetListType(TypeDataRepository()).call(listIdTypes);
   List<TypeEntity> sortTypes = [];
-  if(types != null){
+  if (types != null) {
     for (var id in listIdTypes) {
       for (var type in types) {
         if (type.id == id) sortTypes.add(type);
@@ -88,3 +93,23 @@ Future<Map<String, List>> getDataExcursion(List<ExcursionEntiti> excursions) asy
 
   return {"users": sortUsers, "types": sortTypes};
 }
+
+abstract class ExcursionInfoAction {}
+
+class LoadExcursionInfoAction extends ExcursionInfoAction {}
+
+class ErrorExcursionInfoAction extends ExcursionInfoAction {}
+
+class GetExcursionInfoAction extends ExcursionInfoAction {
+  final ExcursionEntiti excursion;
+
+  GetExcursionInfoAction({
+    required this.excursion,
+  });
+}
+
+ThunkAction GetExcursionInfoThunkAction({required ExcursionEntiti excursion}) =>
+    (Store store) async {
+      store.dispatch(LoadExcursionInfoAction());
+      store.dispatch(GetExcursionInfoAction(excursion: excursion));
+    };

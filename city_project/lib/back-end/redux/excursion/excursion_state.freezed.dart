@@ -247,3 +247,178 @@ abstract class _ListExcursionsState implements ListExcursionsState {
   _$ListExcursionsStateCopyWith<_ListExcursionsState> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+/// @nodoc
+class _$ExcursionInfoStateTearOff {
+  const _$ExcursionInfoStateTearOff();
+
+  _ExcursionInfoState call(
+      {ExcursionEntiti? excursion,
+      bool isError = false,
+      bool isLoading = false}) {
+    return _ExcursionInfoState(
+      excursion: excursion,
+      isError: isError,
+      isLoading: isLoading,
+    );
+  }
+}
+
+/// @nodoc
+const $ExcursionInfoState = _$ExcursionInfoStateTearOff();
+
+/// @nodoc
+mixin _$ExcursionInfoState {
+  ExcursionEntiti? get excursion => throw _privateConstructorUsedError;
+  bool get isError => throw _privateConstructorUsedError;
+  bool get isLoading => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $ExcursionInfoStateCopyWith<ExcursionInfoState> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ExcursionInfoStateCopyWith<$Res> {
+  factory $ExcursionInfoStateCopyWith(
+          ExcursionInfoState value, $Res Function(ExcursionInfoState) then) =
+      _$ExcursionInfoStateCopyWithImpl<$Res>;
+  $Res call({ExcursionEntiti? excursion, bool isError, bool isLoading});
+}
+
+/// @nodoc
+class _$ExcursionInfoStateCopyWithImpl<$Res>
+    implements $ExcursionInfoStateCopyWith<$Res> {
+  _$ExcursionInfoStateCopyWithImpl(this._value, this._then);
+
+  final ExcursionInfoState _value;
+  // ignore: unused_field
+  final $Res Function(ExcursionInfoState) _then;
+
+  @override
+  $Res call({
+    Object? excursion = freezed,
+    Object? isError = freezed,
+    Object? isLoading = freezed,
+  }) {
+    return _then(_value.copyWith(
+      excursion: excursion == freezed
+          ? _value.excursion
+          : excursion // ignore: cast_nullable_to_non_nullable
+              as ExcursionEntiti?,
+      isError: isError == freezed
+          ? _value.isError
+          : isError // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isLoading: isLoading == freezed
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$ExcursionInfoStateCopyWith<$Res>
+    implements $ExcursionInfoStateCopyWith<$Res> {
+  factory _$ExcursionInfoStateCopyWith(
+          _ExcursionInfoState value, $Res Function(_ExcursionInfoState) then) =
+      __$ExcursionInfoStateCopyWithImpl<$Res>;
+  @override
+  $Res call({ExcursionEntiti? excursion, bool isError, bool isLoading});
+}
+
+/// @nodoc
+class __$ExcursionInfoStateCopyWithImpl<$Res>
+    extends _$ExcursionInfoStateCopyWithImpl<$Res>
+    implements _$ExcursionInfoStateCopyWith<$Res> {
+  __$ExcursionInfoStateCopyWithImpl(
+      _ExcursionInfoState _value, $Res Function(_ExcursionInfoState) _then)
+      : super(_value, (v) => _then(v as _ExcursionInfoState));
+
+  @override
+  _ExcursionInfoState get _value => super._value as _ExcursionInfoState;
+
+  @override
+  $Res call({
+    Object? excursion = freezed,
+    Object? isError = freezed,
+    Object? isLoading = freezed,
+  }) {
+    return _then(_ExcursionInfoState(
+      excursion: excursion == freezed
+          ? _value.excursion
+          : excursion // ignore: cast_nullable_to_non_nullable
+              as ExcursionEntiti?,
+      isError: isError == freezed
+          ? _value.isError
+          : isError // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isLoading: isLoading == freezed
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_ExcursionInfoState implements _ExcursionInfoState {
+  const _$_ExcursionInfoState(
+      {this.excursion, this.isError = false, this.isLoading = false});
+
+  @override
+  final ExcursionEntiti? excursion;
+  @JsonKey()
+  @override
+  final bool isError;
+  @JsonKey()
+  @override
+  final bool isLoading;
+
+  @override
+  String toString() {
+    return 'ExcursionInfoState(excursion: $excursion, isError: $isError, isLoading: $isLoading)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _ExcursionInfoState &&
+            const DeepCollectionEquality().equals(other.excursion, excursion) &&
+            const DeepCollectionEquality().equals(other.isError, isError) &&
+            const DeepCollectionEquality().equals(other.isLoading, isLoading));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(excursion),
+      const DeepCollectionEquality().hash(isError),
+      const DeepCollectionEquality().hash(isLoading));
+
+  @JsonKey(ignore: true)
+  @override
+  _$ExcursionInfoStateCopyWith<_ExcursionInfoState> get copyWith =>
+      __$ExcursionInfoStateCopyWithImpl<_ExcursionInfoState>(this, _$identity);
+}
+
+abstract class _ExcursionInfoState implements ExcursionInfoState {
+  const factory _ExcursionInfoState(
+      {ExcursionEntiti? excursion,
+      bool isError,
+      bool isLoading}) = _$_ExcursionInfoState;
+
+  @override
+  ExcursionEntiti? get excursion;
+  @override
+  bool get isError;
+  @override
+  bool get isLoading;
+  @override
+  @JsonKey(ignore: true)
+  _$ExcursionInfoStateCopyWith<_ExcursionInfoState> get copyWith =>
+      throw _privateConstructorUsedError;
+}

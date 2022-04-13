@@ -15,3 +15,12 @@ class ListExcursionsState with _$ListExcursionsState {
   @Default(false) bool isLoading,
   }) = _ListExcursionsState;
 }
+
+@freezed
+class ExcursionInfoState with _$ExcursionInfoState {
+  const factory ExcursionInfoState({
+    ExcursionEntiti? excursion,
+    @Default(false) bool isError,
+    @Default(false) bool isLoading,
+  }) = _ExcursionInfoState;
+}
