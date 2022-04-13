@@ -18,6 +18,5 @@ AppState appReducer(AppState state, dynamic action) {
     final nextState = listExcursionsReducer(state.listExcursionsState, action);
     return state.copyWith(listExcursionsState: nextState);
   }
-
   return state;
 }
