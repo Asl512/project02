@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lan_code/back-end/domain/entities/excursion_entity.dart';
 
-class ExcursionModel extends ExcursionEntiti {
+class ExcursionModel extends ExcursionEntity {
   const ExcursionModel({
     required id,
     required name,

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class ExcursionEntiti extends Equatable {
+class ExcursionEntity extends Equatable {
   final String id;
   final String name;
   final String photo;
@@ -14,7 +14,7 @@ class ExcursionEntiti extends Equatable {
   final String meetPoint;
   final int standardPrice;
 
-  const ExcursionEntiti(
+  const ExcursionEntity(
       {required this.id,
       required this.name,
       required this.photo,

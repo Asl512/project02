@@ -14,7 +14,7 @@ import 'package:redux/redux.dart';
 import 'search_page.dart';
 
 class CityPage extends StatefulWidget {
-  final CityEntiti? _cityEntiti;
+  final CityEntity? _cityEntiti;
 
   const CityPage(this._cityEntiti, {Key? key}) : super(key: key);
 
@@ -150,7 +150,7 @@ class _BodyExcursionsState extends State<_BodyExcursions> {
           List<Widget> _excursionsCard = [];
           for (int i = 0; i < store.excursions.length; i++) {
             _excursionsCard.add(ExcursionCardWidget(
-              excursionEntiti: store.excursions[i],
+              excursionEntity: store.excursions[i],
               userEntity: store.users[i],
               typeEntity: store.types[i],
             ));

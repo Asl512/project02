@@ -53,6 +53,9 @@ ExcursionInfoState _loadExcursionInfo(
     LoadExcursionInfoAction action,
     ) =>
     state.copyWith(
+      excursion: action.excursion,
+      user: action.user,
+      type: action.type,
       isLoading: true,
       isError: false,
     );
@@ -72,6 +75,8 @@ ExcursionInfoState _getExcursionInfo(
     ) =>
     state.copyWith(
       excursion: action.excursion,
+      user: action.user,
+      type: action.type,
       isLoading: false,
       isError: false,
     );

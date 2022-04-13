@@ -6,7 +6,7 @@ class GetAllExcursion {
 
   GetAllExcursion(this._excursionRepository);
 
-  Future<List<ExcursionEntiti>?> call() async {
+  Future<List<ExcursionEntity>?> call() async {
     return await _excursionRepository.getAllExcursion();
   }
 }
@@ -16,7 +16,7 @@ class GetExcursionByType {
 
   GetExcursionByType(this._excursionRepository);
 
-  Future<List<ExcursionEntiti>?> call(String type) async {
+  Future<List<ExcursionEntity>?> call(String type) async {
     return await _excursionRepository.getExcursionByType(type);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lan_code/back-end/data/repositories/excursion_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/type_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/user_data_repository.dart';
@@ -17,7 +18,7 @@ class LoadListExcursionsAction extends ListExcursionsAction {}
 class ErrorListExcursionsAction extends ListExcursionsAction {}
 
 class GetListExcursionsAction extends ListExcursionsAction {
-  final List<ExcursionEntiti> excursions;
+  final List<ExcursionEntity> excursions;
   final List<UserEntity> users;
   final List<TypeEntity> types;
 
@@ -31,7 +32,7 @@ class GetListExcursionsAction extends ListExcursionsAction {
 ThunkAction GetListExcursionsThunkAction({String? type}) =>
     (Store store) async {
       store.dispatch(LoadListExcursionsAction());
-      List<ExcursionEntiti>? responseExcursions;
+      List<ExcursionEntity>? responseExcursions;
 
       if (type == null) {
         responseExcursions =
@@ -66,7 +67,7 @@ ThunkAction GetListExcursionsThunkAction({String? type}) =>
     };
 
 Future<Map<String, List>> getDataExcursion(
-    List<ExcursionEntiti> excursions) async {
+    List<ExcursionEntity> excursions) async {
   List<String> listIdUsers = excursions.map((e) => e.guide).toList();
   List<UserEntity>? users =
       await GetListUsers(UserDataRepository()).call(listIdUsers);
@@ -96,20 +97,46 @@ Future<Map<String, List>> getDataExcursion(
 
 abstract class ExcursionInfoAction {}
 
-class LoadExcursionInfoAction extends ExcursionInfoAction {}
+class LoadExcursionInfoAction extends ExcursionInfoAction {
+  final ExcursionEntity excursion;
+  final UserEntity user;
+  final TypeEntity type;
+
+  LoadExcursionInfoAction({
+    required this.excursion,
+    required this.user,
+    required this.type,
+  });
+}
 
 class ErrorExcursionInfoAction extends ExcursionInfoAction {}
 
 class GetExcursionInfoAction extends ExcursionInfoAction {
-  final ExcursionEntiti excursion;
+  final ExcursionEntity excursion;
+  final UserEntity user;
+  final TypeEntity type;
 
   GetExcursionInfoAction({
     required this.excursion,
+    required this.user,
+    required this.type,
   });
 }
 
-ThunkAction GetExcursionInfoThunkAction({required ExcursionEntiti excursion}) =>
+ThunkAction GetExcursionInfoThunkAction({
+  required ExcursionEntity excursion,
+  required UserEntity user,
+  required TypeEntity type,
+}) =>
     (Store store) async {
-      store.dispatch(LoadExcursionInfoAction());
-      store.dispatch(GetExcursionInfoAction(excursion: excursion));
+      store.dispatch(LoadExcursionInfoAction(
+        excursion: excursion,
+        user: user,
+        type: type,
+      ));
+      store.dispatch(GetExcursionInfoAction(
+        excursion: excursion,
+        user: user,
+        type: type,
+      ));
     };

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../domain/entities/city_entity.dart';
 
-class CityModel extends CityEntiti {
+class CityModel extends CityEntity {
   const CityModel({required id, required name, required photo})
       : super(
           id: id,

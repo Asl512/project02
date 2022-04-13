@@ -7,7 +7,7 @@ class GetAllCity {
 
   GetAllCity(this._cityRepository);
 
-  Future<List<CityEntiti>?> call() async {
+  Future<List<CityEntity>?> call() async {
     return await _cityRepository.getAllCity();
   }
 }
@@ -17,7 +17,7 @@ class GetCity {
 
   GetCity(this._cityRepository);
 
-  Future<CityEntiti?> call() async {
+  Future<CityEntity?> call() async {
     return await _cityRepository.getCity();
   }
 }
