@@ -21,10 +21,10 @@ main() async {
   final Store<AppState> store = Store(
     appReducer,
     middleware: [thunkMiddleware],
-    initialState: AppState(
-      excursionInfoState: const ExcursionInfoState(),
-      listCitiesState: const ListCitiesState(),
-      cityState: const CityState(),
+    initialState: const AppState(
+      excursionInfoState: ExcursionInfoState(),
+      listCitiesState: ListCitiesState(),
+      cityState: CityState(),
       listExcursionsState: ListExcursionsState(),
     ),
   );

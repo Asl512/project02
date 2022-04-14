@@ -152,13 +152,17 @@ class _City extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Store<AppState> _store = StoreProvider.of<AppState>(context);
     return StoreConnector<AppState, CityState>(
       converter: (store) => store.state.cityState,
       builder: (context, store) {
         if (store.isLoading) {
           return const LoadingWidget();
         } else if (store.isError) {
-          return const PageReloadWidget('Ошибка получения города');
+          return PageReloadWidget(
+            errorText: 'Ошибка получения города',
+            func: _store.dispatch(GetCityThunkAction()),
+          );
         }
         return const CityPage();
       },
