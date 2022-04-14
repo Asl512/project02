@@ -4,21 +4,21 @@ import 'package:lan_code/back-end/domain/repositories/excursion_repositorie.dart
 
 class ExcursionDataRepository extends ExcursionRepository {
   @override
-  Future<List<ExcursionEntiti>?> getAllExcursion() async {
+  Future<List<ExcursionEntity>?> getAllExcursion() async {
     return await _getExcursion(() {
       return ExcursionRemoteDataSourceImpl().getAllExcursion();
     });
   }
 
   @override
-  Future<List<ExcursionEntiti>?> getExcursionByType(String type) async {
+  Future<List<ExcursionEntity>?> getExcursionByType(String type) async {
     return await _getExcursion(() {
       return ExcursionRemoteDataSourceImpl().getExcursionByType(type);
     });
   }
 
-  Future<List<ExcursionEntiti>?> _getExcursion(
-      Future<List<ExcursionEntiti>?> Function() getAllExcursion) async {
+  Future<List<ExcursionEntity>?> _getExcursion(
+      Future<List<ExcursionEntity>?> Function() getAllExcursion) async {
     final remoteExcursion = await getAllExcursion();
     return remoteExcursion;
   }

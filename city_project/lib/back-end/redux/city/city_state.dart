@@ -8,7 +8,7 @@ class ListCitiesState with _$ListCitiesState {
   const factory ListCitiesState({
     @Default(false) bool isError,
     @Default(false) bool isLoading,
-    @Default([]) List<CityEntiti> cities,
+    @Default([]) List<CityEntity> cities,
   }) = _ListCitiesState;
 }
 
@@ -17,6 +17,6 @@ class CityState with _$CityState {
   const factory CityState({
     @Default(false) bool isError,
     @Default(false) bool isLoading,
-    CityEntiti? city,
+    CityEntity? city,
   }) = _CityState;
 }

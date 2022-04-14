@@ -21,7 +21,7 @@ class _$ListCitiesStateTearOff {
   _ListCitiesState call(
       {bool isError = false,
       bool isLoading = false,
-      List<CityEntiti> cities = const []}) {
+      List<CityEntity> cities = const []}) {
     return _ListCitiesState(
       isError: isError,
       isLoading: isLoading,
@@ -37,7 +37,7 @@ const $ListCitiesState = _$ListCitiesStateTearOff();
 mixin _$ListCitiesState {
   bool get isError => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
-  List<CityEntiti> get cities => throw _privateConstructorUsedError;
+  List<CityEntity> get cities => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ListCitiesStateCopyWith<ListCitiesState> get copyWith =>
@@ -49,7 +49,7 @@ abstract class $ListCitiesStateCopyWith<$Res> {
   factory $ListCitiesStateCopyWith(
           ListCitiesState value, $Res Function(ListCitiesState) then) =
       _$ListCitiesStateCopyWithImpl<$Res>;
-  $Res call({bool isError, bool isLoading, List<CityEntiti> cities});
+  $Res call({bool isError, bool isLoading, List<CityEntity> cities});
 }
 
 /// @nodoc
@@ -79,7 +79,7 @@ class _$ListCitiesStateCopyWithImpl<$Res>
       cities: cities == freezed
           ? _value.cities
           : cities // ignore: cast_nullable_to_non_nullable
-              as List<CityEntiti>,
+              as List<CityEntity>,
     ));
   }
 }
@@ -91,7 +91,7 @@ abstract class _$ListCitiesStateCopyWith<$Res>
           _ListCitiesState value, $Res Function(_ListCitiesState) then) =
       __$ListCitiesStateCopyWithImpl<$Res>;
   @override
-  $Res call({bool isError, bool isLoading, List<CityEntiti> cities});
+  $Res call({bool isError, bool isLoading, List<CityEntity> cities});
 }
 
 /// @nodoc
@@ -123,7 +123,7 @@ class __$ListCitiesStateCopyWithImpl<$Res>
       cities: cities == freezed
           ? _value.cities
           : cities // ignore: cast_nullable_to_non_nullable
-              as List<CityEntiti>,
+              as List<CityEntity>,
     ));
   }
 }
@@ -142,7 +142,7 @@ class _$_ListCitiesState implements _ListCitiesState {
   final bool isLoading;
   @JsonKey()
   @override
-  final List<CityEntiti> cities;
+  final List<CityEntity> cities;
 
   @override
   String toString() {
@@ -176,14 +176,14 @@ abstract class _ListCitiesState implements ListCitiesState {
   const factory _ListCitiesState(
       {bool isError,
       bool isLoading,
-      List<CityEntiti> cities}) = _$_ListCitiesState;
+      List<CityEntity> cities}) = _$_ListCitiesState;
 
   @override
   bool get isError;
   @override
   bool get isLoading;
   @override
-  List<CityEntiti> get cities;
+  List<CityEntity> get cities;
   @override
   @JsonKey(ignore: true)
   _$ListCitiesStateCopyWith<_ListCitiesState> get copyWith =>
@@ -195,7 +195,7 @@ class _$CityStateTearOff {
   const _$CityStateTearOff();
 
   _CityState call(
-      {bool isError = false, bool isLoading = false, CityEntiti? city}) {
+      {bool isError = false, bool isLoading = false, CityEntity? city}) {
     return _CityState(
       isError: isError,
       isLoading: isLoading,
@@ -211,7 +211,7 @@ const $CityState = _$CityStateTearOff();
 mixin _$CityState {
   bool get isError => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
-  CityEntiti? get city => throw _privateConstructorUsedError;
+  CityEntity? get city => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CityStateCopyWith<CityState> get copyWith =>
@@ -222,7 +222,7 @@ mixin _$CityState {
 abstract class $CityStateCopyWith<$Res> {
   factory $CityStateCopyWith(CityState value, $Res Function(CityState) then) =
       _$CityStateCopyWithImpl<$Res>;
-  $Res call({bool isError, bool isLoading, CityEntiti? city});
+  $Res call({bool isError, bool isLoading, CityEntity? city});
 }
 
 /// @nodoc
@@ -251,7 +251,7 @@ class _$CityStateCopyWithImpl<$Res> implements $CityStateCopyWith<$Res> {
       city: city == freezed
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
-              as CityEntiti?,
+              as CityEntity?,
     ));
   }
 }
@@ -262,7 +262,7 @@ abstract class _$CityStateCopyWith<$Res> implements $CityStateCopyWith<$Res> {
           _CityState value, $Res Function(_CityState) then) =
       __$CityStateCopyWithImpl<$Res>;
   @override
-  $Res call({bool isError, bool isLoading, CityEntiti? city});
+  $Res call({bool isError, bool isLoading, CityEntity? city});
 }
 
 /// @nodoc
@@ -292,7 +292,7 @@ class __$CityStateCopyWithImpl<$Res> extends _$CityStateCopyWithImpl<$Res>
       city: city == freezed
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
-              as CityEntiti?,
+              as CityEntity?,
     ));
   }
 }
@@ -309,7 +309,7 @@ class _$_CityState implements _CityState {
   @override
   final bool isLoading;
   @override
-  final CityEntiti? city;
+  final CityEntity? city;
 
   @override
   String toString() {
@@ -340,7 +340,7 @@ class _$_CityState implements _CityState {
 }
 
 abstract class _CityState implements CityState {
-  const factory _CityState({bool isError, bool isLoading, CityEntiti? city}) =
+  const factory _CityState({bool isError, bool isLoading, CityEntity? city}) =
       _$_CityState;
 
   @override
@@ -348,7 +348,7 @@ abstract class _CityState implements CityState {
   @override
   bool get isLoading;
   @override
-  CityEntiti? get city;
+  CityEntity? get city;
   @override
   @JsonKey(ignore: true)
   _$CityStateCopyWith<_CityState> get copyWith =>

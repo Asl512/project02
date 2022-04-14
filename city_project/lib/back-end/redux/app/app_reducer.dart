@@ -17,6 +17,9 @@ AppState appReducer(AppState state, dynamic action) {
   } else if (action is ListExcursionsAction) {
     final nextState = listExcursionsReducer(state.listExcursionsState, action);
     return state.copyWith(listExcursionsState: nextState);
+  } else if (action is ExcursionInfoAction) {
+    final nextState = excursionInfoReducer(state.excursionInfoState, action);
+    return state.copyWith(excursionInfoState: nextState);
   }
   return state;
 }

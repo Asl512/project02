@@ -8,7 +8,7 @@ import 'package:lan_code/ui/widgets/style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CityCardWidget extends StatelessWidget {
-  final CityEntiti cityEntiti;
+  final CityEntity cityEntiti;
 
   const CityCardWidget({
     Key? key,

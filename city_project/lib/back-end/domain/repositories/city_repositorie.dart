@@ -1,7 +1,7 @@
 import 'package:lan_code/back-end/domain/entities/city_entity.dart';
 
 abstract class CityRepository {
-  Future<List<CityEntiti>?> getAllCity();
+  Future<List<CityEntity>?> getAllCity();
 
-  Future<CityEntiti?> getCity();
+  Future<CityEntity?> getCity();
 }

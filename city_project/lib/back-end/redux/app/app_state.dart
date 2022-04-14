@@ -10,5 +10,6 @@ class AppState with _$AppState {
     required ListCitiesState listCitiesState,
     required CityState cityState,
     required ListExcursionsState listExcursionsState,
+    required ExcursionInfoState excursionInfoState,
   }) = _AppState;
 }

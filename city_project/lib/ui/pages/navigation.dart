@@ -160,7 +160,7 @@ class _City extends StatelessWidget {
         } else if (store.isError) {
           return const PageReloadWidget('Ошибка получения города');
         }
-        return CityPage(store.city);
+        return const CityPage();
       },
     );
   }

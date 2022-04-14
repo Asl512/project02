@@ -11,7 +11,7 @@ class LoadListCitiesAction extends ListCitiesAction {}
 class ErrorListCitiesAction extends ListCitiesAction {}
 
 class GetListCitiesAction extends ListCitiesAction {
-  final List<CityEntiti> cities;
+  final List<CityEntity> cities;
 
   GetListCitiesAction({required this.cities});
 }
@@ -19,7 +19,7 @@ class GetListCitiesAction extends ListCitiesAction {
 ThunkAction GetListCitiesThunkAction() => (Store store) async {
       store.dispatch(LoadListCitiesAction());
 
-      List<CityEntiti>? response = await GetAllCity(CityDataRepository()).call();
+      List<CityEntity>? response = await GetAllCity(CityDataRepository()).call();
       if(response != null){
         if(response.isEmpty){
           store.dispatch(GetListCitiesAction(cities: []));
@@ -38,14 +38,14 @@ class LoadCityAction extends CityAction {}
 class ErrorCityAction extends CityAction {}
 
 class GetCityAction extends CityAction {
-  final CityEntiti city;
+  final CityEntity city;
 
   GetCityAction({required this.city});
 }
 
 ThunkAction GetCityThunkAction() => (Store store) async {
       store.dispatch(LoadCityAction());
-      CityEntiti? response = await GetCity(CityDataRepository()).call();
+      CityEntity? response = await GetCity(CityDataRepository()).call();
       if(response == null){
         store.dispatch(ErrorCityAction());
       }else{

@@ -6,7 +6,7 @@ import '../models/city_model.dart';
 abstract class CityRemoteDataSource {
   Future<List<CityModel>?> getAllCity();
 
-  Future<CityEntiti?> getCityCash();
+  Future<CityEntity?> getCityCash();
 }
 
 class CityRemoteDataSourceImpl implements CityRemoteDataSource {
@@ -26,7 +26,7 @@ class CityRemoteDataSourceImpl implements CityRemoteDataSource {
   }
 
   @override
-  Future<CityEntiti?> getCityCash() async {
+  Future<CityEntity?> getCityCash() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     ///поработать какой id при первом запуске брать

@@ -4,20 +4,20 @@ import 'package:lan_code/back-end/domain/repositories/city_repositorie.dart';
 
 class CityDataRepository extends CityRepository {
   @override
-  Future<List<CityEntiti>?> getAllCity() async {
+  Future<List<CityEntity>?> getAllCity() async {
     return await _getAllCity(() {
       return CityRemoteDataSourceImpl().getAllCity();
     });
   }
 
-  Future<List<CityEntiti>?> _getAllCity(
-      Future<List<CityEntiti>?> Function() getAllCity) async {
+  Future<List<CityEntity>?> _getAllCity(
+      Future<List<CityEntity>?> Function() getAllCity) async {
     final remoteCities = await getAllCity();
     return remoteCities;
   }
 
   @override
-  Future<CityEntiti?> getCity() async {
+  Future<CityEntity?> getCity() async {
     final remoteCity = await CityRemoteDataSourceImpl().getCityCash();
     return remoteCity;
   }

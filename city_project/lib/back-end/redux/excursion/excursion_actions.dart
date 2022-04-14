@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lan_code/back-end/data/repositories/excursion_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/type_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/user_data_repository.dart';
@@ -17,7 +18,7 @@ class LoadListExcursionsAction extends ListExcursionsAction {}
 class ErrorListExcursionsAction extends ListExcursionsAction {}
 
 class GetListExcursionsAction extends ListExcursionsAction {
-  final List<ExcursionEntiti> excursions;
+  final List<ExcursionEntity> excursions;
   final List<UserEntity> users;
   final List<TypeEntity> types;
 
@@ -28,14 +29,17 @@ class GetListExcursionsAction extends ListExcursionsAction {
   });
 }
 
-ThunkAction GetListExcursionsThunkAction({String? type}) => (Store store) async {
+ThunkAction GetListExcursionsThunkAction({String? type}) =>
+    (Store store) async {
       store.dispatch(LoadListExcursionsAction());
-      List<ExcursionEntiti>? responseExcursions;
+      List<ExcursionEntity>? responseExcursions;
 
       if (type == null) {
-        responseExcursions = await GetAllExcursion(ExcursionDataRepository()).call();
+        responseExcursions =
+            await GetAllExcursion(ExcursionDataRepository()).call();
       } else {
-        responseExcursions = await GetExcursionByType(ExcursionDataRepository()).call(type);
+        responseExcursions =
+            await GetExcursionByType(ExcursionDataRepository()).call(type);
       }
 
       if (responseExcursions != null) {
@@ -62,12 +66,13 @@ ThunkAction GetListExcursionsThunkAction({String? type}) => (Store store) async 
       }
     };
 
-Future<Map<String, List>> getDataExcursion(List<ExcursionEntiti> excursions) async {
-
+Future<Map<String, List>> getDataExcursion(
+    List<ExcursionEntity> excursions) async {
   List<String> listIdUsers = excursions.map((e) => e.guide).toList();
-  List<UserEntity>? users = await GetListUsers(UserDataRepository()).call(listIdUsers);
+  List<UserEntity>? users =
+      await GetListUsers(UserDataRepository()).call(listIdUsers);
   List<UserEntity> sortUsers = [];
-  if(users != null){
+  if (users != null) {
     for (var id in listIdUsers) {
       for (var user in users) {
         if (user.id == id) sortUsers.add(user);
@@ -76,9 +81,10 @@ Future<Map<String, List>> getDataExcursion(List<ExcursionEntiti> excursions) asy
   }
 
   List<String> listIdTypes = excursions.map((e) => e.type).toList();
-  List<TypeEntity>? types = await GetListType(TypeDataRepository()).call(listIdTypes);
+  List<TypeEntity>? types =
+      await GetListType(TypeDataRepository()).call(listIdTypes);
   List<TypeEntity> sortTypes = [];
-  if(types != null){
+  if (types != null) {
     for (var id in listIdTypes) {
       for (var type in types) {
         if (type.id == id) sortTypes.add(type);
@@ -88,3 +94,49 @@ Future<Map<String, List>> getDataExcursion(List<ExcursionEntiti> excursions) asy
 
   return {"users": sortUsers, "types": sortTypes};
 }
+
+abstract class ExcursionInfoAction {}
+
+class LoadExcursionInfoAction extends ExcursionInfoAction {
+  final ExcursionEntity excursion;
+  final UserEntity user;
+  final TypeEntity type;
+
+  LoadExcursionInfoAction({
+    required this.excursion,
+    required this.user,
+    required this.type,
+  });
+}
+
+class ErrorExcursionInfoAction extends ExcursionInfoAction {}
+
+class GetExcursionInfoAction extends ExcursionInfoAction {
+  final ExcursionEntity excursion;
+  final UserEntity user;
+  final TypeEntity type;
+
+  GetExcursionInfoAction({
+    required this.excursion,
+    required this.user,
+    required this.type,
+  });
+}
+
+ThunkAction GetExcursionInfoThunkAction({
+  required ExcursionEntity excursion,
+  required UserEntity user,
+  required TypeEntity type,
+}) =>
+    (Store store) async {
+      store.dispatch(LoadExcursionInfoAction(
+        excursion: excursion,
+        user: user,
+        type: type,
+      ));
+      store.dispatch(GetExcursionInfoAction(
+        excursion: excursion,
+        user: user,
+        type: type,
+      ));
+    };

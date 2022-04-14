@@ -8,10 +8,21 @@ part 'excursion_state.freezed.dart';
 @freezed
 class ListExcursionsState with _$ListExcursionsState {
   const factory ListExcursionsState({
-  @Default([]) List<ExcursionEntiti> excursions,
+  @Default([]) List<ExcursionEntity> excursions,
   @Default([]) List<UserEntity> users,
   @Default([]) List<TypeEntity> types,
   @Default(false) bool isError,
   @Default(false) bool isLoading,
   }) = _ListExcursionsState;
+}
+
+@freezed
+class ExcursionInfoState with _$ExcursionInfoState {
+  const factory ExcursionInfoState({
+    ExcursionEntity? excursion,
+    UserEntity? user,
+    TypeEntity? type,
+    @Default(false) bool isError,
+    @Default(false) bool isLoading,
+  }) = _ExcursionInfoState;
 }
