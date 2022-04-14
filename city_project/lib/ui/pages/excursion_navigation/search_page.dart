@@ -55,14 +55,7 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ];
         },
-        body: Scaffold(
-          backgroundColor: Grey,
-          body: Column(
-            children: const [
-              _Body(),
-            ],
-          ),
-        ),
+        body: const _Body(),
       ),
     );
   }
@@ -102,11 +95,11 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _store = StoreProvider.of<AppState>(context);
     return RefreshIndicator(
       color: Blue,
       onRefresh: () => Future(() {
-        final store = StoreProvider.of<AppState>(context);
-        store.dispatch(GetListCitiesThunkAction());
+        _store.dispatch(GetListCitiesThunkAction());
       }),
       child: StoreConnector<AppState, ListCitiesState>(
         converter: (store) => store.state.listCitiesState,
@@ -114,7 +107,10 @@ class _Body extends StatelessWidget {
           if (store.isLoading) {
             return const LoadingWidget();
           } else if (store.isError) {
-            return const PageReloadWidget('Ошибка получения городов');
+            return PageReloadWidget(
+              errorText: 'Ошибка получения городов',
+              func: _store.dispatch(GetListCitiesThunkAction())
+            );
           }
           if (store.cities.isEmpty) {
             return SizedBox(
@@ -128,7 +124,7 @@ class _Body extends StatelessWidget {
               ),
             );
           }
-          return Column(
+          return ListView(
             children: store.cities.map((city) => CityCardWidget(cityEntiti: city)).toList(),
           );
         },

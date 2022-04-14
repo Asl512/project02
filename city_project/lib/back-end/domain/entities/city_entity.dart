@@ -8,9 +8,9 @@ class CityEntity extends Equatable {
   const CityEntity({
     required this.id,
     required this.name,
-    required this.photo
+    required this.photo,
   });
 
   @override
-  List<Object?> get props => [id, name];
+  List<Object?> get props => [id, name, photo];
 }
