@@ -52,7 +52,7 @@ class ExcursionCardWidget extends StatelessWidget {
                 Stack(
                   alignment: AlignmentDirectional.bottomStart,
                   children: [
-                    _Image(photo: excursionEntity.photo),
+                    ImageExcursionHeader(photo: excursionEntity.photo),
                     Container(
                       height: 50,
 
@@ -186,10 +186,10 @@ class ExcursionCardWidget extends StatelessWidget {
   }
 }
 
-class _Image extends StatelessWidget {
+class ImageExcursionHeader extends StatelessWidget {
   final String photo;
 
-  const _Image({Key? key, required this.photo}) : super(key: key);
+  const ImageExcursionHeader({Key? key, required this.photo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

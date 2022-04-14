@@ -10,6 +10,7 @@ import 'package:lan_code/ui/common/icons.dart';
 import 'package:lan_code/ui/common/images.dart';
 import 'package:lan_code/ui/common/textStyle.dart';
 import 'package:lan_code/ui/pages/excursion_navigation/excursion/excursion_page.dart';
+import 'package:lan_code/ui/pages/excursion_navigation/widgets/excursion_card_widget.dart';
 import 'package:lan_code/ui/pages/excursion_navigation/widgets/photo_user_widget.dart';
 import 'package:lan_code/ui/pages/excursion_navigation/widgets/verified_user_widget.dart';
 import 'package:lan_code/ui/widgets/style.dart';
@@ -29,14 +30,6 @@ class MyTicketsCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 60),
       child: TextButton(
         onPressed: () {
-          store.dispatch(
-            GetExcursionInfoThunkAction(
-              excursion: excursionEntity,
-              user: userEntity,
-              type: typeEntity,
-            ),
-          );
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const ExcursionPage()));
         },
         child: Column(
           children: [
@@ -46,15 +39,15 @@ class MyTicketsCard extends StatelessWidget {
                 Stack(
                   alignment: AlignmentDirectional.bottomStart,
                   children: [
-                    _Image(photo: excursionEntity.photo),
+                    ImageExcursionHeader(photo: "null"),
                     Container(
                       height: 50,
 
                       ///сделать размер черной подложки нормальным
-                      width: excursionEntity.name.length.toDouble() * 14 + 50 >=
+                      width: "Podlozka".length.toDouble() * 14 + 50 >=
                               MediaQuery.of(context).size.width / 1.4
                           ? MediaQuery.of(context).size.width / 1.4
-                          : excursionEntity.name.length.toDouble() * 14 + 50,
+                          : "Podlozka".length.toDouble() * 14 + 50,
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.6),
                         borderRadius: const BorderRadius.only(
@@ -74,15 +67,15 @@ class MyTicketsCard extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Stack(
                               children: [
-                                PhotoUserWidget(userEntity.photo),
-                                VerifiedUserWidget(userEntity.verified)
+                                PhotoUserWidget("PhotoUser"),
+                                VerifiedUserWidget(true)
                               ],
                             ),
                           ),
 
                           Flexible(
                             child: Text(
-                              excursionEntity.name,
+                              "NameExcursion",
                               style: Montserrat(size: 15, style: SemiBold, color: White),
                             ),
                           ),
@@ -90,18 +83,6 @@ class MyTicketsCard extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-
-                ///ДОБАВЛЕНИЕ В ИЗБРАННОЕ
-                Container(
-                  margin: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.width / 50,
-                    right: MediaQuery.of(context).size.width / 50,
-                  ),
-                  child: IconButton(
-                    icon: iconFavoriteWhite,
-                    onPressed: null,
-                  ),
                 ),
               ],
             ),
@@ -126,7 +107,7 @@ class MyTicketsCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    width: MediaQuery.of(context).size.width / 1.5,
+                    width: MediaQuery.of(context).size.width / 1.8,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -134,26 +115,18 @@ class MyTicketsCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              typeEntity.name.split(' ')[0].toString(),
+                              "Moscow",
                               style: Montserrat(
                                 size: 17,
                                 style: SemiBold,
                                 color: const Color(0xFF55596A),
                               ),
                             ),
-                            excursionEntity.moment
-                                ? Container(
-                                    width: 17,
-                                    height: 17,
-                                    margin: const EdgeInsets.only(left: 5),
-                                    child: iconLightning,
-                                  )
-                                : Container()
                           ],
                         ),
                         Flexible(
                           child: Text(
-                            excursionEntity.description,
+                            "Описание",
                             style: Montserrat(size: 14),
                           ),
                         )
@@ -161,12 +134,11 @@ class MyTicketsCard extends StatelessWidget {
                     ),
                   ),
                   Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       ///окончания на часах
-                      Text(excursionEntity.duration, style: Montserrat(size: 13, style: Regular)),
-                      Text('₽ ' + excursionEntity.standardPrice.toString(),
+                      Text('12.09.2022',
                           style: Montserrat(size: 16, style: Bold)),
                     ],
                   )
@@ -174,45 +146,6 @@ class MyTicketsCard extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _Image extends StatelessWidget {
-  final String photo;
-
-  const _Image({Key? key, required this.photo}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return
-
-        ///КАРТИНКА
-        ClipRRect(
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-      child: Image.network(
-        photo,
-        fit: BoxFit.cover,
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height / 10 + 20,
-        loadingBuilder: (
-          BuildContext context,
-          Widget child,
-          ImageChunkEvent? loadingProgress,
-        ) {
-          if (loadingProgress == null) return child;
-          return Placholder(
-            double.infinity,
-            MediaQuery.of(context).size.height / 10 + 20,
-          );
-        },
-        errorBuilder: (context, error, stackTrace) => Image.asset(
-          excursionDef,
-          fit: BoxFit.cover,
-          width: double.infinity,
-          height: MediaQuery.of(context).size.height / 10 + 20,
         ),
       ),
     );

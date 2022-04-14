@@ -6,6 +6,7 @@ import 'package:lan_code/back-end/redux/app/app_reducer.dart';
 import 'package:lan_code/back-end/redux/app/app_state.dart';
 import 'package:lan_code/back-end/redux/city/city_state.dart';
 import 'package:lan_code/back-end/redux/excursion/excursion_state.dart';
+import 'package:lan_code/test.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'ui/pages/navigation.dart';
@@ -33,7 +34,7 @@ main() async {
     StoreProvider<AppState>(
       store: store,
       child: const MaterialApp(
-        home: Navigation()
+        home: test()
       ),
     ),
   );
