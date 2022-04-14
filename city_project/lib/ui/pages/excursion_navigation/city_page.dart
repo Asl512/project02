@@ -15,7 +15,6 @@ import 'package:redux/redux.dart';
 import 'search_page.dart';
 
 class CityPage extends StatefulWidget {
-
   const CityPage({Key? key}) : super(key: key);
 
   @override
@@ -40,6 +39,7 @@ class _CityPageState extends State<CityPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Grey,
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [
@@ -64,11 +64,14 @@ class _CityPageState extends State<CityPage> with TickerProviderStateMixin {
         },
         body: Scaffold(
           backgroundColor: Grey,
-          body: TabBarView(controller: _tabController, children: const [
-            _BodyExcursions(),
-            _BodyExcursions(type: '12'),
-            _BodyExcursions(type: '3'),
-          ]),
+          body: TabBarView(
+            controller: _tabController,
+            children: const [
+              _BodyExcursions(),
+              _BodyExcursions(type: '12'),
+              _BodyExcursions(type: '3'),
+            ],
+          ),
         ),
       ),
     );
@@ -99,7 +102,7 @@ class _Header extends StatelessWidget {
           ),
         ),
       ),
-      expandedHeight: MediaQuery.of(context).size.height/10,
+      expandedHeight: MediaQuery.of(context).size.height / 10,
       flexibleSpace: FlexibleSpaceBar(
         background: Stack(
           children: [
@@ -195,7 +198,10 @@ class _BodyExcursionsState extends State<_BodyExcursions> {
           if (store.isLoading) {
             return const LoadingWidget();
           } else if (store.isError) {
-            return const PageReloadWidget('Ошибка загрузки экскурсий');
+            return PageReloadWidget(
+              errorText: 'Ошибка загрузки экскурсий',
+              func: _store.dispatch(GetListExcursionsThunkAction(type: widget.type)),
+            );
           }
           if (store.excursions.isEmpty) {
             return SizedBox(
