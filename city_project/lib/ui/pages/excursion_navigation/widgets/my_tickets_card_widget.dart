@@ -1,36 +1,94 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:lan_code/back-end/domain/entities/excursion_entity.dart';
-import 'package:lan_code/back-end/domain/entities/type_entity.dart';
-import 'package:lan_code/back-end/domain/entities/user_entity.dart';
 import 'package:lan_code/back-end/redux/app/app_state.dart';
-import 'package:lan_code/back-end/redux/excursion/excursion_actions.dart';
 import 'package:lan_code/ui/common/colors.dart';
-import 'package:lan_code/ui/common/icons.dart';
-import 'package:lan_code/ui/common/images.dart';
 import 'package:lan_code/ui/common/textStyle.dart';
-import 'package:lan_code/ui/pages/excursion_navigation/excursion/excursion_page.dart';
 import 'package:lan_code/ui/pages/excursion_navigation/widgets/excursion_card_widget.dart';
 import 'package:lan_code/ui/pages/excursion_navigation/widgets/photo_user_widget.dart';
 import 'package:lan_code/ui/pages/excursion_navigation/widgets/verified_user_widget.dart';
 import 'package:lan_code/ui/widgets/style.dart';
 import 'package:redux/redux.dart';
+import 'package:lan_code/ui/widgets/image_box_widget.dart';
 
-class MyTicketsCard extends StatelessWidget {
+class MyTicketsPage extends StatefulWidget {
+  const MyTicketsPage({Key? key}) : super(key: key);
 
-  const MyTicketsCard({
+  @override
+  State<MyTicketsPage> createState() => _MyTicketsPageState();
+}
+
+class _MyTicketsPageState extends State<MyTicketsPage> with TickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Grey,
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return [
+            const _Header(),
+            SliverToBoxAdapter(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                color: Grey,
+                child: TabBar(
+                  controller: _tabController,
+                  isScrollable: true,
+                  indicatorColor: Blue,
+                  tabs: [
+                    Tab(child: Text("Активные", style: Montserrat())),
+                    Tab(child: Text("Избранные", style: Montserrat())),
+                    Tab(child: Text("Отмененные", style: Montserrat())), // ждет 3 табсов
+                  ],
+                ),
+              ),
+            ),
+          ];
+        },
+        body: Scaffold(
+          backgroundColor: Grey,
+          body: TabBarView(
+            controller: _tabController,
+            children: const [
+              _MyTicketsCard(),
+              _MyTicketsCard(),
+              _MyTicketsCard(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+class _MyTicketsCard extends StatelessWidget {
+  const _MyTicketsCard({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final Store<AppState> store = StoreProvider.of<AppState>(context);
-
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 60),
+      margin: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 60),
       child: TextButton(
-        onPressed: () {
-        },
+        onPressed: () {},
         child: Column(
           children: [
             Stack(
@@ -76,7 +134,8 @@ class MyTicketsCard extends StatelessWidget {
                           Flexible(
                             child: Text(
                               "NameExcursion",
-                              style: Montserrat(size: 15, style: SemiBold, color: White),
+                              style: Montserrat(
+                                  size: 15, style: SemiBold, color: White),
                             ),
                           ),
                         ],
@@ -142,6 +201,61 @@ class MyTicketsCard extends StatelessWidget {
                           style: Montserrat(size: 16, style: Bold)),
                     ],
                   )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+class _Header extends StatelessWidget {
+  const _Header({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    final Store<AppState> _store = StoreProvider.of<AppState>(context);
+    return SliverAppBar(
+      backgroundColor: Grey,
+      bottom: PreferredSize(
+        preferredSize: const Size(
+          double.infinity,
+          10.0,
+        ),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(10.0),
+            topRight: Radius.circular(10.0),
+          ),
+          child: Container(
+            height: 10.0,
+            color: Theme.of(context).appBarTheme.backgroundColor,
+          ),
+        ),
+      ),
+      expandedHeight: MediaQuery.of(context).size.height / 10,
+      flexibleSpace: FlexibleSpaceBar(
+        background: Stack(
+          children: [
+            // ПРОВЕРЬ ВЕРСТКУ
+            /*Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: Colors.black.withOpacity(0.3),
+            ),*/
+            Positioned(
+              left: 20.0,
+              bottom: 20.0,
+              right: 20.0,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Text(
+                      ((_store.state.cityState.city?.name) ?? 'Error City Name').toUpperCase(),
+                      style: Montserrat(color: Blue, size: 25, style: Bold),
+                    ),
+                  ),
                 ],
               ),
             ),
