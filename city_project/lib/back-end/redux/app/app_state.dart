@@ -1,6 +1,7 @@
 import 'package:lan_code/back-end/redux/city/city_state.dart';
 import 'package:lan_code/back-end/redux/excursion/excursion_state.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lan_code/back-end/redux/user/user_state.dart';
 
 part 'app_state.freezed.dart';
 
@@ -11,5 +12,6 @@ class AppState with _$AppState {
     required CityState cityState,
     required ListExcursionsState listExcursionsState,
     required ExcursionInfoState excursionInfoState,
+    required AuthState authState,
   }) = _AppState;
 }

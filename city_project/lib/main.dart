@@ -6,6 +6,9 @@ import 'package:lan_code/back-end/redux/app/app_reducer.dart';
 import 'package:lan_code/back-end/redux/app/app_state.dart';
 import 'package:lan_code/back-end/redux/city/city_state.dart';
 import 'package:lan_code/back-end/redux/excursion/excursion_state.dart';
+import 'package:lan_code/back-end/redux/user/user_state.dart';
+import 'package:lan_code/service.dart';
+import 'package:provider/provider.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'ui/pages/navigation.dart';
@@ -26,26 +29,20 @@ main() async {
       listCitiesState: ListCitiesState(),
       cityState: CityState(),
       listExcursionsState: ListExcursionsState(),
+      authState: AuthState(),
     ),
   );
 
   runApp(
     StoreProvider<AppState>(
       store: store,
-      child: const MaterialApp(
-        home: Navigation()
+      child: StreamProvider<UserMeth?>.value(
+        value: AuthService().currentUser,
+        initialData: null,
+        child: const MaterialApp(
+          home: Navigation()
+        ),
       ),
     ),
   );
-
-  /*runApp(StoreProvider(
-    store: store,
-    child: StreamProvider<UserMeth?>.value(
-      value: AuthService().currentUser,
-      initialData: null,
-      child: const MaterialApp(
-        home: Navigation(),
-      ),
-    ),
-  ));*/
 }
