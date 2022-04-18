@@ -256,12 +256,20 @@ class _$ExcursionInfoStateTearOff {
       {ExcursionEntity? excursion,
       UserEntity? user,
       TypeEntity? type,
+      PhotosExcursionEntity? photos,
+      List<List>? reviews,
+      List<TagEntity> tags = const [],
+      List<TypeMoveEntity> typesMove = const [],
       bool isError = false,
       bool isLoading = false}) {
     return _ExcursionInfoState(
       excursion: excursion,
       user: user,
       type: type,
+      photos: photos,
+      reviews: reviews,
+      tags: tags,
+      typesMove: typesMove,
       isError: isError,
       isLoading: isLoading,
     );
@@ -276,6 +284,10 @@ mixin _$ExcursionInfoState {
   ExcursionEntity? get excursion => throw _privateConstructorUsedError;
   UserEntity? get user => throw _privateConstructorUsedError;
   TypeEntity? get type => throw _privateConstructorUsedError;
+  PhotosExcursionEntity? get photos => throw _privateConstructorUsedError;
+  List<List>? get reviews => throw _privateConstructorUsedError;
+  List<TagEntity> get tags => throw _privateConstructorUsedError;
+  List<TypeMoveEntity> get typesMove => throw _privateConstructorUsedError;
   bool get isError => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
 
@@ -293,6 +305,10 @@ abstract class $ExcursionInfoStateCopyWith<$Res> {
       {ExcursionEntity? excursion,
       UserEntity? user,
       TypeEntity? type,
+      PhotosExcursionEntity? photos,
+      List<List>? reviews,
+      List<TagEntity> tags,
+      List<TypeMoveEntity> typesMove,
       bool isError,
       bool isLoading});
 }
@@ -311,6 +327,10 @@ class _$ExcursionInfoStateCopyWithImpl<$Res>
     Object? excursion = freezed,
     Object? user = freezed,
     Object? type = freezed,
+    Object? photos = freezed,
+    Object? reviews = freezed,
+    Object? tags = freezed,
+    Object? typesMove = freezed,
     Object? isError = freezed,
     Object? isLoading = freezed,
   }) {
@@ -327,6 +347,22 @@ class _$ExcursionInfoStateCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as TypeEntity?,
+      photos: photos == freezed
+          ? _value.photos
+          : photos // ignore: cast_nullable_to_non_nullable
+              as PhotosExcursionEntity?,
+      reviews: reviews == freezed
+          ? _value.reviews
+          : reviews // ignore: cast_nullable_to_non_nullable
+              as List<List>?,
+      tags: tags == freezed
+          ? _value.tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as List<TagEntity>,
+      typesMove: typesMove == freezed
+          ? _value.typesMove
+          : typesMove // ignore: cast_nullable_to_non_nullable
+              as List<TypeMoveEntity>,
       isError: isError == freezed
           ? _value.isError
           : isError // ignore: cast_nullable_to_non_nullable
@@ -350,6 +386,10 @@ abstract class _$ExcursionInfoStateCopyWith<$Res>
       {ExcursionEntity? excursion,
       UserEntity? user,
       TypeEntity? type,
+      PhotosExcursionEntity? photos,
+      List<List>? reviews,
+      List<TagEntity> tags,
+      List<TypeMoveEntity> typesMove,
       bool isError,
       bool isLoading});
 }
@@ -370,6 +410,10 @@ class __$ExcursionInfoStateCopyWithImpl<$Res>
     Object? excursion = freezed,
     Object? user = freezed,
     Object? type = freezed,
+    Object? photos = freezed,
+    Object? reviews = freezed,
+    Object? tags = freezed,
+    Object? typesMove = freezed,
     Object? isError = freezed,
     Object? isLoading = freezed,
   }) {
@@ -386,6 +430,22 @@ class __$ExcursionInfoStateCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as TypeEntity?,
+      photos: photos == freezed
+          ? _value.photos
+          : photos // ignore: cast_nullable_to_non_nullable
+              as PhotosExcursionEntity?,
+      reviews: reviews == freezed
+          ? _value.reviews
+          : reviews // ignore: cast_nullable_to_non_nullable
+              as List<List>?,
+      tags: tags == freezed
+          ? _value.tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as List<TagEntity>,
+      typesMove: typesMove == freezed
+          ? _value.typesMove
+          : typesMove // ignore: cast_nullable_to_non_nullable
+              as List<TypeMoveEntity>,
       isError: isError == freezed
           ? _value.isError
           : isError // ignore: cast_nullable_to_non_nullable
@@ -405,6 +465,10 @@ class _$_ExcursionInfoState implements _ExcursionInfoState {
       {this.excursion,
       this.user,
       this.type,
+      this.photos,
+      this.reviews,
+      this.tags = const [],
+      this.typesMove = const [],
       this.isError = false,
       this.isLoading = false});
 
@@ -414,6 +478,16 @@ class _$_ExcursionInfoState implements _ExcursionInfoState {
   final UserEntity? user;
   @override
   final TypeEntity? type;
+  @override
+  final PhotosExcursionEntity? photos;
+  @override
+  final List<List>? reviews;
+  @JsonKey()
+  @override
+  final List<TagEntity> tags;
+  @JsonKey()
+  @override
+  final List<TypeMoveEntity> typesMove;
   @JsonKey()
   @override
   final bool isError;
@@ -423,7 +497,7 @@ class _$_ExcursionInfoState implements _ExcursionInfoState {
 
   @override
   String toString() {
-    return 'ExcursionInfoState(excursion: $excursion, user: $user, type: $type, isError: $isError, isLoading: $isLoading)';
+    return 'ExcursionInfoState(excursion: $excursion, user: $user, type: $type, photos: $photos, reviews: $reviews, tags: $tags, typesMove: $typesMove, isError: $isError, isLoading: $isLoading)';
   }
 
   @override
@@ -434,6 +508,10 @@ class _$_ExcursionInfoState implements _ExcursionInfoState {
             const DeepCollectionEquality().equals(other.excursion, excursion) &&
             const DeepCollectionEquality().equals(other.user, user) &&
             const DeepCollectionEquality().equals(other.type, type) &&
+            const DeepCollectionEquality().equals(other.photos, photos) &&
+            const DeepCollectionEquality().equals(other.reviews, reviews) &&
+            const DeepCollectionEquality().equals(other.tags, tags) &&
+            const DeepCollectionEquality().equals(other.typesMove, typesMove) &&
             const DeepCollectionEquality().equals(other.isError, isError) &&
             const DeepCollectionEquality().equals(other.isLoading, isLoading));
   }
@@ -444,6 +522,10 @@ class _$_ExcursionInfoState implements _ExcursionInfoState {
       const DeepCollectionEquality().hash(excursion),
       const DeepCollectionEquality().hash(user),
       const DeepCollectionEquality().hash(type),
+      const DeepCollectionEquality().hash(photos),
+      const DeepCollectionEquality().hash(reviews),
+      const DeepCollectionEquality().hash(tags),
+      const DeepCollectionEquality().hash(typesMove),
       const DeepCollectionEquality().hash(isError),
       const DeepCollectionEquality().hash(isLoading));
 
@@ -458,6 +540,10 @@ abstract class _ExcursionInfoState implements ExcursionInfoState {
       {ExcursionEntity? excursion,
       UserEntity? user,
       TypeEntity? type,
+      PhotosExcursionEntity? photos,
+      List<List>? reviews,
+      List<TagEntity> tags,
+      List<TypeMoveEntity> typesMove,
       bool isError,
       bool isLoading}) = _$_ExcursionInfoState;
 
@@ -467,6 +553,14 @@ abstract class _ExcursionInfoState implements ExcursionInfoState {
   UserEntity? get user;
   @override
   TypeEntity? get type;
+  @override
+  PhotosExcursionEntity? get photos;
+  @override
+  List<List>? get reviews;
+  @override
+  List<TagEntity> get tags;
+  @override
+  List<TypeMoveEntity> get typesMove;
   @override
   bool get isError;
   @override

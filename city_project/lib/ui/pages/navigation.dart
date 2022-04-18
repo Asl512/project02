@@ -96,15 +96,17 @@ class _FloatingActionButton extends StatelessWidget {
       converter: (store) => store.state.authState,
       builder: (context, store) {
         if (store.isLoggedIn) {
-          guidePermit = true;
-          return FloatingActionButton(
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const AddExcursion(typeExcursion: [])),
-            ),
-            child: const Icon(Icons.add),
-            backgroundColor: Blue,
-          );
+          if(store.user!.guidePermit){
+            guidePermit = true;
+            return FloatingActionButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AddExcursion(typeExcursion: [])),
+              ),
+              child: const Icon(Icons.add),
+              backgroundColor: Blue,
+            );
+          }
         }
         guidePermit = false;
         return Container();

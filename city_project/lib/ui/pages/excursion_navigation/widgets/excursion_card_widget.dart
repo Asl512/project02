@@ -64,7 +64,7 @@ class ExcursionCardWidget extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.6),
                         borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(30),
+                          topRight: Radius.circular(20),
                         ),
                       ),
                     ),
@@ -124,8 +124,8 @@ class ExcursionCardWidget extends StatelessWidget {
                 color: White,
                 boxShadow: [ShadowForContainer()],
                 borderRadius: const BorderRadius.only(
-                  bottomRight: Radius.circular(20),
-                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
                 ),
               ),
               child: Row(
@@ -197,7 +197,7 @@ class _Image extends StatelessWidget {
 
         ///КАРТИНКА
         ClipRRect(
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
       child: Image.network(
         photo,
         fit: BoxFit.cover,

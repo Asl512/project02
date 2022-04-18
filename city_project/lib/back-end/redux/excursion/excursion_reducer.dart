@@ -14,7 +14,7 @@ Reducer<ExcursionInfoState> excursionInfoReducer = combineReducers([
   TypedReducer<ExcursionInfoState, GetExcursionInfoAction>(_getExcursionInfo),
 ]);
 
-//List cities
+//List excursions
 
 ListExcursionsState _loadListExcursions(
   ListExcursionsState state,
@@ -46,7 +46,7 @@ ListExcursionsState _getListExcursions(
       isError: false,
     );
 
-///
+//Excursion Info
 
 ExcursionInfoState _loadExcursionInfo(
     ExcursionInfoState state,
@@ -77,6 +77,8 @@ ExcursionInfoState _getExcursionInfo(
       excursion: action.excursion,
       user: action.user,
       type: action.type,
+      photos: action.photos,
+      reviews: action.reviews,
       isLoading: false,
       isError: false,
     );

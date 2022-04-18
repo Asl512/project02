@@ -3,15 +3,19 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:lan_code/back-end/domain/entities/photos_excursion_entity.dart';
 import 'package:lan_code/back-end/redux/app/app_state.dart';
+import 'package:lan_code/back-end/redux/excursion/excursion_state.dart';
 import 'package:lan_code/ui/common/colors.dart';
 import 'package:lan_code/ui/common/icons.dart';
 import 'package:lan_code/ui/common/textStyle.dart';
+import 'package:lan_code/ui/pages/guide/booking.dart';
+import 'package:lan_code/ui/widgets/button_widget.dart';
 import 'package:lan_code/ui/widgets/image_box_widget.dart';
 import 'package:lan_code/ui/widgets/style.dart';
 import 'package:redux/redux.dart';
 import 'dart:math' as math;
-import 'reviews.dart';
+import 'reviews_page.dart';
 
 class ExcursionPage extends StatelessWidget {
   const ExcursionPage({Key? key}) : super(key: key);
@@ -39,29 +43,16 @@ class _Header extends StatelessWidget {
     final Store<AppState> _store = StoreProvider.of<AppState>(context);
     return SliverAppBar(
       backgroundColor: Blue,
-      bottom: PreferredSize(
-        preferredSize: const Size(
-          double.infinity,
-          10.0,
-        ),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(10.0),
-            topRight: Radius.circular(10.0),
-          ),
-          child: Container(
-            height: 10.0,
-            color: Theme.of(context).appBarTheme.backgroundColor,
-          ),
-        ),
-      ),
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios, size: 20, color: White),
         onPressed: () {
           Navigator.pop(context);
         },
       ),
-      expandedHeight: MediaQuery.of(context).size.height/3,
+      expandedHeight: MediaQuery
+          .of(context)
+          .size
+          .height / 3,
       flexibleSpace: FlexibleSpaceBar(
         background: Stack(
           children: [
@@ -98,7 +89,7 @@ class _Header extends StatelessWidget {
                     height: 50,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(40)),
+                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(20)),
                       color: Colors.black.withOpacity(0.5),
                     ),
                     child: Stack(
@@ -158,6 +149,7 @@ class _BodyState extends State<_Body> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 ///РЕЙТИНГ И ОТЗЫВЫ
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -183,32 +175,59 @@ class _BodyState extends State<_Body> {
                         )
                       ],
                     ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const RewiewPage(null),
+                    StoreConnector<AppState, ExcursionInfoState>(
+                      converter: (store) => store.state.excursionInfoState,
+                      builder: (context, store) {
+                        if (store.reviews != null) {
+                          return TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ReviewPage(null),
+                                ),
+                              );
+                            },
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  store.reviews!.length.toString() + " отзывов",
+                                  style: Montserrat(
+                                    color: const Color(0xFFF48494a),
+                                    size: 16,
+                                    style: Bold,
+                                  ),
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Color(0xFFF48494a),
+                                )
+                              ],
+                            ),
+                          );
+                        }
+                        return TextButton(
+                          onPressed: () {},
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "- отзывов",
+                                style: Montserrat(
+                                  color: const Color(0xFFF48494a),
+                                  size: 16,
+                                  style: Bold,
+                                ),
+                              ),
+                              const Icon(
+                                Icons.arrow_forward_ios,
+                                color: Color(0xFFF48494a),
+                              )
+                            ],
                           ),
                         );
                       },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            0.toString() + " отзывов",
-                            style: Montserrat(
-                              color: const Color(0xFFF48494a),
-                              size: 16,
-                              style: Bold,
-                            ),
-                          ),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Color(0xFFF48494a),
-                          )
-                        ],
-                      ),
                     ),
                   ],
                 ),
@@ -225,14 +244,15 @@ class _BodyState extends State<_Body> {
                     spacing: 10,
                     children: store.state.excursionInfoState.excursion!.tags
                         .map(
-                          (tag) => InputChip(
-                            avatar: Text("#", style: Montserrat(color: Colors.white)),
+                          (tag) =>
+                          InputChip(
+                            avatar: Text("#", style: Montserrat(color: White)),
                             labelStyle: Montserrat(size: 14),
                             backgroundColor: Blue,
                             onSelected: (sel) {},
-                            label: Text(tag, style: Montserrat(color: Colors.white)),
+                            label: Text(tag, style: Montserrat(color: White)),
                           ),
-                        )
+                    )
                         .toList(),
                   ),
                 ),
@@ -244,11 +264,14 @@ class _BodyState extends State<_Body> {
                     children: [
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width,
                         decoration: BoxDecoration(
                           boxShadow: [ShadowForContainer()],
                           color: White,
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                          borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -259,7 +282,10 @@ class _BodyState extends State<_Body> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    store.state.excursionInfoState.type!.name.split(' ').first +
+                                    store.state.excursionInfoState.type!
+                                        .name
+                                        .split(' ')
+                                        .first +
                                         " экскурсия",
                                     style: Montserrat(size: 16, style: Bold),
                                   ),
@@ -286,7 +312,10 @@ class _BodyState extends State<_Body> {
                                             .join(', '),
                                         style: Montserrat(size: 14),
                                       ),
-                                      width: MediaQuery.of(context).size.width / 2 - 40,
+                                      width: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width / 2 - 40,
                                     ),
                                   ],
                                 ),
@@ -306,7 +335,10 @@ class _BodyState extends State<_Body> {
                                             " человек",
                                         style: Montserrat(size: 14),
                                       ),
-                                      width: MediaQuery.of(context).size.width / 2 - 40,
+                                      width: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width / 2 - 40,
                                     ),
                                   ],
                                 ),
@@ -343,23 +375,14 @@ class _BodyState extends State<_Body> {
                             ),
                             Container(
                               margin: const EdgeInsets.only(top: 10),
-                              child: TextButton(
-                                onPressed: () {
-                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => Booking("dd",widget.data,widget.gid,widget.type)));
+                              child: ButtonWidget(
+                                text: "Бронировать",
+                                buttonColor: Red,
+                                padding: 0,
+                                func: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) => const BookingPage()));
                                 },
-                                child: Container(
-                                  height: 50,
-                                  decoration: const BoxDecoration(
-                                    color: Red,
-                                    borderRadius: BorderRadius.all(Radius.circular(500)),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "Бронировать",
-                                      style: Montserrat(style: SemiBold, size: 19, color: White),
-                                    ),
-                                  ),
-                                ),
                               ),
                             ),
                           ],
@@ -367,24 +390,27 @@ class _BodyState extends State<_Body> {
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width,
                         decoration: BoxDecoration(
                             boxShadow: [ShadowForContainer()],
                             color: Blue,
-                            borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20))),
+                            borderRadius: const BorderRadius.vertical(bottom: Radius.circular(10))),
                         child: Column(
                           children: [
                             store.state.excursionInfoState.excursion!.moment
                                 ? _Status(
-                                    icon: iconLightning,
-                                    title: "Мгновенное бронирование",
-                                    description: "Без ожидания ответа от гида",
-                                  )
+                              icon: iconLightning,
+                              title: "Мгновенное бронирование",
+                              description: "Без ожидания ответа от гида",
+                            )
                                 : const _Status(
-                                    icon: Icon(Icons.access_time_rounded, color: Red),
-                                    title: "Ожидание",
-                                    description: "Вы должны будете ожидать ответа гида",
-                                  ),
+                              icon: Icon(Icons.access_time_rounded, color: Red),
+                              title: "Ожидание",
+                              description: "Вы должны будете ожидать ответа гида",
+                            ),
                             const SizedBox(height: 10),
                             const _Status(
                               icon: Icon(
@@ -427,11 +453,20 @@ class _BodyState extends State<_Body> {
                 Container(width: double.infinity, height: 0.5, color: Blue.withOpacity(0.5)),
                 const _Card(
                   title: "Правила экскурсии",
-                  description: "Правила экскурсии",
+                  description:
+                  "Экскурсия считается забронированной после того, как вы внесете предоплату. Пока вы не внесли предоплату, нужное вам время может быть забронировано другими путешественниками. Бронь важна для того, чтобы гид точно понимал, что вы придете на экскурсию и мог забронировать для вас свое время. В нашем приложении вы оплачиваете 20% стоимости. Подробнее. Хорошие условия возврата При отмене заказа за 48 часов до начала мы вернем предоплату на вашу карту. Подробнее.",
                 ),
 
                 ///ФОТОГРАФИИ
-                PhotosBlock(images: [])
+                StoreConnector<AppState, ExcursionInfoState>(
+                  converter: (store) => store.state.excursionInfoState,
+                  builder: (context, store) {
+                    if (store.photos != null) {
+                      return PhotosBlock(photos: store.photos!);
+                    }
+                    return Container();
+                  },
+                ),
               ],
             ),
           ),
@@ -468,7 +503,10 @@ class _Status extends StatelessWidget {
               style: Montserrat(style: Bold, size: 14, color: White),
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width / 1.4,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width / 1.4,
               child: Text(
                 description,
                 style: Montserrat(size: 13, color: White),
@@ -497,7 +535,8 @@ class _Card extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ExpandablePanel(
+    return description != 'null'
+        ? ExpandablePanel(
       theme: const ExpandableThemeData(hasIcon: false),
       header: Padding(
         padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
@@ -518,36 +557,37 @@ class _Card extends StatelessWidget {
       ),
       collapsed: Container(),
       expanded: buildList(),
-    );
+    )
+        : Container();
   }
 }
 
+///переделать полностью
 class PhotosBlock extends StatelessWidget {
-  final List images;
+  final PhotosExcursionEntity photos;
 
-  const PhotosBlock({Key? key, required this.images}) : super(key: key);
+  const PhotosBlock({Key? key, required this.photos}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (images.isEmpty) {
-      return Container();
-    } else {
-      return Container(
-        padding: const EdgeInsets.all(5),
-        margin: const EdgeInsets.only(top: 10, bottom: 25),
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          boxShadow: [ShadowForContainer()],
-          color: White,
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
-        ),
-        child: ifMoreOne(context),
-      );
-    }
+    return Container(
+      padding: const EdgeInsets.all(5),
+      margin: const EdgeInsets.only(top: 10, bottom: 25),
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
+      decoration: BoxDecoration(
+        boxShadow: [ShadowForContainer()],
+        color: White,
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+      ),
+      child: ifMoreOne(context),
+    );
   }
 
   Widget ifMoreOne(context) {
-    if (images.length > 1) {
+    if (photos.photos.length > 1) {
       return Row(
         children: [
           TextButton(
@@ -555,15 +595,27 @@ class PhotosBlock extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(5),
               child: Image.network(
-                images[0],
+                photos.photos[0],
                 fit: BoxFit.cover,
-                height: MediaQuery.of(context).size.width / 3 * 1.5 + 15,
-                width: MediaQuery.of(context).size.width / 2.5,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .width / 3 * 1.5 + 15,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width / 2.5,
                 loadingBuilder:
                     (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                   if (loadingProgress == null) return child;
-                  return Placholder(MediaQuery.of(context).size.width / 2.5,
-                      MediaQuery.of(context).size.width / 3 * 1.5 + 15);
+                  return Placholder(MediaQuery
+                      .of(context)
+                      .size
+                      .width / 2.5,
+                      MediaQuery
+                          .of(context)
+                          .size
+                          .width / 3 * 1.5 + 15);
                 },
               ),
             ),
@@ -577,18 +629,25 @@ class PhotosBlock extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(5),
           child: Image.network(
-            images[0],
+            photos.photos[0],
             fit: BoxFit.cover,
-            height: MediaQuery.of(context).size.width / 3 * 1.5 + 15,
-            loadingBuilder: (
-              BuildContext context,
-              Widget child,
-              ImageChunkEvent? loadingProgress,
-            ) {
+            height: MediaQuery
+                .of(context)
+                .size
+                .width / 3 * 1.5 + 15,
+            loadingBuilder: (BuildContext context,
+                Widget child,
+                ImageChunkEvent? loadingProgress,) {
               if (loadingProgress == null) return child;
               return Placholder(
-                MediaQuery.of(context).size.width,
-                MediaQuery.of(context).size.width / 3 * 1.5 + 15,
+                MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                MediaQuery
+                    .of(context)
+                    .size
+                    .width / 3 * 1.5 + 15,
               );
             },
           ),
@@ -598,7 +657,7 @@ class PhotosBlock extends StatelessWidget {
   }
 
   Widget ifTwoMore(context) {
-    if (images.length > 2) {
+    if (photos.photos.length > 2) {
       return Column(
         children: [
           TextButton(
@@ -606,19 +665,29 @@ class PhotosBlock extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(5),
               child: Image.network(
-                images[1],
+                photos.photos[1],
                 fit: BoxFit.cover,
-                height: MediaQuery.of(context).size.width / 3 * 1.5 / 2,
-                width: MediaQuery.of(context).size.width / 2.5,
-                loadingBuilder: (
-                  BuildContext context,
-                  Widget child,
-                  ImageChunkEvent? loadingProgress,
-                ) {
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .width / 3 * 1.5 / 2,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width / 2.5,
+                loadingBuilder: (BuildContext context,
+                    Widget child,
+                    ImageChunkEvent? loadingProgress,) {
                   if (loadingProgress == null) return child;
                   return Placholder(
-                    MediaQuery.of(context).size.width / 2.5,
-                    MediaQuery.of(context).size.width / 3 * 1.5 / 2,
+                    MediaQuery
+                        .of(context)
+                        .size
+                        .width / 2.5,
+                    MediaQuery
+                        .of(context)
+                        .size
+                        .width / 3 * 1.5 / 2,
                   );
                 },
               ),
@@ -631,19 +700,29 @@ class PhotosBlock extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(5),
                   child: Image.network(
-                    images[2],
+                    photos.photos[2],
                     fit: BoxFit.cover,
-                    height: MediaQuery.of(context).size.width / 3 * 1.5 / 2,
-                    width: MediaQuery.of(context).size.width / 2.5,
-                    loadingBuilder: (
-                      BuildContext context,
-                      Widget child,
-                      ImageChunkEvent? loadingProgress,
-                    ) {
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .width / 3 * 1.5 / 2,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width / 2.5,
+                    loadingBuilder: (BuildContext context,
+                        Widget child,
+                        ImageChunkEvent? loadingProgress,) {
                       if (loadingProgress == null) return child;
                       return Placholder(
-                        MediaQuery.of(context).size.width / 2.5,
-                        MediaQuery.of(context).size.width / 3 * 1.5 / 2,
+                        MediaQuery
+                            .of(context)
+                            .size
+                            .width / 2.5,
+                        MediaQuery
+                            .of(context)
+                            .size
+                            .width / 3 * 1.5 / 2,
                       );
                     },
                   ),
@@ -653,11 +732,17 @@ class PhotosBlock extends StatelessWidget {
                       color: Colors.black.withOpacity(0.7),
                       borderRadius: const BorderRadius.all(Radius.circular(5))),
                   alignment: Alignment.center,
-                  height: MediaQuery.of(context).size.width / 3 * 1.5 / 2,
-                  width: MediaQuery.of(context).size.width / 2.5,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .width / 3 * 1.5 / 2,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width / 2.5,
                   child: Text(
-                    '+' + (images.length - 2).toString(),
-                    style: Montserrat(size: 40, style: SemiBold),
+                    '+' + (photos.photos.length - 2).toString(),
+                    style: Montserrat(size: 40, color: White, style: SemiBold),
                   ),
                 ),
               ],
@@ -671,19 +756,29 @@ class PhotosBlock extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(5),
           child: Image.network(
-            images[1],
+            photos.photos[1],
             fit: BoxFit.cover,
-            height: MediaQuery.of(context).size.width / 3 * 1.5 + 15,
-            width: MediaQuery.of(context).size.width / 2.5,
-            loadingBuilder: (
-              BuildContext context,
-              Widget child,
-              ImageChunkEvent? loadingProgress,
-            ) {
+            height: MediaQuery
+                .of(context)
+                .size
+                .width / 3 * 1.5 + 15,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width / 2.5,
+            loadingBuilder: (BuildContext context,
+                Widget child,
+                ImageChunkEvent? loadingProgress,) {
               if (loadingProgress == null) return child;
               return Placholder(
-                MediaQuery.of(context).size.width / 2.5,
-                MediaQuery.of(context).size.width / 3 * 1.5 + 15,
+                MediaQuery
+                    .of(context)
+                    .size
+                    .width / 2.5,
+                MediaQuery
+                    .of(context)
+                    .size
+                    .width / 3 * 1.5 + 15,
               );
             },
           ),
@@ -696,7 +791,7 @@ class PhotosBlock extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return PhotoCarousel(images: images);
+        return PhotoCarousel(images: photos.photos);
       },
     );
   }
@@ -731,11 +826,9 @@ class _PhotoCarouselState extends State<PhotoCarousel> {
               child: InteractiveViewer(
                 child: Image.network(
                   widget.images[index],
-                  loadingBuilder: (
-                    BuildContext context,
-                    Widget child,
-                    ImageChunkEvent? loadingProgress,
-                  ) {
+                  loadingBuilder: (BuildContext context,
+                      Widget child,
+                      ImageChunkEvent? loadingProgress,) {
                     if (loadingProgress == null) return child;
                     return const Center(child: CircularProgressIndicator(color: White));
                   },
@@ -748,7 +841,10 @@ class _PhotoCarouselState extends State<PhotoCarousel> {
           itemCount: widget.images.length,
         ),
         SizedBox(
-          height: MediaQuery.of(context).size.height / 13,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height / 13,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -768,11 +864,11 @@ class _PhotoCarouselState extends State<PhotoCarousel> {
                   children: [
                     Text(
                       'Фотографии с экскурсии',
-                      style: Montserrat(style: Bold, size: 17),
+                      style: Montserrat(style: Bold, color: White, size: 17),
                     ),
                     Text(
                       indexNow.toString() + ' из ' + widget.images.length.toString(),
-                      style: Montserrat(style: SemiBold, size: 15),
+                      style: Montserrat(style: SemiBold, color: White, size: 15),
                     )
                   ],
                 ),
