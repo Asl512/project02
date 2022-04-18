@@ -26,7 +26,7 @@ class ButtonWidget extends StatelessWidget {
               height: 50,
               decoration: BoxDecoration(
                   color: buttonColor,
-                  borderRadius: const BorderRadius.all(Radius.circular(500))
+                  borderRadius: const BorderRadius.all(Radius.circular(10))
               ),
               child: Container(
                   alignment: Alignment.center,

@@ -11,26 +11,9 @@ import 'package:lan_code/ui/widgets/link_to_document_widget.dart';
 import 'authorization/registration.dart';
 import 'widgets/button_social_network_widget.dart';
 
-class NotAuthProfilePage extends StatelessWidget {
+
+class NotAuthProfilePage extends StatelessWidget{
   const NotAuthProfilePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      initialRoute: "/body",
-      routes:
-      {
-        '/body': (context) =>  const _bodyPage(),
-        '/authorization': (context) =>  const AuthorizationPage(),
-        '/registration': (context) =>  const Registration(),
-      },
-    );
-  }
-}
-
-
-class _bodyPage extends StatelessWidget{
-  const _bodyPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -87,13 +70,15 @@ class _bodyPage extends StatelessWidget{
                           ButtonWidget(
                             text: "Войти",
                             padding: 0,
-                            func: ()=>Navigator.pushNamed(context,"/authorization"),
+                            func: ()=>Navigator.push(context,
+                                MaterialPageRoute(builder: (_) => const AuthorizationPage()))
                           ),
 
                           ButtonWidget(
                             text: "Регистрация",
                             padding: 0,
-                            func: ()=>Navigator.pushNamed(context,"/registration"),
+                            func: ()=>Navigator.push(context,
+                                MaterialPageRoute(builder: (_) => const Registration()))
                           )
                         ]
                     ),

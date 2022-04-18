@@ -1,14 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:lan_code/back-end/redux/city/city_actions.dart';
 
-class AuthService{
+class AuthService {
   final FirebaseAuth fauth = FirebaseAuth.instance;
 
   Future signIn(String email, String password) async {
-    try{
-      UserCredential result = await fauth.signInWithEmailAndPassword(email: email, password: password);
+    try {
+      UserCredential result =
+          await fauth.signInWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
       return UserMeth.fromFirebase(user);
-    }catch(e){
+    } catch (e) {
       print("Sing Error ============");
       print(e);
       return null;
@@ -16,29 +18,35 @@ class AuthService{
   }
 
   Future register(String email, String password) async {
-    try{
-      UserCredential result = await fauth.createUserWithEmailAndPassword(email: email, password: password);
+    try {
+      UserCredential result = await fauth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
       User? user = result.user;
       return UserMeth.fromFirebase(user);
-    }catch(e){
+    } catch (e) {
       print("Register Error ============");
       print(e);
       return null;
     }
   }
 
-  Future loyaut()async{
+  Future layout() async {
     await fauth.signOut();
   }
 
-  Stream<UserMeth?> get currentUser{
-    return fauth.authStateChanges().map((dynamic user)=> user != null ? UserMeth.fromFirebase(user):null);
+  Stream<UserMeth?> get currentUser {
+    return fauth.authStateChanges().map(
+          (dynamic user) => user != null ? UserMeth.fromFirebase(user) : null,
+        );
   }
 }
 
-class UserMeth{
+class UserMeth {
   String? id;
-  UserMeth.fromFirebase(dynamic user){
-    this.id = user.uid;
+
+  UserMeth.fromFirebase(dynamic user) {
+    id = user.uid;
   }
 }

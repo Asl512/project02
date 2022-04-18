@@ -35,7 +35,7 @@ class CityCardWidget extends StatelessWidget {
           children: [
             ///КАРТИНКА
             ClipRRect(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(10),
               child: Image.network(
                 cityEntiti.photo,
                 fit: BoxFit.cover,
@@ -64,8 +64,8 @@ class CityCardWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.6),
                     borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
+                      bottomLeft: Radius.circular(10),
+                      topRight: Radius.circular(20),
                     ),
                   ),
                 ),

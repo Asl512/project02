@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:lan_code/back-end/domain/entities/user_entity.dart';
 import 'package:lan_code/back-end/redux/app/app_state.dart';
 import 'package:lan_code/back-end/redux/city/city_actions.dart';
 import 'package:lan_code/back-end/redux/city/city_state.dart';
+import 'package:lan_code/back-end/redux/user/user_actions.dart';
+import 'package:lan_code/back-end/redux/user/user_state.dart';
 import 'package:lan_code/ui/common/colors.dart';
 import 'package:lan_code/ui/common/icons.dart';
 import 'package:lan_code/ui/common/textStyle.dart';
@@ -24,8 +25,6 @@ class Navigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final UserMeth? userProvider = Provider.of<UserMeth?>(context);
-
     return Scaffold(
         backgroundColor: Grey,
         body: BodyNavigation(
@@ -36,9 +35,8 @@ class Navigation extends StatelessWidget {
 
 class BodyNavigation extends StatefulWidget {
   final int index;
-  final UserEntity? userEntity;
 
-  const BodyNavigation({this.userEntity, required this.index, Key? key}) : super(key: key);
+  const BodyNavigation({required this.index, Key? key}) : super(key: key);
 
   @override
   _BodyNavigationState createState() => _BodyNavigationState();
@@ -48,72 +46,72 @@ class _BodyNavigationState extends State<BodyNavigation> {
   int? page;
 
   late Store<AppState> _store;
+  late _FloatingActionButton floatingActionButton;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
+    floatingActionButton = _FloatingActionButton();
     _store = StoreProvider.of<AppState>(context);
+    _store.dispatch(AuthThunkAction(context));
     _store.dispatch(GetCityThunkAction());
     page ??= widget.index;
   }
 
   @override
   Widget build(BuildContext context) {
-    //final UserMeth? userProvider = Provider.of<UserMeth?>(context);
-
-    _FloatingActionButton floatingActionButton = _FloatingActionButton(widget.userEntity);
-
     return Scaffold(
-        bottomNavigationBar: BubbleBottomBar(
-            fabLocation: floatingActionButton.fabLocation(),
-            backgroundColor: Blue,
-            hasNotch: true,
-            opacity: .2,
-            currentIndex: page,
-            onTap: (index) => setState(() => page = index!),
-            elevation: 8,
-            tilesPadding: const EdgeInsets.symmetric(
-              vertical: 8.0,
-            ),
-            items: [
-              MenuItem(icon: iconMenuExcursion, text: "Экскурсии").widget,
-              MenuItem(icon: iconMenuTickets, text: "Мои билеты").widget,
-              MenuItem(icon: iconMenuProfile, text: "Профиль").widget,
-            ]),
-        floatingActionButton: floatingActionButton,
-        floatingActionButtonLocation: floatingActionButton.location(),
-        body: page == 0
-            ? const _City()
-            : page == 1
-                ? const MyTicketsPage()
-                : widget.userEntity == null
-                    ? const NotAuthProfilePage()
-                    : PersonalAreaPage(widget.userEntity));
+      bottomNavigationBar: BubbleBottomBar(
+          fabLocation: floatingActionButton.fabLocation(),
+          backgroundColor: Blue,
+          hasNotch: true,
+          opacity: .2,
+          currentIndex: page,
+          onTap: (index) => setState(() => page = index!),
+          elevation: 8,
+          tilesPadding: const EdgeInsets.symmetric(
+            vertical: 8.0,
+          ),
+          items: [
+            MenuItem(icon: iconMenuExcursion, text: "Экскурсии").widget,
+            MenuItem(icon: iconMenuTickets, text: "Мои билеты").widget,
+            MenuItem(icon: iconMenuProfile, text: "Профиль").widget,
+          ]),
+      floatingActionButton: floatingActionButton,
+      floatingActionButtonLocation: floatingActionButton.location(),
+      body: page == 0
+          ? const _City()
+          : page == 1
+              ? const MyTicketsPage()
+              : const _Profile(),
+    );
   }
 }
 
 class _FloatingActionButton extends StatelessWidget {
-  final UserEntity? user;
-  late bool guidePermit;
-
-  _FloatingActionButton(this.user) {
-    guidePermit = (user?.guidePermit) ?? false;
-  }
-
+  late bool guidePermit = false;
   @override
   Widget build(BuildContext context) {
-    if (guidePermit) {
-      return FloatingActionButton(
-        ///нунжо передать данные
-        onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (_) => const AddExcursion(typeExcursion: []))),
-        child: const Icon(Icons.add),
-        backgroundColor: Blue,
-      );
-    } else {
-      return Container();
-    }
+    return StoreConnector<AppState, AuthState>(
+      converter: (store) => store.state.authState,
+      builder: (context, store) {
+        if (store.isLoggedIn) {
+          if(store.user!.guidePermit){
+            guidePermit = true;
+            return FloatingActionButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AddExcursion(typeExcursion: [])),
+              ),
+              child: const Icon(Icons.add),
+              backgroundColor: Blue,
+            );
+          }
+        }
+        guidePermit = false;
+        return Container();
+      },
+    );
   }
 
   FloatingActionButtonLocation? location() {
@@ -165,6 +163,31 @@ class _City extends StatelessWidget {
           );
         }
         return const CityPage();
+      },
+    );
+  }
+}
+
+class _Profile extends StatelessWidget {
+  const _Profile({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final Store<AppState> _store = StoreProvider.of<AppState>(context);
+    return StoreConnector<AppState, AuthState>(
+      converter: (store) => store.state.authState,
+      builder: (context, store) {
+        if (store.isLoading) {
+          return const LoadingWidget();
+        } else if (store.isError) {
+          return PageReloadWidget(
+            errorText: 'Ошибка загрузки профиля',
+            func: _store.dispatch(AuthThunkAction(context)),
+          );
+        } else if (store.isLoggedIn) {
+          return PersonalAreaPage(store.user);
+        }
+        return const NotAuthProfilePage();
       },
     );
   }
