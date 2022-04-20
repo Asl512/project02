@@ -20,12 +20,12 @@ class TextFieldWithShadow extends StatelessWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Material(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(10),
             elevation: 7.0,
             shadowColor: Colors.black,
             child: Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(10),
                   border: error![0] ? Border.all(color: Red) : Border.all(color: White)
               ),
               child: textField,
@@ -63,7 +63,7 @@ class TextFieldDecoration{
        suffixIcon: suffixIcon,
        //СТИЛЬ
        border: OutlineInputBorder(
-           borderRadius: BorderRadius.circular(20),
+           borderRadius: BorderRadius.circular(10),
            borderSide: const BorderSide(
                width: 0,
                style: BorderStyle.none

@@ -4,7 +4,7 @@ import 'package:lan_code/back-end/domain/entities/excursion_entity.dart';
 import 'package:lan_code/back-end/domain/entities/type_entity.dart';
 import 'package:lan_code/back-end/domain/entities/user_entity.dart';
 import 'package:lan_code/back-end/redux/app/app_state.dart';
-import 'package:lan_code/back-end/redux/excursion/excursion_actions.dart';
+import 'package:lan_code/back-end/redux/excursion/excursions_actions.dart';
 import 'package:lan_code/ui/common/colors.dart';
 import 'package:lan_code/ui/common/icons.dart';
 import 'package:lan_code/ui/common/images.dart';
@@ -52,7 +52,7 @@ class ExcursionCardWidget extends StatelessWidget {
                 Stack(
                   alignment: AlignmentDirectional.bottomStart,
                   children: [
-                    _Image(photo: excursionEntity.photo),
+                    ImageExcursionHeader(photo: excursionEntity.photo),
                     Container(
                       height: 50,
 
@@ -64,7 +64,7 @@ class ExcursionCardWidget extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.6),
                         borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(30),
+                          topRight: Radius.circular(20),
                         ),
                       ),
                     ),
@@ -124,8 +124,8 @@ class ExcursionCardWidget extends StatelessWidget {
                 color: White,
                 boxShadow: [ShadowForContainer()],
                 borderRadius: const BorderRadius.only(
-                  bottomRight: Radius.circular(20),
-                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
                 ),
               ),
               child: Row(
@@ -186,10 +186,10 @@ class ExcursionCardWidget extends StatelessWidget {
   }
 }
 
-class _Image extends StatelessWidget {
+class ImageExcursionHeader extends StatelessWidget {
   final String photo;
 
-  const _Image({Key? key, required this.photo}) : super(key: key);
+  const ImageExcursionHeader({Key? key, required this.photo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +197,7 @@ class _Image extends StatelessWidget {
 
         ///КАРТИНКА
         ClipRRect(
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
       child: Image.network(
         photo,
         fit: BoxFit.cover,

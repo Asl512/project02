@@ -1,4 +1,4 @@
-import 'package:lan_code/back-end/redux/excursion/excursion_actions.dart';
+import 'package:lan_code/back-end/redux/excursion/excursions_actions.dart';
 import 'package:lan_code/back-end/redux/excursion/excursion_state.dart';
 import 'package:redux/redux.dart';
 
@@ -14,7 +14,7 @@ Reducer<ExcursionInfoState> excursionInfoReducer = combineReducers([
   TypedReducer<ExcursionInfoState, GetExcursionInfoAction>(_getExcursionInfo),
 ]);
 
-//List cities
+//List excursions
 
 ListExcursionsState _loadListExcursions(
   ListExcursionsState state,
@@ -46,37 +46,47 @@ ListExcursionsState _getListExcursions(
       isError: false,
     );
 
-///
+//Excursion Info
 
 ExcursionInfoState _loadExcursionInfo(
-    ExcursionInfoState state,
-    LoadExcursionInfoAction action,
-    ) =>
+  ExcursionInfoState state,
+  LoadExcursionInfoAction action,
+) =>
     state.copyWith(
       excursion: action.excursion,
       user: action.user,
       type: action.type,
+      reviews: null,
+      userReview: null,
+      photos: null,
       isLoading: true,
       isError: false,
+      tags: [],
+      typesMove: [],
     );
 
 ExcursionInfoState _errorExcursionInfo(
-    ExcursionInfoState state,
-    ErrorExcursionInfoAction action,
-    ) =>
+  ExcursionInfoState state,
+  ErrorExcursionInfoAction action,
+) =>
     state.copyWith(
       isLoading: false,
       isError: true,
     );
 
 ExcursionInfoState _getExcursionInfo(
-    ExcursionInfoState state,
-    GetExcursionInfoAction action,
-    ) =>
+  ExcursionInfoState state,
+  GetExcursionInfoAction action,
+) =>
     state.copyWith(
       excursion: action.excursion,
       user: action.user,
       type: action.type,
+      tags: action.tags,
+      photos: action.photos,
+      userReview: action.usersReview,
+      reviews: action.reviews,
+      typesMove: action.typesMove,
       isLoading: false,
       isError: false,
     );

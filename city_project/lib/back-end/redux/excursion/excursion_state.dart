@@ -1,6 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lan_code/back-end/domain/entities/excursion_entity.dart';
+import 'package:lan_code/back-end/domain/entities/photos_excursion_entity.dart';
+import 'package:lan_code/back-end/domain/entities/review_entity.dart';
+import 'package:lan_code/back-end/domain/entities/tag_entity.dart';
 import 'package:lan_code/back-end/domain/entities/type_entity.dart';
+import 'package:lan_code/back-end/domain/entities/type_move_entity.dart';
 import 'package:lan_code/back-end/domain/entities/user_entity.dart';
 
 part 'excursion_state.freezed.dart';
@@ -22,6 +26,11 @@ class ExcursionInfoState with _$ExcursionInfoState {
     ExcursionEntity? excursion,
     UserEntity? user,
     TypeEntity? type,
+    PhotosExcursionEntity? photos,
+    List<ReviewsEntity>? reviews,
+    List<UserEntity>? userReview,
+    @Default([]) List<TagEntity> tags,
+    @Default([]) List<TypeMoveEntity> typesMove,
     @Default(false) bool isError,
     @Default(false) bool isLoading,
   }) = _ExcursionInfoState;

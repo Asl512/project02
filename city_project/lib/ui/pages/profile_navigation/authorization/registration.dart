@@ -53,132 +53,137 @@ class _RegistrationState extends State<Registration> {
                 title: Text("Регистрация",style: Montserrat(size: 25,style: Bold)),
               ),
 
-              body: SizedBox(
-                height: sizePage.height,
-                child:Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                        Container(
-                            margin: const EdgeInsets.only(top: 50),
-                            padding: EdgeInsets.symmetric(horizontal: sizePage.width / 15),
-                            child: Column(
-                                children: [
+              body: ListView(
+                shrinkWrap: true,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                            Container(
+                                margin: const EdgeInsets.only(top: 50),
+                                padding: EdgeInsets.symmetric(horizontal: sizePage.width / 15),
+                                child: Column(
+                                    children: [
 
-                                  ///NAME
-                                  Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const TitleTextFormField(text: "Имя Фамилия:"),
-                                        TextFieldWithShadow(
-                                          TextFormField(
-                                              style: Montserrat(size: 15),
-                                              initialValue: name,
-                                              onChanged: (String value) {
-                                                setState(() {
-                                                  name = value;
-                                                  errorName[0] = false;
-                                                });
-                                              },
-                                              decoration: TextFieldDecoration(
-                                                  hintText: "Введите ваше имя и фамилию",
-                                                  prefixIcon: PrefixIconTextField(color: const Color(0xFFffaf5a),icon: iconMenuProfile)
-                                              ).inputDecoration
-                                          ),
-                                          errorText: true,
-                                          error: errorName,
-                                        )
-                                      ]
-                                  ),
+                                      ///NAME
+                                      Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            const TitleTextFormField(text: "Имя Фамилия:"),
+                                            TextFieldWithShadow(
+                                              TextFormField(
+                                                  style: Montserrat(size: 15),
+                                                  initialValue: name,
+                                                  onChanged: (String value) {
+                                                    setState(() {
+                                                      name = value;
+                                                      errorName[0] = false;
+                                                    });
+                                                  },
+                                                  decoration: TextFieldDecoration(
+                                                      hintText: "Введите ваше имя и фамилию",
+                                                      prefixIcon: PrefixIconTextField(color: const Color(0xFFffaf5a),icon: iconMenuProfile)
+                                                  ).inputDecoration
+                                              ),
+                                              errorText: true,
+                                              error: errorName,
+                                            )
+                                          ]
+                                      ),
 
-                                  ///EMAIL
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(vertical: 25),
-                                    child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          const TitleTextFormField(text: "Почта:"),
-                                          TextFieldWithShadow(
-                                            TextFormField(
-                                                style: Montserrat(size: 15),
-                                                initialValue: email,
-                                                onChanged: (String value) {
-                                                  setState(() {
-                                                    email = value;
-                                                    errorEmail[0] = false;
-                                                  });
-                                                },
-                                                decoration: TextFieldDecoration(
-                                                    hintText: "Введите вашу почту",
-                                                    prefixIcon: PrefixIconTextField(color: const Color(0xFF546eff), icon: iconEmail)
-                                                ).inputDecoration
-                                            ),
-                                            errorText: true,
-                                            error: errorEmail,
-                                          )
-                                        ]
-                                    ),
-                                  ),
-
-                                  ///PASSWORD
-                                  Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const TitleTextFormField(text: "Пароль:"),
-                                        TextFieldWithShadow(
-                                          TextFormField(
-                                              initialValue: password,
-                                              style: Montserrat(size: 15),
-                                              obscureText: passwordVisible,
-                                              onChanged: (String value) {
-                                                setState(() {
-                                                  password = value;
-                                                  errorPassword[0] = false;
-                                                });
-                                              },
-                                              decoration: InputDecoration(
-                                                  prefixIcon: PrefixIconTextField(color: const Color(0xFF00f069), icon: iconPassword),
-                                                  suffixIcon: Container(
-                                                      margin: const EdgeInsets.only(right: 10),
-                                                      child: IconButton(
-                                                          icon: passwordVisible == true ? iconShow : iconHide,
-                                                          onPressed: () {
-                                                            setState(() {
-                                                              passwordVisible = !passwordVisible;
-                                                            });
-                                                          }
-                                                      )
-                                                  ),
-
-                                                  hintStyle: Montserrat(color: Colors.black26, size: 15),
-                                                  hintText: "Придумайте пароль",
-
-                                                  border: OutlineInputBorder(
-                                                      borderRadius: BorderRadius.circular(20),
-                                                      borderSide: const BorderSide(width: 0, style: BorderStyle.none)
-                                                  ),
-                                                  fillColor: White,
-                                                  isDense: true,
-                                                  filled: true
+                                      ///EMAIL
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(vertical: 25),
+                                        child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              const TitleTextFormField(text: "Почта:"),
+                                              TextFieldWithShadow(
+                                                TextFormField(
+                                                    style: Montserrat(size: 15),
+                                                    initialValue: email,
+                                                    onChanged: (String value) {
+                                                      setState(() {
+                                                        email = value;
+                                                        errorEmail[0] = false;
+                                                      });
+                                                    },
+                                                    decoration: TextFieldDecoration(
+                                                        hintText: "Введите вашу почту",
+                                                        prefixIcon: PrefixIconTextField(color: const Color(0xFF546eff), icon: iconEmail)
+                                                    ).inputDecoration
+                                                ),
+                                                errorText: true,
+                                                error: errorEmail,
                                               )
-                                          ),
-                                          errorText: true,
-                                          error: errorPassword,
-                                        )
-                                      ]
-                                  )
-                                ]
-                            )
-                        ),
-                        ///КНОПКА ЗАРЕГЕСТРИРОВАТЬСЯ
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 50),
-                          child: ButtonWidget(
-                            text: "Зарегестрироваться",
-                            func: ()=>Validation(),
-                          ),
-                        ),
-                      ]
+                                            ]
+                                        ),
+                                      ),
+
+                                      ///PASSWORD
+                                      Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            const TitleTextFormField(text: "Пароль:"),
+                                            TextFieldWithShadow(
+                                              TextFormField(
+                                                  initialValue: password,
+                                                  style: Montserrat(size: 15),
+                                                  obscureText: passwordVisible,
+                                                  onChanged: (String value) {
+                                                    setState(() {
+                                                      password = value;
+                                                      errorPassword[0] = false;
+                                                    });
+                                                  },
+                                                  decoration: InputDecoration(
+                                                      prefixIcon: PrefixIconTextField(color: const Color(0xFF00f069), icon: iconPassword),
+                                                      suffixIcon: Container(
+                                                          margin: const EdgeInsets.only(right: 10),
+                                                          child: IconButton(
+                                                              icon: passwordVisible == true ? iconShow : iconHide,
+                                                              onPressed: () {
+                                                                setState(() {
+                                                                  passwordVisible = !passwordVisible;
+                                                                });
+                                                              }
+                                                          )
+                                                      ),
+
+                                                      hintStyle: Montserrat(color: Colors.black26, size: 15),
+                                                      hintText: "Придумайте пароль",
+
+                                                      border: OutlineInputBorder(
+                                                          borderRadius: BorderRadius.circular(20),
+                                                          borderSide: const BorderSide(width: 0, style: BorderStyle.none)
+                                                      ),
+                                                      fillColor: White,
+                                                      isDense: true,
+                                                      filled: true
+                                                  )
+                                              ),
+                                              errorText: true,
+                                              error: errorPassword,
+                                            )
+                                          ]
+                                      )
+                                    ]
+                                )
+                            ),
+                            ///КНОПКА ЗАРЕГЕСТРИРОВАТЬСЯ
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 50),
+                              child: ButtonWidget(
+                                text: "Зарегестрироваться",
+                                func: ()=>Validation(),
+                              ),
+                            ),
+                          ]
+                      ),
                   ),
+                ],
               )
           ),
 
@@ -244,7 +249,11 @@ class _RegistrationState extends State<Registration> {
             "photo": 'null',
             "guidePermit":false
           });
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> const Navigation(index: 3)), (route) => false);
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (_) => const Navigation(index: 2)),
+                (route) => false,
+          );
         }
         setState(() {isLoading = false;});
       }
