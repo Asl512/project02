@@ -4,19 +4,32 @@ import 'package:lan_code/back-end/domain/entities/review_entity.dart';
 class ReviewsModel extends ReviewsEntity {
   const ReviewsModel({
     required id,
-    required reviews,
-    required users,
+    required review,
+    required user,
+    required date,
   }) : super(
           id: id,
-          reviews: reviews,
-          users: users,
+          review: review,
+          user: user,
+          date: date,
         );
 
   factory ReviewsModel.fromDocument(DocumentSnapshot snapshot) {
+    String month = '';
+    if (snapshot["date"].toDate().month.toString().length == 1) {
+      month = '0' + snapshot["date"].toDate().month.toString();
+    } else {
+      month = snapshot["date"].toDate().month.toString();
+    }
     return ReviewsModel(
       id: snapshot.id,
-      reviews: snapshot["reviews"].map((review)=>review['review']).toList(),
-      users: snapshot["reviews"].map((review)=>review['user']).toList(),
+      review: snapshot["review"],
+      user: snapshot["idUser"],
+      date: snapshot["date"].toDate().day.toString() +
+          '.' +
+          month +
+          '.' +
+          snapshot["date"].toDate().year.toString(),
     );
   }
 }

@@ -11,7 +11,7 @@ class TagDataRepository extends TagRepository {
   }
 
   @override
-  Future<List<TagEntity>?> getListTag({required List<dynamic> indexes}) async {
+  Future<List<TagEntity>?> getListTag({required List<String> indexes}) async {
     return await _getListTag(() {
       return TagRemoteDataSourceImpl().getListTag(indexes);
     });

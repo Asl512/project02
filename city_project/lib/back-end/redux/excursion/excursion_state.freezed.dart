@@ -257,7 +257,8 @@ class _$ExcursionInfoStateTearOff {
       UserEntity? user,
       TypeEntity? type,
       PhotosExcursionEntity? photos,
-      List<List>? reviews,
+      List<ReviewsEntity>? reviews,
+      List<UserEntity>? userReview,
       List<TagEntity> tags = const [],
       List<TypeMoveEntity> typesMove = const [],
       bool isError = false,
@@ -268,6 +269,7 @@ class _$ExcursionInfoStateTearOff {
       type: type,
       photos: photos,
       reviews: reviews,
+      userReview: userReview,
       tags: tags,
       typesMove: typesMove,
       isError: isError,
@@ -285,7 +287,8 @@ mixin _$ExcursionInfoState {
   UserEntity? get user => throw _privateConstructorUsedError;
   TypeEntity? get type => throw _privateConstructorUsedError;
   PhotosExcursionEntity? get photos => throw _privateConstructorUsedError;
-  List<List>? get reviews => throw _privateConstructorUsedError;
+  List<ReviewsEntity>? get reviews => throw _privateConstructorUsedError;
+  List<UserEntity>? get userReview => throw _privateConstructorUsedError;
   List<TagEntity> get tags => throw _privateConstructorUsedError;
   List<TypeMoveEntity> get typesMove => throw _privateConstructorUsedError;
   bool get isError => throw _privateConstructorUsedError;
@@ -306,7 +309,8 @@ abstract class $ExcursionInfoStateCopyWith<$Res> {
       UserEntity? user,
       TypeEntity? type,
       PhotosExcursionEntity? photos,
-      List<List>? reviews,
+      List<ReviewsEntity>? reviews,
+      List<UserEntity>? userReview,
       List<TagEntity> tags,
       List<TypeMoveEntity> typesMove,
       bool isError,
@@ -329,6 +333,7 @@ class _$ExcursionInfoStateCopyWithImpl<$Res>
     Object? type = freezed,
     Object? photos = freezed,
     Object? reviews = freezed,
+    Object? userReview = freezed,
     Object? tags = freezed,
     Object? typesMove = freezed,
     Object? isError = freezed,
@@ -354,7 +359,11 @@ class _$ExcursionInfoStateCopyWithImpl<$Res>
       reviews: reviews == freezed
           ? _value.reviews
           : reviews // ignore: cast_nullable_to_non_nullable
-              as List<List>?,
+              as List<ReviewsEntity>?,
+      userReview: userReview == freezed
+          ? _value.userReview
+          : userReview // ignore: cast_nullable_to_non_nullable
+              as List<UserEntity>?,
       tags: tags == freezed
           ? _value.tags
           : tags // ignore: cast_nullable_to_non_nullable
@@ -387,7 +396,8 @@ abstract class _$ExcursionInfoStateCopyWith<$Res>
       UserEntity? user,
       TypeEntity? type,
       PhotosExcursionEntity? photos,
-      List<List>? reviews,
+      List<ReviewsEntity>? reviews,
+      List<UserEntity>? userReview,
       List<TagEntity> tags,
       List<TypeMoveEntity> typesMove,
       bool isError,
@@ -412,6 +422,7 @@ class __$ExcursionInfoStateCopyWithImpl<$Res>
     Object? type = freezed,
     Object? photos = freezed,
     Object? reviews = freezed,
+    Object? userReview = freezed,
     Object? tags = freezed,
     Object? typesMove = freezed,
     Object? isError = freezed,
@@ -437,7 +448,11 @@ class __$ExcursionInfoStateCopyWithImpl<$Res>
       reviews: reviews == freezed
           ? _value.reviews
           : reviews // ignore: cast_nullable_to_non_nullable
-              as List<List>?,
+              as List<ReviewsEntity>?,
+      userReview: userReview == freezed
+          ? _value.userReview
+          : userReview // ignore: cast_nullable_to_non_nullable
+              as List<UserEntity>?,
       tags: tags == freezed
           ? _value.tags
           : tags // ignore: cast_nullable_to_non_nullable
@@ -467,6 +482,7 @@ class _$_ExcursionInfoState implements _ExcursionInfoState {
       this.type,
       this.photos,
       this.reviews,
+      this.userReview,
       this.tags = const [],
       this.typesMove = const [],
       this.isError = false,
@@ -481,7 +497,9 @@ class _$_ExcursionInfoState implements _ExcursionInfoState {
   @override
   final PhotosExcursionEntity? photos;
   @override
-  final List<List>? reviews;
+  final List<ReviewsEntity>? reviews;
+  @override
+  final List<UserEntity>? userReview;
   @JsonKey()
   @override
   final List<TagEntity> tags;
@@ -497,7 +515,7 @@ class _$_ExcursionInfoState implements _ExcursionInfoState {
 
   @override
   String toString() {
-    return 'ExcursionInfoState(excursion: $excursion, user: $user, type: $type, photos: $photos, reviews: $reviews, tags: $tags, typesMove: $typesMove, isError: $isError, isLoading: $isLoading)';
+    return 'ExcursionInfoState(excursion: $excursion, user: $user, type: $type, photos: $photos, reviews: $reviews, userReview: $userReview, tags: $tags, typesMove: $typesMove, isError: $isError, isLoading: $isLoading)';
   }
 
   @override
@@ -510,6 +528,8 @@ class _$_ExcursionInfoState implements _ExcursionInfoState {
             const DeepCollectionEquality().equals(other.type, type) &&
             const DeepCollectionEquality().equals(other.photos, photos) &&
             const DeepCollectionEquality().equals(other.reviews, reviews) &&
+            const DeepCollectionEquality()
+                .equals(other.userReview, userReview) &&
             const DeepCollectionEquality().equals(other.tags, tags) &&
             const DeepCollectionEquality().equals(other.typesMove, typesMove) &&
             const DeepCollectionEquality().equals(other.isError, isError) &&
@@ -524,6 +544,7 @@ class _$_ExcursionInfoState implements _ExcursionInfoState {
       const DeepCollectionEquality().hash(type),
       const DeepCollectionEquality().hash(photos),
       const DeepCollectionEquality().hash(reviews),
+      const DeepCollectionEquality().hash(userReview),
       const DeepCollectionEquality().hash(tags),
       const DeepCollectionEquality().hash(typesMove),
       const DeepCollectionEquality().hash(isError),
@@ -541,7 +562,8 @@ abstract class _ExcursionInfoState implements ExcursionInfoState {
       UserEntity? user,
       TypeEntity? type,
       PhotosExcursionEntity? photos,
-      List<List>? reviews,
+      List<ReviewsEntity>? reviews,
+      List<UserEntity>? userReview,
       List<TagEntity> tags,
       List<TypeMoveEntity> typesMove,
       bool isError,
@@ -556,7 +578,9 @@ abstract class _ExcursionInfoState implements ExcursionInfoState {
   @override
   PhotosExcursionEntity? get photos;
   @override
-  List<List>? get reviews;
+  List<ReviewsEntity>? get reviews;
+  @override
+  List<UserEntity>? get userReview;
   @override
   List<TagEntity> get tags;
   @override

@@ -35,7 +35,7 @@ class BookingPage extends StatelessWidget {
             onPressed: () => Navigator.pop(context)),
         title: Text("Бронирование", style: Montserrat(size: 25, style: Bold)),
       ),
-      body: _Body(),
+      body: const _Body(),
     );
   }
 }

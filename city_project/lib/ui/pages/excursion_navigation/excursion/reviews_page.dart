@@ -1,32 +1,17 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:lan_code/back-end/domain/entities/review_entity.dart';
 import 'package:lan_code/back-end/domain/entities/user_entity.dart';
 import 'package:lan_code/back-end/redux/app/app_state.dart';
 import 'package:lan_code/ui/common/colors.dart';
-import 'package:lan_code/ui/common/images.dart';
 import 'package:lan_code/ui/common/textStyle.dart';
-import 'package:lan_code/ui/widgets/backButtons.dart';
 import 'package:lan_code/ui/widgets/image_box_widget.dart';
 import 'package:lan_code/ui/widgets/style.dart';
 import 'package:redux/redux.dart';
 
-class ReviewPage extends StatefulWidget {
-  const ReviewPage(
-    this.reviews, {
-    Key? key,
-  }) : super(key: key);
-  final List? reviews;
-
-  @override
-  State<ReviewPage> createState() => _ReviewPageState();
-}
-
-class _ReviewPageState extends State<ReviewPage> {
-  List users = [];
-  bool isLoading = false;
-  List<Widget> reviews = [];
+class ReviewPage extends StatelessWidget {
+  const ReviewPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +90,7 @@ class _Header extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 15),
                     alignment: Alignment.center,
                     child: Text(
-                      0.toString() + " отзывов",
+                      _store.state.excursionInfoState.reviews!.length.toString() + " отзывов",
                       style: Montserrat(size: 15, style: SemiBold, color: White),
                     ),
                   ),
@@ -119,26 +104,18 @@ class _Header extends StatelessWidget {
   }
 }
 
-class _Body extends StatefulWidget {
+class _Body extends StatelessWidget {
   const _Body({Key? key}) : super(key: key);
 
   @override
-  State<_Body> createState() => _BodyState();
-}
-
-class _BodyState extends State<_Body> {
-  late List<Widget> reviewW;
-
-  @override
   Widget build(BuildContext context) {
-    Store<AppState> _store = StoreProvider.of<AppState>(context);
-
+    final Store<AppState> _store = StoreProvider.of<AppState>(context);
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Column(
         children: [
           Container(
-            margin: EdgeInsets.symmetric(vertical: 10),
+            margin: const EdgeInsets.symmetric(vertical: 10),
             alignment: Alignment.center,
             child: RichText(
               textAlign: TextAlign.center,
@@ -170,16 +147,29 @@ class _BodyState extends State<_Body> {
             decoration: BoxDecoration(
                 boxShadow: [ShadowForContainer()],
                 color: White,
-                borderRadius: BorderRadius.all(Radius.circular(10))),
+                borderRadius: const BorderRadius.all(Radius.circular(10))),
             child: Column(
               children: [
-                Container(
-                  width: double.infinity / 2,
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.symmetric(vertical: 50, horizontal: 30),
-                  child: Text('У данного мероприятия пока что нет отзывов.',
-                      style: Montserrat(color: Blue, size: 15, style: SemiBold)),
-                )
+                if (_store.state.excursionInfoState.reviews!.isEmpty)
+                  Container(
+                    width: double.infinity / 2,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
+                    child: Text('У данного мероприятия пока что нет отзывов.',
+                        style: Montserrat(color: Blue, size: 15, style: SemiBold)),
+                  )
+                else
+                  for (int i = 0; i < _store.state.excursionInfoState.reviews!.length; i++)
+                    Column(
+                      children: [
+                        Review(
+                          user: _store.state.excursionInfoState.userReview![i],
+                          review: _store.state.excursionInfoState.reviews![i],
+                        ),
+                        if (i % 2 == 0)
+                          Container(width: double.infinity, height: 1, color: Blue.withOpacity(0.5))
+                      ],
+                    ),
               ],
             ),
           )
@@ -190,40 +180,57 @@ class _BodyState extends State<_Body> {
 }
 
 class Review extends StatelessWidget {
-  UserEntity user;
-  String review;
+  final UserEntity user;
+  final ReviewsEntity review;
 
-  Review(this.user, this.review) {}
+  const Review({
+    Key? key,
+    required this.user,
+    required this.review,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Stack(children: [PhotoAuthor(this.user.photo), GuideCheck(this.user.verified)]),
-                    Container(
-                      margin: EdgeInsets.only(left: 15),
-                      child: Text(
-                        this.user.name,
-                        style: Montserrat(style: SemiBold, color: Blue, size: 15),
-                      ),
-                    )
-                  ],
-                ),
-                Text('18.04.2022',
-                    style: Montserrat(style: SemiBold, color: Blue.withOpacity(0.7), size: 15))
-              ],
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Stack(
+                    children: [
+                      PhotoAuthor(user.photo),
+                      GuideCheck(user.verified),
+                    ],
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 15),
+                    child: Text(
+                      user.name,
+                      style: Montserrat(style: SemiBold, color: Blue, size: 15),
+                    ),
+                  )
+                ],
+              ),
+              Text(
+                review.date,
+                style: Montserrat(style: Bold, color: Blue.withOpacity(0.7), size: 15),
+              ),
+            ],
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 10),
+            child: Text(
+              review.review,
+              style: Montserrat(color: Blue, size: 13),
             ),
-            Container(
-                margin: EdgeInsets.only(top: 10),
-                child: Text(this.review, style: Montserrat(color: Blue, size: 13)))
-          ],
-        ));
+          )
+        ],
+      ),
+    );
   }
 }

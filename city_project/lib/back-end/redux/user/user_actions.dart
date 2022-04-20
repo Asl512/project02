@@ -1,6 +1,7 @@
 import 'package:lan_code/back-end/data/repositories/user_data_repository.dart';
 import 'package:lan_code/back-end/domain/entities/user_entity.dart';
 import 'package:lan_code/back-end/domain/useCases/user_useCase.dart';
+import 'package:lan_code/back-end/redux/add_excursion/add_excursion_actions.dart';
 import 'package:lan_code/service.dart';
 import 'package:provider/provider.dart';
 import 'package:redux/redux.dart';
@@ -34,6 +35,7 @@ ThunkAction AuthThunkAction(context) => (Store store) async {
         if (user == null) {
           store.dispatch(ErrorAuthAction());
         } else {
+          store.dispatch(AddExcursionThunkAction());
           store.dispatch(GetAuthAction(
             token: user.id,
             user: user,

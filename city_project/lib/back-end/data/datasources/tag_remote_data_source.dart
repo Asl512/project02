@@ -23,18 +23,11 @@ class TagRemoteDataSourceImpl implements TagRemoteDataSource {
   }
 
   @override
-  Future<List<TagModel>?> getListTag(List<dynamic> indexes) async {
+  Future<List<TagModel>?> getListTag(List<String> indexes) async {
     List response = [];
-    await FirebaseFirestore.instance
-        .collection('typeExcursion')
-        .where('id', whereIn: (indexes as List<String>))
-        .get()
-        .then(
+    await FirebaseFirestore.instance.collection('tags').where('id', whereIn: indexes).get().then(
           (snapshot) => {response = snapshot.docs},
         );
-
-    print(response.length);
-    print('===========================');
 
     try {
       return response.map((tag) => TagModel.fromDocument(tag)).toList();

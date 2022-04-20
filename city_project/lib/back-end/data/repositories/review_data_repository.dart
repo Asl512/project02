@@ -5,7 +5,7 @@ import 'package:lan_code/back-end/domain/repositories/review_repositorie.dart';
 class ReviewDataRepository extends ReviewRepository {
 
   @override
-  Future<ReviewsEntity?> getReview({required String idExcursion}) async {
+  Future<List<ReviewsEntity>?> getReview({required String idExcursion}) async {
     final remote = await ReviewsRemoteDataSourceImpl().getReviews(idExcursion);
     return remote;
   }

@@ -8,7 +8,6 @@ import 'package:lan_code/ui/pages/excursion_navigation/widgets/photo_user_widget
 import 'package:lan_code/ui/pages/excursion_navigation/widgets/verified_user_widget.dart';
 import 'package:lan_code/ui/widgets/style.dart';
 import 'package:redux/redux.dart';
-import 'package:lan_code/ui/widgets/image_box_widget.dart';
 
 class MyTicketsPage extends StatefulWidget {
   const MyTicketsPage({Key? key}) : super(key: key);
@@ -62,10 +61,37 @@ class _MyTicketsPageState extends State<MyTicketsPage> with TickerProviderStateM
           backgroundColor: Grey,
           body: TabBarView(
             controller: _tabController,
-            children: const [
-              _MyTicketsCard(),
-              _MyTicketsCard(),
-              _MyTicketsCard(),
+            children:  [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: Text(
+                    'У вас нет активных экскурсий.',
+                    style: Montserrat(size: 15),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: Text(
+                    'Добавляйте экскурсии в избранные, чтобы посмотреть их позже.',
+                    style: Montserrat(size: 15),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: Text(
+                    'У вас нет отмененных экскурсий.',
+                    style: Montserrat(size: 15),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -97,7 +123,7 @@ class _MyTicketsCard extends StatelessWidget {
                 Stack(
                   alignment: AlignmentDirectional.bottomStart,
                   children: [
-                    ImageExcursionHeader(photo: "null"),
+                    const ImageExcursionHeader(photo: "null"),
                     Container(
                       height: 50,
 
@@ -214,7 +240,6 @@ class _Header extends StatelessWidget {
   const _Header({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final Store<AppState> _store = StoreProvider.of<AppState>(context);
     return SliverAppBar(
       backgroundColor: Grey,
       bottom: PreferredSize(
@@ -252,7 +277,7 @@ class _Header extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      ((_store.state.cityState.city?.name) ?? 'Error City Name').toUpperCase(),
+                      "МОИ БИЛЕТЫ",
                       style: Montserrat(color: Blue, size: 25, style: Bold),
                     ),
                   ),

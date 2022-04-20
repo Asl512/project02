@@ -4,24 +4,23 @@ import 'package:lan_code/back-end/data/models/tag_model.dart';
 import 'package:lan_code/back-end/domain/entities/review_entity.dart';
 
 abstract class ReviewsRemoteDataSource {
-  Future<ReviewsModel?> getReviews(String idExcursion);
+  Future<List<ReviewsModel>?> getReviews(String idExcursion);
 }
 
 class ReviewsRemoteDataSourceImpl implements ReviewsRemoteDataSource {
   @override
-  Future<ReviewsModel?> getReviews(String idExcursion) async {
-    late DocumentSnapshot response;
+  Future<List<ReviewsModel>?> getReviews(String idExcursion) async {
+    late List response;
     await FirebaseFirestore.instance
-        .collection('review')
+        .collection('reviews')
         .where('idExcursion', isEqualTo: idExcursion)
-        .limit(1)
         .get()
         .then(
-          (snapshot) => {response = snapshot.docs.first},
+          (snapshot) => {response = snapshot.docs},
         );
 
     try {
-      return ReviewsModel.fromDocument(response);
+      return response.map((review) => ReviewsModel.fromDocument(review)).toList();
     } catch (e) {
       return null;
     }

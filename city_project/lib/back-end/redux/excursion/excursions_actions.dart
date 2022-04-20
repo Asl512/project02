@@ -1,21 +1,22 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lan_code/back-end/data/repositories/excursion_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/photos_excursion_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/review_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/tag_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/type_data_repository.dart';
+import 'package:lan_code/back-end/data/repositories/type_move_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/user_data_repository.dart';
 import 'package:lan_code/back-end/domain/entities/excursion_entity.dart';
 import 'package:lan_code/back-end/domain/entities/photos_excursion_entity.dart';
 import 'package:lan_code/back-end/domain/entities/review_entity.dart';
 import 'package:lan_code/back-end/domain/entities/tag_entity.dart';
 import 'package:lan_code/back-end/domain/entities/type_entity.dart';
+import 'package:lan_code/back-end/domain/entities/type_move_entity.dart';
 import 'package:lan_code/back-end/domain/entities/user_entity.dart';
-import 'package:lan_code/back-end/domain/repositories/photos_excursion_repositorie.dart';
 import 'package:lan_code/back-end/domain/useCases/excursion_useCase.dart';
 import 'package:lan_code/back-end/domain/useCases/photos_excursion_useCase.dart';
 import 'package:lan_code/back-end/domain/useCases/review_useCase.dart';
 import 'package:lan_code/back-end/domain/useCases/tag_useCase.dart';
+import 'package:lan_code/back-end/domain/useCases/type_move_useCase.dart';
 import 'package:lan_code/back-end/domain/useCases/type_useCase.dart';
 import 'package:lan_code/back-end/domain/useCases/user_useCase.dart';
 import 'package:redux/redux.dart';
@@ -120,14 +121,20 @@ class GetExcursionInfoAction extends ExcursionInfoAction {
   final UserEntity user;
   final TypeEntity type;
   final PhotosExcursionEntity? photos;
-  final List<List>? reviews;
+  final List<ReviewsEntity>? reviews;
+  final List<UserEntity>? usersReview;
+  final List<TagEntity> tags;
+  final List<TypeMoveEntity> typesMove;
 
   GetExcursionInfoAction({
     required this.excursion,
     required this.user,
     required this.type,
     required this.photos,
-    this.reviews,
+    required this.typesMove,
+    required this.usersReview,
+    required this.reviews,
+    required this.tags,
   });
 }
 
@@ -146,36 +153,37 @@ ThunkAction GetExcursionInfoThunkAction({
       PhotosExcursionEntity? responsePhotoExcursion =
           await GetPhotosExcursion(PhotosExcursionDataRepository()).call(idExcursion: excursion.id);
 
-      ReviewsEntity? responseReviews =
+      List<ReviewsEntity>? responseReviews =
           await GetReviews(ReviewDataRepository()).call(idExcursion: excursion.id);
+
+      List<UserEntity> sortUsers = [];
+      if(responseReviews != null && responseReviews.isNotEmpty){
+        List<String> userId = responseReviews.map((review) => review.user).toList();
+        List<UserEntity>? users = await GetListUsers(UserDataRepository()).call(userId);
+        if (users != null) {
+          for (var id in userId) {
+            for (var user in users) {
+              if (user.id == id) sortUsers.add(user);
+            }
+          }
+        }
+      }
+
+      List<String> tagsId = excursion.tags.map((e) => e as String).toList();
+      List<TagEntity>? responseTags = await GetListTag(TagDataRepository()).call(indexes: tagsId);
+
+      List<String> typesMoveId = excursion.moveType.map((e) => e as String).toList();
+      List<TypeMoveEntity>? responseTypeMove =
+      await GetListTypeMove(TypeMoveDataRepository()).call(indexes: typesMoveId);
 
       store.dispatch(GetExcursionInfoAction(
         excursion: excursion,
         user: user,
         type: type,
         photos: responsePhotoExcursion,
+        usersReview: sortUsers,
+        reviews: responseReviews ?? [],
+        tags: responseTags ?? [],
+        typesMove: responseTypeMove ?? [],
       ));
-
-      if (responseReviews != null) {
-        List<String> userId = responseReviews.users.map((us) => us.toString()).toList();
-        List<UserEntity>? users = await GetListUsers(UserDataRepository()).call(userId);
-        List<UserEntity> sortUsers = [];
-        if (users != null) {
-          for (var id in responseReviews.users) {
-            for (var user in users) {
-              if (user.id == id) sortUsers.add(user);
-            }
-          }
-        }
-
-        if(sortUsers.length == responseReviews.reviews.length){
-          store.dispatch(GetExcursionInfoAction(
-            excursion: excursion,
-            user: user,
-            type: type,
-            photos: responsePhotoExcursion,
-            reviews: [responseReviews.reviews,sortUsers]
-          ));
-        }
-      }
     };

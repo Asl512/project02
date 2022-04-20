@@ -9,14 +9,15 @@ import 'package:lan_code/ui/common/colors.dart';
 import 'package:lan_code/ui/common/icons.dart';
 import 'package:lan_code/ui/common/textStyle.dart';
 import 'package:lan_code/ui/pages/excursion_navigation/city_page.dart';
-import 'package:lan_code/ui/pages/guide/addExcursion.dart';
-import 'package:lan_code/ui/pages/my_tickets_navigation/my_tickets_page.dart';
+import 'package:lan_code/ui/pages/guide/add_excursion_page/add_excursion_page.dart';
 import 'package:lan_code/ui/pages/profile_navigation/not_auth_profile_page.dart';
 import 'package:lan_code/ui/pages/profile_navigation/personal_area_page.dart';
 import 'package:lan_code/ui/widgets/loading_widget.dart';
 import 'package:lan_code/ui/widgets/page_reload_widget.dart';
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:redux/redux.dart';
+
+import 'my_tickets_navigation/my_tickets_card_widget.dart';
 
 class Navigation extends StatelessWidget {
   final int index;
@@ -101,7 +102,7 @@ class _FloatingActionButton extends StatelessWidget {
             return FloatingActionButton(
               onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const AddExcursion(typeExcursion: [])),
+                MaterialPageRoute(builder: (_) => const AddExcursionPage()),
               ),
               child: const Icon(Icons.add),
               backgroundColor: Blue,
