@@ -6,7 +6,7 @@ class GetReviews {
 
   GetReviews(this._reviewRepository);
 
-  Future<ReviewsEntity?> call({required String idExcursion}) async {
+  Future<List<ReviewsEntity>?> call({required String idExcursion}) async {
     return await _reviewRepository.getReview(idExcursion: idExcursion);
   }
 }

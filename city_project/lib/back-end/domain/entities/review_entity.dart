@@ -2,15 +2,22 @@ import 'package:equatable/equatable.dart';
 
 class ReviewsEntity extends Equatable {
   final String id;
-  final List reviews;
-  final List users;
+  final String review;
+  final String user;
+  final String date;
 
   const ReviewsEntity({
     required this.id,
-    required this.reviews,
-    required this.users,
+    required this.review,
+    required this.user,
+    required this.date,
   });
 
   @override
-  List<Object?> get props => [id, users,reviews];
+  List<Object?> get props => [
+        id,
+        user,
+        review,
+        date,
+      ];
 }

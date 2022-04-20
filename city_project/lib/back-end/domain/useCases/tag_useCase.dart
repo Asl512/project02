@@ -16,7 +16,7 @@ class GetListTag {
 
   GetListTag(this._tagRepository);
 
-  Future<List<TagEntity>?> call({required List<dynamic> indexes}) async {
+  Future<List<TagEntity>?> call({required List<String> indexes}) async {
     return await _tagRepository.getListTag(indexes: indexes);
   }
 }

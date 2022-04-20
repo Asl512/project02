@@ -64,7 +64,7 @@ class _MyTicketsPageState extends State<MyTicketsPage> with TickerProviderStateM
             children:  [
               Center(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40),
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Text(
                     'У вас нет активных экскурсий.',
                     style: Montserrat(size: 15),
@@ -74,7 +74,7 @@ class _MyTicketsPageState extends State<MyTicketsPage> with TickerProviderStateM
               ),
               Center(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40),
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Text(
                     'Добавляйте экскурсии в избранные, чтобы посмотреть их позже.',
                     style: Montserrat(size: 15),
@@ -84,7 +84,7 @@ class _MyTicketsPageState extends State<MyTicketsPage> with TickerProviderStateM
               ),
               Center(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40),
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Text(
                     'У вас нет отмененных экскурсий.',
                     style: Montserrat(size: 15),
@@ -123,7 +123,7 @@ class _MyTicketsCard extends StatelessWidget {
                 Stack(
                   alignment: AlignmentDirectional.bottomStart,
                   children: [
-                    ImageExcursionHeader(photo: "null"),
+                    const ImageExcursionHeader(photo: "null"),
                     Container(
                       height: 50,
 

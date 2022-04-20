@@ -1,16 +1,13 @@
-import 'package:card_swiper/card_swiper.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:lan_code/back-end/domain/entities/photos_excursion_entity.dart';
 import 'package:lan_code/back-end/redux/app/app_state.dart';
 import 'package:lan_code/back-end/redux/excursion/excursion_state.dart';
 import 'package:lan_code/ui/common/colors.dart';
-import 'package:lan_code/ui/common/icons.dart';
 import 'package:lan_code/ui/common/textStyle.dart';
-import 'package:lan_code/ui/pages/guide/booking.dart';
-import 'package:lan_code/ui/widgets/button_widget.dart';
+import 'package:lan_code/ui/pages/excursion_navigation/excursion/general_information.dart';
+import 'package:lan_code/ui/pages/excursion_navigation/excursion/photo_block.dart';
 import 'package:lan_code/ui/widgets/image_box_widget.dart';
 import 'package:lan_code/ui/widgets/style.dart';
 import 'package:redux/redux.dart';
@@ -49,10 +46,7 @@ class _Header extends StatelessWidget {
           Navigator.pop(context);
         },
       ),
-      expandedHeight: MediaQuery
-          .of(context)
-          .size
-          .height / 3,
+      expandedHeight: MediaQuery.of(context).size.height / 3,
       flexibleSpace: FlexibleSpaceBar(
         background: Stack(
           children: [
@@ -149,12 +143,11 @@ class _BodyState extends State<_Body> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
-                ///РЕЙТИНГ И ОТЗЫВЫ
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    ///РЕЙТИНГ
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -175,60 +168,9 @@ class _BodyState extends State<_Body> {
                         )
                       ],
                     ),
-                    StoreConnector<AppState, ExcursionInfoState>(
-                      converter: (store) => store.state.excursionInfoState,
-                      builder: (context, store) {
-                        if (store.reviews != null) {
-                          return TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const ReviewPage(null),
-                                ),
-                              );
-                            },
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  store.reviews!.length.toString() + " отзывов",
-                                  style: Montserrat(
-                                    color: const Color(0xFFF48494a),
-                                    size: 16,
-                                    style: Bold,
-                                  ),
-                                ),
-                                const Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: Color(0xFFF48494a),
-                                )
-                              ],
-                            ),
-                          );
-                        }
-                        return TextButton(
-                          onPressed: () {},
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "- отзывов",
-                                style: Montserrat(
-                                  color: const Color(0xFFF48494a),
-                                  size: 16,
-                                  style: Bold,
-                                ),
-                              ),
-                              const Icon(
-                                Icons.arrow_forward_ios,
-                                color: Color(0xFFF48494a),
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+
+                    ///ОТЗЫВ
+                    const _ReviewButton(),
                   ],
                 ),
 
@@ -238,196 +180,12 @@ class _BodyState extends State<_Body> {
                   style: Montserrat(color: Blue, size: 15),
                 ),
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Wrap(
-                    spacing: 10,
-                    children: store.state.excursionInfoState.excursion!.tags
-                        .map(
-                          (tag) =>
-                          InputChip(
-                            avatar: Text("#", style: Montserrat(color: White)),
-                            labelStyle: Montserrat(size: 14),
-                            backgroundColor: Blue,
-                            onSelected: (sel) {},
-                            label: Text(tag, style: Montserrat(color: White)),
-                          ),
-                    )
-                        .toList(),
-                  ),
-                ),
+                ///ТЭГИ
+                const _Tags(),
 
                 ///ОСНОВНАЯ ИНФОРМАЦИЯ
-                Container(
-                  margin: const EdgeInsets.only(bottom: 30),
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width,
-                        decoration: BoxDecoration(
-                          boxShadow: [ShadowForContainer()],
-                          color: White,
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 20),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    store.state.excursionInfoState.type!
-                                        .name
-                                        .split(' ')
-                                        .first +
-                                        " экскурсия",
-                                    style: Montserrat(size: 16, style: Bold),
-                                  ),
-                                  Text(
-                                    store.state.excursionInfoState.excursion!.duration,
-                                    style: Montserrat(size: 16),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Тип передвижения:',
-                                      style: Montserrat(size: 14, style: SemiBold),
-                                    ),
-                                    SizedBox(
-                                      child: Text(
-                                        store.state.excursionInfoState.excursion!.moveType
-                                            .join(', '),
-                                        style: Montserrat(size: 14),
-                                      ),
-                                      width: MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width / 2 - 40,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Размер группы:',
-                                      style: Montserrat(size: 14, style: SemiBold),
-                                    ),
-                                    SizedBox(
-                                      child: Text(
-                                        'до ' +
-                                            store.state.excursionInfoState.excursion!.groupSize
-                                                .toString() +
-                                            " человек",
-                                        style: Montserrat(size: 14),
-                                      ),
-                                      width: MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width / 2 - 40,
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 10,
-                                  ),
-                                  child: Text(
-                                    'Точное место встречи и контакты гида вы узнаете сразу после бронирования.',
-                                    style: Montserrat(size: 14, style: Regular),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              width: double.infinity,
-                              height: 0.5,
-                              color: Blue.withOpacity(0.5),
-                              margin: const EdgeInsets.symmetric(vertical: 15),
-                            ),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                      text: "₽ " + 1200.toString(),
-                                      style: Montserrat(style: Bold, size: 17, color: Blue)),
-                                  TextSpan(
-                                    text: " за человека",
-                                    style: Montserrat(size: 16, color: Blue),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 10),
-                              child: ButtonWidget(
-                                text: "Бронировать",
-                                buttonColor: Red,
-                                padding: 0,
-                                func: () {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) => const BookingPage()));
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width,
-                        decoration: BoxDecoration(
-                            boxShadow: [ShadowForContainer()],
-                            color: Blue,
-                            borderRadius: const BorderRadius.vertical(bottom: Radius.circular(10))),
-                        child: Column(
-                          children: [
-                            store.state.excursionInfoState.excursion!.moment
-                                ? _Status(
-                              icon: iconLightning,
-                              title: "Мгновенное бронирование",
-                              description: "Без ожидания ответа от гида",
-                            )
-                                : const _Status(
-                              icon: Icon(Icons.access_time_rounded, color: Red),
-                              title: "Ожидание",
-                              description: "Вы должны будете ожидать ответа гида",
-                            ),
-                            const SizedBox(height: 10),
-                            const _Status(
-                              icon: Icon(
-                                Icons.check,
-                                color: Red,
-                              ),
-                              title: "Экскурсия подтверждена",
-                              description: "Эта экскурсия проходила успешно более 5 раз",
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                const GeneralInformationExcursion(),
 
-                ///ПОДРОБНАЯ ИНФОРМАЦИЯ
                 Container(
                   margin: const EdgeInsets.only(bottom: 15),
                   child: Text(
@@ -454,19 +212,11 @@ class _BodyState extends State<_Body> {
                 const _Card(
                   title: "Правила экскурсии",
                   description:
-                  "Экскурсия считается забронированной после того, как вы внесете предоплату. Пока вы не внесли предоплату, нужное вам время может быть забронировано другими путешественниками. Бронь важна для того, чтобы гид точно понимал, что вы придете на экскурсию и мог забронировать для вас свое время. В нашем приложении вы оплачиваете 20% стоимости. Подробнее. Хорошие условия возврата При отмене заказа за 48 часов до начала мы вернем предоплату на вашу карту. Подробнее.",
+                      "Экскурсия считается забронированной после того, как вы внесете предоплату. Пока вы не внесли предоплату, нужное вам время может быть забронировано другими путешественниками. Бронь важна для того, чтобы гид точно понимал, что вы придете на экскурсию и мог забронировать для вас свое время. В нашем приложении вы оплачиваете 20% стоимости. Подробнее. Хорошие условия возврата При отмене заказа за 48 часов до начала мы вернем предоплату на вашу карту. Подробнее.",
                 ),
 
                 ///ФОТОГРАФИИ
-                StoreConnector<AppState, ExcursionInfoState>(
-                  converter: (store) => store.state.excursionInfoState,
-                  builder: (context, store) {
-                    if (store.photos != null) {
-                      return PhotosBlock(photos: store.photos!);
-                    }
-                    return Container();
-                  },
-                ),
+                const PhotoBlock(),
               ],
             ),
           ),
@@ -476,46 +226,72 @@ class _BodyState extends State<_Body> {
   }
 }
 
-class _Status extends StatelessWidget {
-  final Widget icon;
-  final String title;
-  final String description;
-
-  const _Status({
-    Key? key,
-    required this.description,
-    required this.title,
-    required this.icon,
-  }) : super(key: key);
+class _Tags extends StatelessWidget {
+  const _Tags({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          margin: const EdgeInsets.only(right: 10),
-          child: icon,
-        ),
-        Column(
-          children: [
-            Text(
-              title,
-              style: Montserrat(style: Bold, size: 14, color: White),
-            ),
-            SizedBox(
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width / 1.4,
-              child: Text(
-                description,
-                style: Montserrat(size: 13, color: White),
+    return StoreConnector<AppState, ExcursionInfoState>(
+      converter: (store) => store.state.excursionInfoState,
+      builder: (context, store) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Wrap(
+            spacing: 10,
+            children: store.tags
+                .map(
+                  (tag) => InputChip(
+                    avatar: Text("#", style: Montserrat(color: White)),
+                    labelStyle: Montserrat(size: 14),
+                    backgroundColor: Blue,
+                    onSelected: (sel) {},
+                    label: Text(tag.name, style: Montserrat(color: White)),
+                  ),
+                )
+                .toList(),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _ReviewButton extends StatelessWidget {
+  const _ReviewButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StoreConnector<AppState, ExcursionInfoState>(
+      converter: (store) => store.state.excursionInfoState,
+      builder: (context, store) {
+        return TextButton(
+          onPressed: () {
+            if (store.reviews != null) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ReviewPage()),
+              );
+            }
+          },
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                (store.reviews?.length.toString() ?? '-') + " отзывов",
+                style: Montserrat(
+                  color: const Color(0xFFF48494a),
+                  size: 16,
+                  style: Bold,
+                ),
               ),
-            )
-          ],
-          crossAxisAlignment: CrossAxisAlignment.start,
-        )
-      ],
+              const Icon(
+                Icons.arrow_forward_ios,
+                color: Color(0xFFF48494a),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -537,346 +313,27 @@ class _Card extends StatelessWidget {
   Widget build(BuildContext context) {
     return description != 'null'
         ? ExpandablePanel(
-      theme: const ExpandableThemeData(hasIcon: false),
-      header: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(title, style: Montserrat(style: SemiBold, size: 16, color: Blue)),
-            ExpandableIcon(
-              theme: const ExpandableThemeData(
-                expandIcon: Icons.arrow_forward_ios,
-                collapseIcon: Icons.arrow_forward_ios,
-                iconRotationAngle: math.pi / 2,
-                iconColor: Blue,
-              ),
-            ),
-          ],
-        ),
-      ),
-      collapsed: Container(),
-      expanded: buildList(),
-    )
-        : Container();
-  }
-}
-
-///переделать полностью
-class PhotosBlock extends StatelessWidget {
-  final PhotosExcursionEntity photos;
-
-  const PhotosBlock({Key? key, required this.photos}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5),
-      margin: const EdgeInsets.only(top: 10, bottom: 25),
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
-      decoration: BoxDecoration(
-        boxShadow: [ShadowForContainer()],
-        color: White,
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-      ),
-      child: ifMoreOne(context),
-    );
-  }
-
-  Widget ifMoreOne(context) {
-    if (photos.photos.length > 1) {
-      return Row(
-        children: [
-          TextButton(
-            onPressed: () => showPhotoDialog(context),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(5),
-              child: Image.network(
-                photos.photos[0],
-                fit: BoxFit.cover,
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .width / 3 * 1.5 + 15,
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width / 2.5,
-                loadingBuilder:
-                    (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Placholder(MediaQuery
-                      .of(context)
-                      .size
-                      .width / 2.5,
-                      MediaQuery
-                          .of(context)
-                          .size
-                          .width / 3 * 1.5 + 15);
-                },
-              ),
-            ),
-          ),
-          ifTwoMore(context)
-        ],
-      );
-    } else {
-      return TextButton(
-        onPressed: () => showPhotoDialog(context),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(5),
-          child: Image.network(
-            photos.photos[0],
-            fit: BoxFit.cover,
-            height: MediaQuery
-                .of(context)
-                .size
-                .width / 3 * 1.5 + 15,
-            loadingBuilder: (BuildContext context,
-                Widget child,
-                ImageChunkEvent? loadingProgress,) {
-              if (loadingProgress == null) return child;
-              return Placholder(
-                MediaQuery
-                    .of(context)
-                    .size
-                    .width,
-                MediaQuery
-                    .of(context)
-                    .size
-                    .width / 3 * 1.5 + 15,
-              );
-            },
-          ),
-        ),
-      );
-    }
-  }
-
-  Widget ifTwoMore(context) {
-    if (photos.photos.length > 2) {
-      return Column(
-        children: [
-          TextButton(
-            onPressed: () => showPhotoDialog(context),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(5),
-              child: Image.network(
-                photos.photos[1],
-                fit: BoxFit.cover,
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .width / 3 * 1.5 / 2,
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width / 2.5,
-                loadingBuilder: (BuildContext context,
-                    Widget child,
-                    ImageChunkEvent? loadingProgress,) {
-                  if (loadingProgress == null) return child;
-                  return Placholder(
-                    MediaQuery
-                        .of(context)
-                        .size
-                        .width / 2.5,
-                    MediaQuery
-                        .of(context)
-                        .size
-                        .width / 3 * 1.5 / 2,
-                  );
-                },
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () => showPhotoDialog(context),
-            child: Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: Image.network(
-                    photos.photos[2],
-                    fit: BoxFit.cover,
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .width / 3 * 1.5 / 2,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width / 2.5,
-                    loadingBuilder: (BuildContext context,
-                        Widget child,
-                        ImageChunkEvent? loadingProgress,) {
-                      if (loadingProgress == null) return child;
-                      return Placholder(
-                        MediaQuery
-                            .of(context)
-                            .size
-                            .width / 2.5,
-                        MediaQuery
-                            .of(context)
-                            .size
-                            .width / 3 * 1.5 / 2,
-                      );
-                    },
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.7),
-                      borderRadius: const BorderRadius.all(Radius.circular(5))),
-                  alignment: Alignment.center,
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .width / 3 * 1.5 / 2,
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width / 2.5,
-                  child: Text(
-                    '+' + (photos.photos.length - 2).toString(),
-                    style: Montserrat(size: 40, color: White, style: SemiBold),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      );
-    } else {
-      return TextButton(
-        onPressed: () => showPhotoDialog(context),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(5),
-          child: Image.network(
-            photos.photos[1],
-            fit: BoxFit.cover,
-            height: MediaQuery
-                .of(context)
-                .size
-                .width / 3 * 1.5 + 15,
-            width: MediaQuery
-                .of(context)
-                .size
-                .width / 2.5,
-            loadingBuilder: (BuildContext context,
-                Widget child,
-                ImageChunkEvent? loadingProgress,) {
-              if (loadingProgress == null) return child;
-              return Placholder(
-                MediaQuery
-                    .of(context)
-                    .size
-                    .width / 2.5,
-                MediaQuery
-                    .of(context)
-                    .size
-                    .width / 3 * 1.5 + 15,
-              );
-            },
-          ),
-        ),
-      );
-    }
-  }
-
-  void showPhotoDialog(context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return PhotoCarousel(images: photos.photos);
-      },
-    );
-  }
-}
-
-class PhotoCarousel extends StatefulWidget {
-  final List images;
-
-  const PhotoCarousel({
-    required this.images,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<PhotoCarousel> createState() => _PhotoCarouselState();
-}
-
-class _PhotoCarouselState extends State<PhotoCarousel> {
-  int indexNow = 1;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Swiper(
-          onIndexChanged: (index) => setState(() => indexNow = index + 1),
-          itemBuilder: (context, index) {
-            return Container(
-              width: double.infinity,
-              height: double.infinity,
-              color: Colors.black,
-              child: InteractiveViewer(
-                child: Image.network(
-                  widget.images[index],
-                  loadingBuilder: (BuildContext context,
-                      Widget child,
-                      ImageChunkEvent? loadingProgress,) {
-                    if (loadingProgress == null) return child;
-                    return const Center(child: CircularProgressIndicator(color: White));
-                  },
-                ),
-              ),
-            );
-          },
-          curve: Curves.decelerate,
-          indicatorLayout: PageIndicatorLayout.NONE,
-          itemCount: widget.images.length,
-        ),
-        SizedBox(
-          height: MediaQuery
-              .of(context)
-              .size
-              .height / 13,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Icon(
-                  Icons.arrow_back_ios,
-                  color: White,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Фотографии с экскурсии',
-                      style: Montserrat(style: Bold, color: White, size: 17),
+            theme: const ExpandableThemeData(hasIcon: false),
+            header: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(title, style: Montserrat(style: SemiBold, size: 16, color: Blue)),
+                  ExpandableIcon(
+                    theme: const ExpandableThemeData(
+                      expandIcon: Icons.arrow_forward_ios,
+                      collapseIcon: Icons.arrow_forward_ios,
+                      iconRotationAngle: math.pi / 2,
+                      iconColor: Blue,
                     ),
-                    Text(
-                      indexNow.toString() + ' из ' + widget.images.length.toString(),
-                      style: Montserrat(style: SemiBold, color: White, size: 15),
-                    )
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-      ],
-    );
+            ),
+            collapsed: Container(),
+            expanded: buildList(),
+          )
+        : Container();
   }
 }

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:lan_code/back-end/redux/add_excursion/add_excursion_state.dart';
 import 'package:lan_code/back-end/redux/app/app_reducer.dart';
 import 'package:lan_code/back-end/redux/app/app_state.dart';
 import 'package:lan_code/back-end/redux/city/city_state.dart';
@@ -30,6 +31,8 @@ main() async {
       cityState: CityState(),
       listExcursionsState: ListExcursionsState(),
       authState: AuthState(),
+      addExcursionState: AddExcursionState(),
+      insertExcursionState: InsertExcursionState(),
     ),
   );
 
@@ -39,9 +42,7 @@ main() async {
       child: StreamProvider<UserMeth?>.value(
         value: AuthService().currentUser,
         initialData: null,
-        child: const MaterialApp(
-          home: Navigation()
-        ),
+        child: const MaterialApp(home: Navigation()),
       ),
     ),
   );

@@ -78,9 +78,9 @@ class Placholder extends StatelessWidget {
     return Shimmer.fromColors(
         baseColor: Colors.transparent.withOpacity(0.1),
         highlightColor: White,
-        child: Container(width: double.infinity,height: this.heigth,
+        child: Container(width: double.infinity,height: heigth,
             color: White, alignment: Alignment.center,
-            child: Container(width: this.width,height: this.heigth)
+            child: SizedBox(width: width,height: heigth)
         )
     );
   }
@@ -96,10 +96,10 @@ class PhotoAuthor extends StatelessWidget {
     return ClipRRect(borderRadius: BorderRadius.all(Radius.circular(500)),
         child: Image.network(url.toString(),
           fit: BoxFit.cover,
-          width: this.size, height: this.size,
+          width: size, height: size,
           errorBuilder: (context, error, stackTrace) {
             return Image.asset(avatarDef,
-              width: this.size, height: this.size,
+              width: size, height: size,
             );
           },
         )
@@ -117,15 +117,15 @@ class GuideCheck extends StatelessWidget {
   Widget build(BuildContext context) {
     if(check == true)
     {
-      return Container(width: this.size,height: this.size,
+      return Container(width: size,height: size,
           alignment: Alignment.bottomRight,
-          child: Container(width: this.mSize,height: this.mSize,
+          child: SizedBox(width: mSize,height: mSize,
               child: iconConfirmation)
       );
     }
     else
     {
-      return Container(width: this.size, height: this.size);
+      return SizedBox(width: size, height: size);
     }
   }
 }
