@@ -1,26 +1,19 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lan_code/back-end/domain/entities/city_entity.dart';
 import 'package:lan_code/back-end/redux/add_excursion/add_excursion_actions.dart';
 import 'package:lan_code/back-end/redux/add_excursion/add_excursion_state.dart';
 import 'package:lan_code/back-end/redux/app/app_state.dart';
-import 'package:lan_code/back-end/redux/city/city_state.dart';
 import 'package:lan_code/service.dart';
 import 'package:lan_code/ui/common/colors.dart';
 import 'package:lan_code/ui/common/icons.dart';
 import 'package:lan_code/ui/common/textStyle.dart';
-import 'package:lan_code/ui/pages/navigation.dart';
-import 'package:lan_code/ui/widgets/backButtons.dart';
 import 'package:lan_code/ui/widgets/button_widget.dart';
-import 'package:lan_code/ui/widgets/libary/customSnackBar.dart';
 import 'package:lan_code/ui/widgets/libary/dropdown.dart';
-import 'package:lan_code/ui/widgets/libary/topSnackBart.dart';
 import 'package:lan_code/ui/widgets/loading_widget.dart';
 import 'package:lan_code/ui/widgets/page_reload_widget.dart';
 import 'package:lan_code/ui/widgets/style.dart';
@@ -91,7 +84,8 @@ class _Body extends StatefulWidget {
 class _BodyState extends State<_Body> {
   final ImagePicker _picker = ImagePicker();
 
-  final controllerRoles = ControllerRoles();
+  final ControllerRoles controllerRoles = ControllerRoles();
+  final TextEditingController name = TextEditingController();
 
   late Store<AppState> _store;
   late UserMeth? _userMeth;
@@ -112,91 +106,103 @@ class _BodyState extends State<_Body> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
     return Scaffold(
-        backgroundColor: Grey,
-        body: ListView(
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 25),
-              child: Column(
-                children: [
-                  _CitySelect(cityController: controllerRoles),
+      backgroundColor: Grey,
+      body: StoreConnector<AppState, InsertExcursionState>(
+        converter: (store) => store.state.insertExcursionState,
+        builder: (context, store) {
+          if (store.isLoading) {
+            return const LoadingWidget();
+          } else if (store.isError) {
+            return PageReloadWidget(
+              errorText: 'Ошибка загрузки страницы',
+              func: _store.dispatch(AddExcursionThunkAction()),
+            );
+          }
+          print(store.errorName);
+          return ListView(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 25),
+                child: Column(
+                  children: [
+                    _CitySelect(cityController: controllerRoles),
 
-                  ///EXC NAME
-                  Container(
+                    ///EXC NAME
+                    Container(
                       margin: const EdgeInsets.only(top: 20),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        const TitleTextFormField(text: 'Название экскурсии', required: true),
-                        TextFieldWithShadow(
-                          TextFormField(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const TitleTextFormField(text: 'Название экскурсии', required: true),
+                          TextFieldWithShadow(
+                            TextFormField(
                               maxLines: null,
                               maxLength: 50,
                               keyboardType: TextInputType.multiline,
                               style: Montserrat(color: Blue, size: 15),
-                              onChanged: (String value) {},
+                              onChanged: (String value) => name.text = value,
                               decoration: TextFieldDecoration(
                                 hintText: "Ночная Тюмень",
                                 prefixIcon: PrefixIconTextField(
-                                    color: const Color(0xffff54c5),
-                                    icon: Center(
-                                      child: Text("A+", style: Montserrat(style: Bold)),
-                                    )),
-                              ).inputDecoration),
-                          //error: nameError,
-                          errorText: true,
-                        )
-                      ])),
-
-                  TitleChapter(title: "Расписание"),
-
-                  /// TYPE SELECT
-                  Container(
-                    margin: const EdgeInsets.only(top: 30),
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      const TitleTextFormField(text: 'Выберите тип экскурсии', required: true),
-                      TextFieldWithShadow(
-                        DropdownButtonHideUnderline(
-                          child: DropdownButton2(
-                            isExpanded: true,
-                            buttonWidth: double.infinity,
-                            itemHeight: 80,
-                            buttonHeight: 50,
-                            buttonDecoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: White,
+                                  color: const Color(0xffff54c5),
+                                  icon: Center(child: Text("A+", style: Montserrat(style: Bold))),
+                                ),
+                              ).inputDecoration,
                             ),
-                            icon: Container(
-                                padding: const EdgeInsets.all(10),
-                                child: Transform.rotate(
-                                  angle: -90 * math.pi / 180,
-                                  child: const Icon(
-                                    Icons.arrow_back_ios,
-                                    color: Blue,
-                                    size: 20,
-                                  ),
-                                )),
-                            hint: Row(
-                              children: [
-                                PrefixIconTextField(
-                                    color: const Color(0xFF42cec0),
-                                    icon: Center(child: iconTypeExcursion)),
-                                Text("Выбранный тип", style: Montserrat(color: Blue, size: 15)),
-                              ],
+                            error: store.errorName,
+                            errorText: true,
+                          )
+                        ],
+                      ),
+                    ),
+
+                    TitleChapter(title: "Расписание"),
+
+                    /// TYPE SELECT
+                    Container(
+                      margin: const EdgeInsets.only(top: 30),
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                        const TitleTextFormField(text: 'Выберите тип экскурсии', required: true),
+                        TextFieldWithShadow(
+                          DropdownButtonHideUnderline(
+                            child: DropdownButton2(
+                              isExpanded: true,
+                              buttonWidth: double.infinity,
+                              itemHeight: 80,
+                              buttonHeight: 50,
+                              buttonDecoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: White,
+                              ),
+                              icon: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Transform.rotate(
+                                    angle: -90 * math.pi / 180,
+                                    child: const Icon(
+                                      Icons.arrow_back_ios,
+                                      color: Blue,
+                                      size: 20,
+                                    ),
+                                  )),
+                              hint: Row(
+                                children: [
+                                  PrefixIconTextField(
+                                      color: const Color(0xFF42cec0),
+                                      icon: Center(child: iconTypeExcursion)),
+                                  Text("Выбранный тип", style: Montserrat(color: Blue, size: 15)),
+                                ],
+                              ),
+                              items: DropdownItem(),
+                              onChanged: (value) {},
                             ),
-                            items: DropdownItem(),
-                            onChanged: (value) {},
                           ),
-                        ),
-                      )
-                    ]),
-                  ),
+                        )
+                      ]),
+                    ),
 
-                  ///в зависимости от типа
-                  /*Container(
+                    ///в зависимости от типа
+                    /*Container(
                       margin: EdgeInsets.only(top: 30),
                       child: type["id"] == 1
                           ? ScheduleTypeOne()
@@ -204,165 +210,186 @@ class _BodyState extends State<_Body> {
                               ? ScheduleTypeTwo()
                               : ScheduleTypeThree()),*/
 
-                  TitleChapter(title: "Детали"),
+                    TitleChapter(title: "Детали"),
 
-                  /// PLACE
-                  Container(
-                    margin: const EdgeInsets.only(top: 30),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const TitleTextFormField(text: 'Место сбора', required: true),
-                        TextFieldWithShadow(
-                          TextFormField(
-                              style: Montserrat(color: Blue, size: 15),
-                              maxLines: null,
-                              maxLength: 100,
-                              keyboardType: TextInputType.multiline,
-                              onChanged: (String value) {},
-                              decoration: TextFieldDecoration(
-                                hintText: "ул. Республики 195",
-                                prefixIcon: PrefixIconTextField(
-                                    color: const Color(0xFFff5454), icon: iconLocation),
-                              ).inputDecoration),
-                          //error: startPlaceError,
-                          errorText: true,
-                        )
-                      ],
-                    ),
-                  ),
-
-                  /// PEOPLE NUM
-                  Container(
-                    margin: const EdgeInsets.only(top: 30),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const TitleTextFormField(text: 'Размер группы', required: true),
-                        TextFieldWithShadow(
-                          TextFormField(
-                              style: Montserrat(color: Blue, size: 15),
-                              maxLength: 3,
-                              keyboardType: TextInputType.number,
-                              onChanged: (String value) {},
-                              decoration: TextFieldDecoration(
-                                hintText: "Максимальное кол-во людей",
-                                prefixIcon: PrefixIconTextField(
-                                    color: const Color(0xFF4485e6), icon: iconSizer),
-                              ).inputDecoration),
-                          //error: groupSizeError,
-                          errorText: true,
-                        )
-                      ],
-                    ),
-                  ),
-
-                  ///ТИП ПЕРЕДВИЖЕНИЯ
-
-                  TitleChapter(title: "Стоимость"),
-
-                  ///PRICE
-                  Container(
+                    /// PLACE
+                    Container(
                       margin: const EdgeInsets.only(top: 30),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        const TitleTextFormField(text: 'Стандартный билет', required: true),
-                        TextFieldWithShadow(
-                          TextFormField(
-                              maxLength: 5,
-                              keyboardType: TextInputType.number,
-                              style: Montserrat(color: Blue, size: 15),
-                              onChanged: (String value) {},
-                              decoration: TextFieldDecoration(
-                                hintText: "Полная стоимость билета",
-                                prefixIcon: PrefixIconTextField(
-                                    color: const Color(0xFFf3cb3b),
-                                    icon: Center(
-                                        child:
-                                            Text("₽", style: Montserrat(style: Bold, size: 22)))),
-                              ).inputDecoration),
-                          //error: priceError,
-                          errorText: true,
-                        )
-                      ])),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const TitleTextFormField(text: 'Место сбора', required: true),
+                          TextFieldWithShadow(
+                            TextFormField(
+                                style: Montserrat(color: Blue, size: 15),
+                                maxLines: null,
+                                maxLength: 100,
+                                keyboardType: TextInputType.multiline,
+                                onChanged: (String value) {},
+                                decoration: TextFieldDecoration(
+                                  hintText: "ул. Республики 195",
+                                  prefixIcon: PrefixIconTextField(
+                                      color: const Color(0xFFff5454), icon: iconLocation),
+                                ).inputDecoration),
+                            //error: startPlaceError,
+                            errorText: true,
+                          )
+                        ],
+                      ),
+                    ),
 
-                  ///ДЛЯ ШКОЛЬНИКОВ
-
-                  TitleChapter(title: "Описание"),
-
-                  ///TAGS
-                  Container(
+                    /// PEOPLE NUM
+                    Container(
                       margin: const EdgeInsets.only(top: 30),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        const TitleTextFormField(text: 'Выберите категории'),
-                        TextFieldWithShadow(
-                          MyDropdownFormField<Map<String, dynamic>>(
-                              emptyText: 'Данного тега нет',
-                              decoration: TextFieldDecoration(
-                                prefixIcon: PrefixIconTextField(
-                                    color: const Color(0xFFc25cf2),
-                                    icon: Center(
-                                      child: Text("#", style: Montserrat(style: Bold, size: 22)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const TitleTextFormField(text: 'Размер группы', required: true),
+                          TextFieldWithShadow(
+                            TextFormField(
+                                style: Montserrat(color: Blue, size: 15),
+                                maxLength: 3,
+                                keyboardType: TextInputType.number,
+                                onChanged: (String value) {},
+                                decoration: TextFieldDecoration(
+                                  hintText: "Максимальное кол-во людей",
+                                  prefixIcon: PrefixIconTextField(
+                                      color: const Color(0xFF4485e6), icon: iconSizer),
+                                ).inputDecoration),
+                            //error: groupSizeError,
+                            errorText: true,
+                          )
+                        ],
+                      ),
+                    ),
+
+                    ///ТИП ПЕРЕДВИЖЕНИЯ
+
+                    TitleChapter(title: "Стоимость"),
+
+                    ///PRICE
+                    Container(
+                        margin: const EdgeInsets.only(top: 30),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          const TitleTextFormField(text: 'Стандартный билет', required: true),
+                          TextFieldWithShadow(
+                            TextFormField(
+                                maxLength: 5,
+                                keyboardType: TextInputType.number,
+                                style: Montserrat(color: Blue, size: 15),
+                                onChanged: (String value) {},
+                                decoration: TextFieldDecoration(
+                                  hintText: "Полная стоимость билета",
+                                  prefixIcon: PrefixIconTextField(
+                                      color: const Color(0xFFf3cb3b),
+                                      icon: Center(
+                                          child:
+                                          Text("₽", style: Montserrat(style: Bold, size: 22)))),
+                                ).inputDecoration),
+                            //error: priceError,
+                            errorText: true,
+                          )
+                        ])),
+
+                    ///ДЛЯ ШКОЛЬНИКОВ
+
+                    TitleChapter(title: "Описание"),
+
+                    ///TAGS
+                    Container(
+                        margin: const EdgeInsets.only(top: 30),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          const TitleTextFormField(text: 'Выберите категории'),
+                          TextFieldWithShadow(
+                            MyDropdownFormField<Map<String, dynamic>>(
+                                emptyText: 'Данного тега нет',
+                                decoration: TextFieldDecoration(
+                                  prefixIcon: PrefixIconTextField(
+                                      color: const Color(0xFFc25cf2),
+                                      icon: Center(
+                                        child: Text("#", style: Montserrat(style: Bold, size: 22)),
+                                      )),
+                                  suffixIcon: Transform.rotate(
+                                    angle: -90 * math.pi / 180,
+                                    child: const Icon(Icons.arrow_back_ios, color: Blue),
+                                  ),
+                                ).inputDecoration,
+                                onChanged: (dynamic item) {},
+                                displayItemFn: (dynamic item) => Text("Начните вводить категорию",
+                                    style: Montserrat(color: Colors.black26, size: 15)),
+                                findFn: (dynamic str) async => [
+                                  /*roles Tags*/
+                                ],
+                                filterFn: (dynamic item, str) =>
+                                item['name'].toLowerCase().indexOf(str.toLowerCase()) >= 0,
+                                dropdownItemFn: (dynamic item, int position, bool focused,
+                                    bool selected, Function() onTap) =>
+                                    ListTile(
+                                      title: Text(
+                                        item['name'],
+                                        style: Montserrat(color: Blue, size: 15),
+                                      ),
+                                      onTap: onTap,
                                     )),
-                                suffixIcon: Transform.rotate(
-                                  angle: -90 * math.pi / 180,
-                                  child: const Icon(Icons.arrow_back_ios, color: Blue),
-                                ),
-                              ).inputDecoration,
-                              onChanged: (dynamic item) {},
-                              displayItemFn: (dynamic item) => Text("Начните вводить категорию",
-                                  style: Montserrat(color: Colors.black26, size: 15)),
-                              findFn: (dynamic str) async => [
-                                    /*roles Tags*/
-                                  ],
-                              filterFn: (dynamic item, str) =>
-                                  item['name'].toLowerCase().indexOf(str.toLowerCase()) >= 0,
-                              dropdownItemFn: (dynamic item, int position, bool focused,
-                                      bool selected, Function() onTap) =>
-                                  ListTile(
-                                    title: Text(
-                                      item['name'],
-                                      style: Montserrat(color: Blue, size: 15),
-                                    ),
-                                    onTap: onTap,
-                                  )),
-                        ),
+                          ),
 
-                        ///отрисока тегов
-                        /*Container(
+                          ///отрисока тегов
+                          /*Container(
                           margin: EdgeInsets.only(top: 10),
                           child: EnterTags(),
                         )*/
-                      ])),
+                        ])),
 
-                  ///DISCRIPTION
-                  Container(
-                      margin: const EdgeInsets.only(top: 30),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        const TitleTextFormField(text: 'Краткое описание', required: true),
-                        TextFieldWithShadow(
-                          TextFormField(
-                              maxLines: null,
-                              minLines: 3,
-                              maxLength: 500,
-                              keyboardType: TextInputType.multiline,
-                              style: Montserrat(color: Blue, size: 15),
-                              onChanged: (String value) {},
-                              decoration: TextFieldDecoration(
-                                      hintText:
-                                          "Расскажите что ожидает путешественника на Вашей экскурсии?\nКакие места отдыха вы посетите?")
-                                  .inputDecoration),
-                          //error: descriptionError,
-                          errorText: true,
-                        )
-                      ])),
+                    ///DISCRIPTION
+                    Container(
+                        margin: const EdgeInsets.only(top: 30),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          const TitleTextFormField(text: 'Краткое описание', required: true),
+                          TextFieldWithShadow(
+                            TextFormField(
+                                maxLines: null,
+                                minLines: 3,
+                                maxLength: 500,
+                                keyboardType: TextInputType.multiline,
+                                style: Montserrat(color: Blue, size: 15),
+                                onChanged: (String value) {},
+                                decoration: TextFieldDecoration(
+                                    hintText:
+                                    "Расскажите что ожидает путешественника на Вашей экскурсии?\nКакие места отдыха вы посетите?")
+                                    .inputDecoration),
+                            //error: descriptionError,
+                            errorText: true,
+                          )
+                        ])),
 
-                  /// WHAT'S INCLUDE
-                  Container(
-                      margin: const EdgeInsets.only(top: 30),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        const TitleTextFormField(text: 'Что включено', required: true),
-                        TextFieldWithShadow(
-                          TextFormField(
+                    /// WHAT'S INCLUDE
+                    Container(
+                        margin: const EdgeInsets.only(top: 30),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          const TitleTextFormField(text: 'Что включено', required: true),
+                          TextFieldWithShadow(
+                            TextFormField(
+                                maxLines: null,
+                                maxLength: 1000,
+                                minLines: 3,
+                                keyboardType: TextInputType.multiline,
+                                style: Montserrat(color: Blue, size: 15),
+                                onChanged: (String value) {},
+                                decoration: TextFieldDecoration(
+                                    hintText:
+                                    "Опишите подробнее.\nНапример: места посещения, трансфер, услуги, фотограф, обед.")
+                                    .inputDecoration),
+                            //error: includeError,
+                            errorText: true,
+                          )
+                        ])),
+
+                    /// DETAILS
+                    Container(
+                        margin: const EdgeInsets.only(top: 30),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          const TitleTextFormField(text: 'Организационные детали'),
+                          TextFieldWithShadow(TextFormField(
                               maxLines: null,
                               maxLength: 1000,
                               minLines: 3,
@@ -370,128 +397,111 @@ class _BodyState extends State<_Body> {
                               style: Montserrat(color: Blue, size: 15),
                               onChanged: (String value) {},
                               decoration: TextFieldDecoration(
-                                      hintText:
-                                          "Опишите подробнее.\nНапример: места посещения, трансфер, услуги, фотограф, обед.")
-                                  .inputDecoration),
-                          //error: includeError,
-                          errorText: true,
-                        )
-                      ])),
+                                  hintText:
+                                  "Напишите, о чем стоит знать путешествинникам перед экскурсией.\nНапример, что стоит взять с собой.")
+                                  .inputDecoration))
+                        ])),
 
-                  /// DETAILS
-                  Container(
+                    /// OPTIONS
+                    Container(
+                        margin: const EdgeInsets.only(top: 30),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          const TitleTextFormField(text: 'Дополнительные услуги'),
+                          TextFieldWithShadow(TextFormField(
+                              maxLines: null,
+                              maxLength: 1000,
+                              minLines: 3,
+                              keyboardType: TextInputType.multiline,
+                              style: Montserrat(color: Blue, size: 15),
+                              onChanged: (String value) {},
+                              decoration: TextFieldDecoration(
+                                  hintText:
+                                  "Напишите о дополнительных расходах, которые не входят в стоимость стандартного билета.")
+                                  .inputDecoration))
+                        ])),
+
+                    ///PHOTOS
+                    Container(
                       margin: const EdgeInsets.only(top: 30),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        const TitleTextFormField(text: 'Организационные детали'),
-                        TextFieldWithShadow(TextFormField(
-                            maxLines: null,
-                            maxLength: 1000,
-                            minLines: 3,
-                            keyboardType: TextInputType.multiline,
-                            style: Montserrat(color: Blue, size: 15),
-                            onChanged: (String value) {},
-                            decoration: TextFieldDecoration(
-                                    hintText:
-                                        "Напишите, о чем стоит знать путешествинникам перед экскурсией.\nНапример, что стоит взять с собой.")
-                                .inputDecoration))
-                      ])),
-
-                  /// OPTIONS
-                  Container(
-                      margin: const EdgeInsets.only(top: 30),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        const TitleTextFormField(text: 'Дополнительные услуги'),
-                        TextFieldWithShadow(TextFormField(
-                            maxLines: null,
-                            maxLength: 1000,
-                            minLines: 3,
-                            keyboardType: TextInputType.multiline,
-                            style: Montserrat(color: Blue, size: 15),
-                            onChanged: (String value) {},
-                            decoration: TextFieldDecoration(
-                                    hintText:
-                                        "Напишите о дополнительных расходах, которые не входят в стоимость стандартного билета.")
-                                .inputDecoration))
-                      ])),
-
-                  ///PHOTOS
-                  Container(
-                    margin: const EdgeInsets.only(top: 30),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const TitleTextFormField(text: "Фотографии"),
-                        Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.all(const Radius.circular(20)),
-                                color: White,
-                                boxShadow: [ShadowForContainer()],
-                                border: false ? Border.all(color: Red) : Border.all(color: White)),
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Wrap(
-                                crossAxisAlignment: WrapCrossAlignment.center,
-                                children: PhotosList())),
-
-                        ///добавить описание
-                      ],
-                    ),
-                  ),
-
-                  /// BUTTON
-                  Container(
-                      margin: const EdgeInsets.only(top: 50),
-                      height: MediaQuery.of(context).size.height / 4.2,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ButtonWidget(
-                            text: 'Добавить',
-                            func: () {
-                              _store.dispatch(InsertThunkAction(
-                                city: controllerRoles.city,
-                                idGuide: _userMeth!.id!,
-                              ));
-                            },
-                          ),
-
-                          ///ТЕКСТ
+                          const TitleTextFormField(text: "Фотографии"),
                           Container(
-                            margin: const EdgeInsets.only(bottom: 40),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: MediaQuery.of(context).size.width / 7),
-                            child: RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: "Добавляя экскурсию, она сначала проходит модерацию. ",
-                                    style: Montserrat(size: 12, color: Blue),
-                                  ),
-                                  TextSpan(
-                                    text: "Подробнее.",
-                                    style: Montserrat(style: SemiBold, size: 13, color: Red),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        showModalBottomSheet(
-                                            backgroundColor: White.withOpacity(0),
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return Container();
-                                            });
-                                      },
-                                  ),
-                                ],
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(const Radius.circular(20)),
+                                  color: White,
+                                  boxShadow: [ShadowForContainer()],
+                                  border: false ? Border.all(color: Red) : Border.all(color: White)),
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  children: PhotosList())),
+
+                          ///добавить описание
+                        ],
+                      ),
+                    ),
+
+                    /// BUTTON
+                    Container(
+                        margin: const EdgeInsets.only(top: 50),
+                        height: MediaQuery.of(context).size.height / 4.2,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ButtonWidget(
+                              text: 'Добавить',
+                              func: () {
+                                _store.dispatch(InsertThunkAction(
+                                  name: name.text,
+                                  city: controllerRoles.city,
+                                  idGuide: _userMeth!.id!,
+                                ));
+                              },
+                            ),
+
+                            ///ТЕКСТ
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 40),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: MediaQuery.of(context).size.width / 7),
+                              child: RichText(
+                                textAlign: TextAlign.center,
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: "Добавляя экскурсию, она сначала проходит модерацию. ",
+                                      style: Montserrat(size: 12, color: Blue),
+                                    ),
+                                    TextSpan(
+                                      text: "Подробнее.",
+                                      style: Montserrat(style: SemiBold, size: 13, color: Red),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          showModalBottomSheet(
+                                              backgroundColor: White.withOpacity(0),
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return Container();
+                                              });
+                                        },
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      )),
-                ],
-              ),
-            )
-          ],
-        ));
+                          ],
+                        )),
+                  ],
+                ),
+              )
+            ],
+          );
+        },
+      ),
+    );
   }
 
   /*Widget EnterTags() {

@@ -12,6 +12,7 @@ Reducer<InsertExcursionState> insertExcursionReducer = combineReducers([
   TypedReducer<InsertExcursionState, LoadInsetExcursionAction>(_loadInsertExcursion),
   TypedReducer<InsertExcursionState, ErrorInsetExcursionAction>(_errorInsertExcursion),
   TypedReducer<InsertExcursionState, InsertedExcursionAction>(_insertedExcursion),
+  TypedReducer<InsertExcursionState, ShowErrorInsertExcursionAction>(_showErrorInsertExcursion),
 ]);
 
 //load page
@@ -58,21 +59,34 @@ InsertExcursionState _loadInsertExcursion(
       isError: false,
     );
 
+InsertExcursionState _showErrorInsertExcursion(
+    InsertExcursionState state,
+    ShowErrorInsertExcursionAction action,
+    ) 
+{
+print('+++0');
+return state.copyWith(
+isLoading: false,
+isError: true,
+);}
+
 InsertExcursionState _errorInsertExcursion(
   InsertExcursionState state,
   ErrorInsetExcursionAction action,
-) =>
-    state.copyWith(
-      isLoading: false,
-      isError: action.isError ?? false,
-      errorCity: (action.errorCity?.first) ?? false,
-      errorDuration: (action.errorDuration?.first) ?? false,
-      errorGroupSize: (action.errorGroupSize?.first) ?? false,
-      errorName: (action.errorName?.first) ?? false,
-      errorMeetPoint: (action.errorMeetPoint?.first) ?? false,
-      errorStandardPrice: (action.errorStandardPrice?.first) ?? false,
-      errorTypesMove: (action.errorTypesMove?.first) ?? false,
-    );
+) {
+  print('+++0');
+  return state.copyWith(
+    isLoading: false,
+    isError: action.isError ?? false,
+    errorCity: action.errorCity ?? [],
+    errorDuration: action.errorDuration ?? [],
+    errorGroupSize: action.errorGroupSize ?? [],
+    errorName: action.errorName ?? [],
+    errorMeetPoint: action.errorMeetPoint ?? [],
+    errorStandardPrice: action.errorStandardPrice ?? [],
+    errorTypesMove: action.errorTypesMove ?? [],
+  );
+}
 
 InsertExcursionState _insertedExcursion(
   InsertExcursionState state,

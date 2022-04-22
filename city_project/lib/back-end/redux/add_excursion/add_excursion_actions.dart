@@ -70,6 +70,8 @@ class LoadInsetExcursionAction extends InsertExcursionAction {}
 
 class InsertedExcursionAction extends InsertExcursionAction {}
 
+class ShowErrorInsertExcursionAction extends InsertExcursionAction {}
+
 class ErrorInsetExcursionAction extends InsertExcursionAction {
   final bool? isError;
   final List? errorName;
@@ -95,28 +97,49 @@ class ErrorInsetExcursionAction extends InsertExcursionAction {
 ThunkAction InsertThunkAction({
   required CityEntity? city,
   required String idGuide,
+  required String name,
 }) =>
     (Store store) async {
       store.dispatch(LoadInsetExcursionAction());
-      await FirebaseFirestore.instance.collection('excursion').add({
-        "name": 'Экскурсия по трубам',
-        "photo": "null",
-        "organizationalDetails": "null",
-        "addServices": "null",
-        "included": "null",
-        "tags": [],
-        "duration": "1 час",
-        "description": "null",
-        "idGuide": idGuide,
-        "type": "3",
-        "moment": false,
-        "moveType": [],
-        "meetPoint": "Труба",
-        "rating": [0,1],
-        "groupSize": 10,
-        "standartPrice": 1000,
-        "idCity": city!.id,
-      });
-      print('Adddddddddddddddddd');
-      store.dispatch(InsertedExcursionAction());
+      bool error = false;
+      List? errorName;
+
+      if (name == '') {
+        error = true;
+        errorName = [true, 'Введите название'];
+      } else if (name.length <= 3) {
+        error = true;
+        errorName = [true, 'Слишком короткое название'];
+      }
+
+      if (!error) {
+        try {
+          /*await FirebaseFirestore.instance.collection('excursion').add({
+          "name": name,
+          "photo": "null",
+          "organizationalDetails": "null",
+          "addServices": "null",
+          "included": "null",
+          "tags": [],
+          "duration": "1 час",
+          "description": "null",
+          "idGuide": idGuide,
+          "type": "3",
+          "moment": false,
+          "moveType": [],
+          "meetPoint": "Труба",
+          "rating": [0, 1],
+          "groupSize": 10,
+          "standartPrice": 1000,
+          "idCity": city!.id,
+        });*/
+          print('Добавлено');
+          store.dispatch(InsertedExcursionAction());
+        } catch (e) {
+          store.dispatch(ErrorInsetExcursionAction(isError: true));
+        }
+      } else {
+        print('Не прошло');
+        store.dispatch(ShowErrorInsertExcursionAction());
+      }
     };
