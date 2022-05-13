@@ -6,7 +6,6 @@ import 'package:lan_code/back-end/redux/add_excursion/add_excursion_state.dart';
 import 'package:lan_code/back-end/redux/app/app_state.dart';
 import 'package:lan_code/ui/common/colors.dart';
 import 'package:lan_code/ui/common/textStyle.dart';
-import 'package:lan_code/ui/pages/guide/add_excursion_page/add_excursion_page.dart';
 import 'package:lan_code/ui/pages/guide/booking/booking_page.dart';
 import 'package:lan_code/ui/widgets/libary/customSnackBar.dart';
 import 'package:lan_code/ui/widgets/libary/topSnackBart.dart';
