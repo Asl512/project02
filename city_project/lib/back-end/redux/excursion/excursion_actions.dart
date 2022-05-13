@@ -1,3 +1,4 @@
+import 'package:lan_code/back-end/data/repositories/currency_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/excursion_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/photos_excursion_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/review_data_repository.dart';
@@ -5,6 +6,7 @@ import 'package:lan_code/back-end/data/repositories/tag_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/type_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/type_move_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/user_data_repository.dart';
+import 'package:lan_code/back-end/domain/entities/currency_entity.dart';
 import 'package:lan_code/back-end/domain/entities/excursion_entity.dart';
 import 'package:lan_code/back-end/domain/entities/photos_excursion_entity.dart';
 import 'package:lan_code/back-end/domain/entities/review_entity.dart';
@@ -12,6 +14,7 @@ import 'package:lan_code/back-end/domain/entities/tag_entity.dart';
 import 'package:lan_code/back-end/domain/entities/type_entity.dart';
 import 'package:lan_code/back-end/domain/entities/type_move_entity.dart';
 import 'package:lan_code/back-end/domain/entities/user_entity.dart';
+import 'package:lan_code/back-end/domain/useCases/currency_useCase.dart';
 import 'package:lan_code/back-end/domain/useCases/excursion_useCase.dart';
 import 'package:lan_code/back-end/domain/useCases/photos_excursion_useCase.dart';
 import 'package:lan_code/back-end/domain/useCases/review_useCase.dart';
@@ -32,11 +35,13 @@ class GetListExcursionsAction extends ListExcursionsAction {
   final List<ExcursionEntity> excursions;
   final List<UserEntity> users;
   final List<TypeEntity> types;
+  final List<CurrencyEntity> currencies;
 
   GetListExcursionsAction({
     required this.excursions,
     required this.users,
     required this.types,
+    required this.currencies,
   });
 }
 
@@ -56,17 +61,20 @@ ThunkAction GetListExcursionsThunkAction({String? type}) => (Store store) async 
             excursions: [],
             users: [],
             types: [],
+            currencies: [],
           ));
         }
         Map<String, List> data = await getDataExcursion(responseExcursions);
         if (data["users"]!.length != responseExcursions.length ||
-            data["types"]!.length != responseExcursions.length) {
+            data["types"]!.length != responseExcursions.length ||
+            data["currencies"]!.length != responseExcursions.length) {
           store.dispatch(ErrorListExcursionsAction());
         } else {
           store.dispatch(GetListExcursionsAction(
             excursions: responseExcursions,
             users: data["users"] as List<UserEntity>,
             types: data["types"] as List<TypeEntity>,
+            currencies: data["currencies"] as List<CurrencyEntity>,
           ));
         }
       } else {
@@ -97,7 +105,23 @@ Future<Map<String, List>> getDataExcursion(List<ExcursionEntity> excursions) asy
     }
   }
 
-  return {"users": sortUsers, "types": sortTypes};
+  List<String> listCodesCurrency = excursions.map((e) => e.currency).toList();
+  List<CurrencyEntity>? currencies =
+      await GetListCurrency(CurrencyDataRepository()).call(codes: listCodesCurrency);
+  List<CurrencyEntity> sortCurrencies = [];
+  if (currencies != null) {
+    for (var code in listCodesCurrency) {
+      for (var currency in currencies) {
+        if (currency.code == code) sortCurrencies.add(currency);
+      }
+    }
+  }
+
+  return {
+    "users": sortUsers,
+    "types": sortTypes,
+    "currencies": sortCurrencies,
+  };
 }
 
 abstract class ExcursionInfoAction {}
@@ -106,11 +130,13 @@ class LoadExcursionInfoAction extends ExcursionInfoAction {
   final ExcursionEntity excursion;
   final UserEntity user;
   final TypeEntity type;
+  final CurrencyEntity currency;
 
   LoadExcursionInfoAction({
     required this.excursion,
     required this.user,
     required this.type,
+    required this.currency,
   });
 }
 
@@ -120,6 +146,7 @@ class GetExcursionInfoAction extends ExcursionInfoAction {
   final ExcursionEntity excursion;
   final UserEntity user;
   final TypeEntity type;
+  final CurrencyEntity currency;
   final PhotosExcursionEntity? photos;
   final List<ReviewsEntity>? reviews;
   final List<UserEntity>? usersReview;
@@ -134,6 +161,7 @@ class GetExcursionInfoAction extends ExcursionInfoAction {
     required this.typesMove,
     required this.usersReview,
     required this.reviews,
+    required this.currency,
     required this.tags,
   });
 }
@@ -142,9 +170,11 @@ ThunkAction GetExcursionInfoThunkAction({
   required ExcursionEntity excursion,
   required UserEntity user,
   required TypeEntity type,
+  required CurrencyEntity currency,
 }) =>
     (Store store) async {
       store.dispatch(LoadExcursionInfoAction(
+        currency:currency,
         excursion: excursion,
         user: user,
         type: type,
@@ -157,7 +187,7 @@ ThunkAction GetExcursionInfoThunkAction({
           await GetReviews(ReviewDataRepository()).call(idExcursion: excursion.id);
 
       List<UserEntity> sortUsers = [];
-      if(responseReviews != null && responseReviews.isNotEmpty){
+      if (responseReviews != null && responseReviews.isNotEmpty) {
         List<String> userId = responseReviews.map((review) => review.user).toList();
         List<UserEntity>? users = await GetListUsers(UserDataRepository()).call(userId);
         if (users != null) {
@@ -169,17 +199,24 @@ ThunkAction GetExcursionInfoThunkAction({
         }
       }
 
+      List<TagEntity>? responseTags;
       List<String> tagsId = excursion.tags.map((e) => e as String).toList();
-      List<TagEntity>? responseTags = await GetListTag(TagDataRepository()).call(indexes: tagsId);
+      if (tagsId.isNotEmpty) {
+        responseTags = await GetListTag(TagDataRepository()).call(indexes: tagsId);
+      }
 
+      List<TypeMoveEntity>? responseTypeMove;
       List<String> typesMoveId = excursion.moveType.map((e) => e as String).toList();
-      List<TypeMoveEntity>? responseTypeMove =
-      await GetListTypeMove(TypeMoveDataRepository()).call(indexes: typesMoveId);
+      if (typesMoveId.isNotEmpty) {
+        responseTypeMove =
+            await GetListTypeMove(TypeMoveDataRepository()).call(indexes: typesMoveId);
+      }
 
       store.dispatch(GetExcursionInfoAction(
         excursion: excursion,
         user: user,
         type: type,
+        currency: currency,
         photos: responsePhotoExcursion,
         usersReview: sortUsers,
         reviews: responseReviews ?? [],

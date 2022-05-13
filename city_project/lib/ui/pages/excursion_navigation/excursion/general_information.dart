@@ -5,7 +5,7 @@ import 'package:lan_code/back-end/redux/excursion/excursion_state.dart';
 import 'package:lan_code/ui/common/colors.dart';
 import 'package:lan_code/ui/common/icons.dart';
 import 'package:lan_code/ui/common/textStyle.dart';
-import 'package:lan_code/ui/pages/guide/booking_page.dart';
+import 'package:lan_code/ui/pages/guide/booking/booking_page.dart';
 import 'package:lan_code/ui/widgets/button_widget.dart';
 import 'package:lan_code/ui/widgets/style.dart';
 import 'package:redux/redux.dart';
@@ -58,7 +58,9 @@ class GeneralInformationExcursion extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                          text: "₽ " + 1200.toString(),
+                          text: store.state.excursionInfoState.currency!.sign +
+                              " " +
+                              store.state.excursionInfoState.excursion!.standardPrice.toString(),
                           style: Montserrat(style: Bold, size: 17, color: Blue)),
                       TextSpan(
                         text: " за человека",
@@ -106,14 +108,15 @@ class GeneralInformationExcursion extends StatelessWidget {
                     description: "Вы должны будете ожидать ответа гида",
                   ),
                 const SizedBox(height: 10),
-                const _Status(
-                  icon: Icon(
-                    Icons.check,
-                    color: Red,
+                if (store.state.excursionInfoState.user!.countCompleted >= 5)
+                  const _Status(
+                    icon: Icon(
+                      Icons.check,
+                      color: Red,
+                    ),
+                    title: "Экскурсия подтверждена",
+                    description: "Эта экскурсия проходила успешно более 5 раз",
                   ),
-                  title: "Экскурсия подтверждена",
-                  description: "Эта экскурсия проходила успешно более 5 раз",
-                ),
               ],
             ),
           )

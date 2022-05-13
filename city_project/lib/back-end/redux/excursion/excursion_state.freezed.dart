@@ -22,12 +22,14 @@ class _$ListExcursionsStateTearOff {
       {List<ExcursionEntity> excursions = const [],
       List<UserEntity> users = const [],
       List<TypeEntity> types = const [],
+      List<CurrencyEntity> currencies = const [],
       bool isError = false,
       bool isLoading = false}) {
     return _ListExcursionsState(
       excursions: excursions,
       users: users,
       types: types,
+      currencies: currencies,
       isError: isError,
       isLoading: isLoading,
     );
@@ -42,6 +44,7 @@ mixin _$ListExcursionsState {
   List<ExcursionEntity> get excursions => throw _privateConstructorUsedError;
   List<UserEntity> get users => throw _privateConstructorUsedError;
   List<TypeEntity> get types => throw _privateConstructorUsedError;
+  List<CurrencyEntity> get currencies => throw _privateConstructorUsedError;
   bool get isError => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
 
@@ -59,6 +62,7 @@ abstract class $ListExcursionsStateCopyWith<$Res> {
       {List<ExcursionEntity> excursions,
       List<UserEntity> users,
       List<TypeEntity> types,
+      List<CurrencyEntity> currencies,
       bool isError,
       bool isLoading});
 }
@@ -77,6 +81,7 @@ class _$ListExcursionsStateCopyWithImpl<$Res>
     Object? excursions = freezed,
     Object? users = freezed,
     Object? types = freezed,
+    Object? currencies = freezed,
     Object? isError = freezed,
     Object? isLoading = freezed,
   }) {
@@ -93,6 +98,10 @@ class _$ListExcursionsStateCopyWithImpl<$Res>
           ? _value.types
           : types // ignore: cast_nullable_to_non_nullable
               as List<TypeEntity>,
+      currencies: currencies == freezed
+          ? _value.currencies
+          : currencies // ignore: cast_nullable_to_non_nullable
+              as List<CurrencyEntity>,
       isError: isError == freezed
           ? _value.isError
           : isError // ignore: cast_nullable_to_non_nullable
@@ -116,6 +125,7 @@ abstract class _$ListExcursionsStateCopyWith<$Res>
       {List<ExcursionEntity> excursions,
       List<UserEntity> users,
       List<TypeEntity> types,
+      List<CurrencyEntity> currencies,
       bool isError,
       bool isLoading});
 }
@@ -136,6 +146,7 @@ class __$ListExcursionsStateCopyWithImpl<$Res>
     Object? excursions = freezed,
     Object? users = freezed,
     Object? types = freezed,
+    Object? currencies = freezed,
     Object? isError = freezed,
     Object? isLoading = freezed,
   }) {
@@ -152,6 +163,10 @@ class __$ListExcursionsStateCopyWithImpl<$Res>
           ? _value.types
           : types // ignore: cast_nullable_to_non_nullable
               as List<TypeEntity>,
+      currencies: currencies == freezed
+          ? _value.currencies
+          : currencies // ignore: cast_nullable_to_non_nullable
+              as List<CurrencyEntity>,
       isError: isError == freezed
           ? _value.isError
           : isError // ignore: cast_nullable_to_non_nullable
@@ -171,6 +186,7 @@ class _$_ListExcursionsState implements _ListExcursionsState {
       {this.excursions = const [],
       this.users = const [],
       this.types = const [],
+      this.currencies = const [],
       this.isError = false,
       this.isLoading = false});
 
@@ -185,6 +201,9 @@ class _$_ListExcursionsState implements _ListExcursionsState {
   final List<TypeEntity> types;
   @JsonKey()
   @override
+  final List<CurrencyEntity> currencies;
+  @JsonKey()
+  @override
   final bool isError;
   @JsonKey()
   @override
@@ -192,7 +211,7 @@ class _$_ListExcursionsState implements _ListExcursionsState {
 
   @override
   String toString() {
-    return 'ListExcursionsState(excursions: $excursions, users: $users, types: $types, isError: $isError, isLoading: $isLoading)';
+    return 'ListExcursionsState(excursions: $excursions, users: $users, types: $types, currencies: $currencies, isError: $isError, isLoading: $isLoading)';
   }
 
   @override
@@ -204,6 +223,8 @@ class _$_ListExcursionsState implements _ListExcursionsState {
                 .equals(other.excursions, excursions) &&
             const DeepCollectionEquality().equals(other.users, users) &&
             const DeepCollectionEquality().equals(other.types, types) &&
+            const DeepCollectionEquality()
+                .equals(other.currencies, currencies) &&
             const DeepCollectionEquality().equals(other.isError, isError) &&
             const DeepCollectionEquality().equals(other.isLoading, isLoading));
   }
@@ -214,6 +235,7 @@ class _$_ListExcursionsState implements _ListExcursionsState {
       const DeepCollectionEquality().hash(excursions),
       const DeepCollectionEquality().hash(users),
       const DeepCollectionEquality().hash(types),
+      const DeepCollectionEquality().hash(currencies),
       const DeepCollectionEquality().hash(isError),
       const DeepCollectionEquality().hash(isLoading));
 
@@ -229,6 +251,7 @@ abstract class _ListExcursionsState implements ListExcursionsState {
       {List<ExcursionEntity> excursions,
       List<UserEntity> users,
       List<TypeEntity> types,
+      List<CurrencyEntity> currencies,
       bool isError,
       bool isLoading}) = _$_ListExcursionsState;
 
@@ -238,6 +261,8 @@ abstract class _ListExcursionsState implements ListExcursionsState {
   List<UserEntity> get users;
   @override
   List<TypeEntity> get types;
+  @override
+  List<CurrencyEntity> get currencies;
   @override
   bool get isError;
   @override
@@ -256,6 +281,7 @@ class _$ExcursionInfoStateTearOff {
       {ExcursionEntity? excursion,
       UserEntity? user,
       TypeEntity? type,
+      CurrencyEntity? currency,
       PhotosExcursionEntity? photos,
       List<ReviewsEntity>? reviews,
       List<UserEntity>? userReview,
@@ -267,6 +293,7 @@ class _$ExcursionInfoStateTearOff {
       excursion: excursion,
       user: user,
       type: type,
+      currency: currency,
       photos: photos,
       reviews: reviews,
       userReview: userReview,
@@ -286,6 +313,7 @@ mixin _$ExcursionInfoState {
   ExcursionEntity? get excursion => throw _privateConstructorUsedError;
   UserEntity? get user => throw _privateConstructorUsedError;
   TypeEntity? get type => throw _privateConstructorUsedError;
+  CurrencyEntity? get currency => throw _privateConstructorUsedError;
   PhotosExcursionEntity? get photos => throw _privateConstructorUsedError;
   List<ReviewsEntity>? get reviews => throw _privateConstructorUsedError;
   List<UserEntity>? get userReview => throw _privateConstructorUsedError;
@@ -308,6 +336,7 @@ abstract class $ExcursionInfoStateCopyWith<$Res> {
       {ExcursionEntity? excursion,
       UserEntity? user,
       TypeEntity? type,
+      CurrencyEntity? currency,
       PhotosExcursionEntity? photos,
       List<ReviewsEntity>? reviews,
       List<UserEntity>? userReview,
@@ -331,6 +360,7 @@ class _$ExcursionInfoStateCopyWithImpl<$Res>
     Object? excursion = freezed,
     Object? user = freezed,
     Object? type = freezed,
+    Object? currency = freezed,
     Object? photos = freezed,
     Object? reviews = freezed,
     Object? userReview = freezed,
@@ -352,6 +382,10 @@ class _$ExcursionInfoStateCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as TypeEntity?,
+      currency: currency == freezed
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as CurrencyEntity?,
       photos: photos == freezed
           ? _value.photos
           : photos // ignore: cast_nullable_to_non_nullable
@@ -395,6 +429,7 @@ abstract class _$ExcursionInfoStateCopyWith<$Res>
       {ExcursionEntity? excursion,
       UserEntity? user,
       TypeEntity? type,
+      CurrencyEntity? currency,
       PhotosExcursionEntity? photos,
       List<ReviewsEntity>? reviews,
       List<UserEntity>? userReview,
@@ -420,6 +455,7 @@ class __$ExcursionInfoStateCopyWithImpl<$Res>
     Object? excursion = freezed,
     Object? user = freezed,
     Object? type = freezed,
+    Object? currency = freezed,
     Object? photos = freezed,
     Object? reviews = freezed,
     Object? userReview = freezed,
@@ -441,6 +477,10 @@ class __$ExcursionInfoStateCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as TypeEntity?,
+      currency: currency == freezed
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as CurrencyEntity?,
       photos: photos == freezed
           ? _value.photos
           : photos // ignore: cast_nullable_to_non_nullable
@@ -480,6 +520,7 @@ class _$_ExcursionInfoState implements _ExcursionInfoState {
       {this.excursion,
       this.user,
       this.type,
+      this.currency,
       this.photos,
       this.reviews,
       this.userReview,
@@ -494,6 +535,8 @@ class _$_ExcursionInfoState implements _ExcursionInfoState {
   final UserEntity? user;
   @override
   final TypeEntity? type;
+  @override
+  final CurrencyEntity? currency;
   @override
   final PhotosExcursionEntity? photos;
   @override
@@ -515,7 +558,7 @@ class _$_ExcursionInfoState implements _ExcursionInfoState {
 
   @override
   String toString() {
-    return 'ExcursionInfoState(excursion: $excursion, user: $user, type: $type, photos: $photos, reviews: $reviews, userReview: $userReview, tags: $tags, typesMove: $typesMove, isError: $isError, isLoading: $isLoading)';
+    return 'ExcursionInfoState(excursion: $excursion, user: $user, type: $type, currency: $currency, photos: $photos, reviews: $reviews, userReview: $userReview, tags: $tags, typesMove: $typesMove, isError: $isError, isLoading: $isLoading)';
   }
 
   @override
@@ -526,6 +569,7 @@ class _$_ExcursionInfoState implements _ExcursionInfoState {
             const DeepCollectionEquality().equals(other.excursion, excursion) &&
             const DeepCollectionEquality().equals(other.user, user) &&
             const DeepCollectionEquality().equals(other.type, type) &&
+            const DeepCollectionEquality().equals(other.currency, currency) &&
             const DeepCollectionEquality().equals(other.photos, photos) &&
             const DeepCollectionEquality().equals(other.reviews, reviews) &&
             const DeepCollectionEquality()
@@ -542,6 +586,7 @@ class _$_ExcursionInfoState implements _ExcursionInfoState {
       const DeepCollectionEquality().hash(excursion),
       const DeepCollectionEquality().hash(user),
       const DeepCollectionEquality().hash(type),
+      const DeepCollectionEquality().hash(currency),
       const DeepCollectionEquality().hash(photos),
       const DeepCollectionEquality().hash(reviews),
       const DeepCollectionEquality().hash(userReview),
@@ -561,6 +606,7 @@ abstract class _ExcursionInfoState implements ExcursionInfoState {
       {ExcursionEntity? excursion,
       UserEntity? user,
       TypeEntity? type,
+      CurrencyEntity? currency,
       PhotosExcursionEntity? photos,
       List<ReviewsEntity>? reviews,
       List<UserEntity>? userReview,
@@ -575,6 +621,8 @@ abstract class _ExcursionInfoState implements ExcursionInfoState {
   UserEntity? get user;
   @override
   TypeEntity? get type;
+  @override
+  CurrencyEntity? get currency;
   @override
   PhotosExcursionEntity? get photos;
   @override

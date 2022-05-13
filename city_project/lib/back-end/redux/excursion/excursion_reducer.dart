@@ -1,4 +1,4 @@
-import 'package:lan_code/back-end/redux/excursion/excursions_actions.dart';
+import 'package:lan_code/back-end/redux/excursion/excursion_actions.dart';
 import 'package:lan_code/back-end/redux/excursion/excursion_state.dart';
 import 'package:redux/redux.dart';
 
@@ -40,6 +40,7 @@ ListExcursionsState _getListExcursions(
 ) =>
     state.copyWith(
       excursions: action.excursions,
+      currencies: action.currencies,
       users: action.users,
       types: action.types,
       isLoading: false,
@@ -55,6 +56,7 @@ ExcursionInfoState _loadExcursionInfo(
     state.copyWith(
       excursion: action.excursion,
       user: action.user,
+      currency: action.currency,
       type: action.type,
       reviews: null,
       userReview: null,
@@ -82,6 +84,7 @@ ExcursionInfoState _getExcursionInfo(
       excursion: action.excursion,
       user: action.user,
       type: action.type,
+      currency: action.currency,
       tags: action.tags,
       photos: action.photos,
       userReview: action.usersReview,
