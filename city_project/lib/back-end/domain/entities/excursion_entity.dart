@@ -13,18 +13,22 @@ class ExcursionEntity extends Equatable {
   final List<dynamic> moveType;
   final List<dynamic> rating;
   final List<dynamic> tags;
+  final List<dynamic> specialPrice;
   final String meetPoint;
   final int standardPrice;
   final String addServices;
   final String included;
+  final String currency;
   final String organizationalDetails;
 
   const ExcursionEntity({
+    required this.specialPrice,
     required this.id,
     required this.organizationalDetails,
     required this.addServices,
     required this.tags,
     required this.included,
+    required this.currency,
     required this.name,
     required this.photo,
     required this.description,
@@ -46,8 +50,10 @@ class ExcursionEntity extends Equatable {
         addServices,
         tags,
         included,
+        specialPrice,
         organizationalDetails,
         duration,
+        currency,
         photo,
         description,
         groupSize,

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:lan_code/back-end/domain/entities/currency_entity.dart';
 import 'package:lan_code/back-end/domain/entities/excursion_entity.dart';
 import 'package:lan_code/back-end/domain/entities/type_entity.dart';
 import 'package:lan_code/back-end/domain/entities/user_entity.dart';
 import 'package:lan_code/back-end/redux/app/app_state.dart';
-import 'package:lan_code/back-end/redux/excursion/excursions_actions.dart';
+import 'package:lan_code/back-end/redux/excursion/excursion_actions.dart';
 import 'package:lan_code/ui/common/colors.dart';
 import 'package:lan_code/ui/common/icons.dart';
 import 'package:lan_code/ui/common/images.dart';
@@ -19,11 +20,13 @@ class ExcursionCardWidget extends StatelessWidget {
   final ExcursionEntity excursionEntity;
   final UserEntity userEntity;
   final TypeEntity typeEntity;
+  final CurrencyEntity currencyEntity;
 
   const ExcursionCardWidget({
     required this.excursionEntity,
     required this.userEntity,
     required this.typeEntity,
+    required this.currencyEntity,
     Key? key,
   }) : super(key: key);
 
@@ -40,6 +43,7 @@ class ExcursionCardWidget extends StatelessWidget {
               excursion: excursionEntity,
               user: userEntity,
               type: typeEntity,
+              currency: currencyEntity,
             ),
           );
           Navigator.push(context, MaterialPageRoute(builder: (context) => const ExcursionPage()));
@@ -172,8 +176,10 @@ class ExcursionCardWidget extends StatelessWidget {
                     children: [
                       ///окончания на часах
                       Text(excursionEntity.duration, style: Montserrat(size: 13, style: Regular)),
-                      Text('₽ ' + excursionEntity.standardPrice.toString(),
-                          style: Montserrat(size: 16, style: Bold)),
+                      Text(
+                        currencyEntity.sign + " " + excursionEntity.standardPrice.toString(),
+                        style: Montserrat(size: 16, style: Bold),
+                      ),
                     ],
                   )
                 ],

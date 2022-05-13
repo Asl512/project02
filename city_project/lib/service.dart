@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:lan_code/back-end/redux/city/city_actions.dart';
 
 class AuthService {
   final FirebaseAuth fauth = FirebaseAuth.instance;

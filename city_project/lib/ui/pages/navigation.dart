@@ -27,10 +27,11 @@ class Navigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Grey,
-        body: BodyNavigation(
-          index: index,
-        ));
+      backgroundColor: Grey,
+      body: BodyNavigation(
+        index: index,
+      ),
+    );
   }
 }
 
@@ -63,23 +64,22 @@ class _BodyNavigationState extends State<BodyNavigation> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BubbleBottomBar(
-          fabLocation: floatingActionButton.fabLocation(),
-          backgroundColor: Blue,
-          hasNotch: true,
-          opacity: .2,
-          currentIndex: page,
-          onTap: (index) => setState(() => page = index!),
-          elevation: 8,
-          tilesPadding: const EdgeInsets.symmetric(
-            vertical: 8.0,
-          ),
-          items: [
-            MenuItem(icon: iconMenuExcursion, text: "Экскурсии").widget,
-            MenuItem(icon: iconMenuTickets, text: "Мои билеты").widget,
-            MenuItem(icon: iconMenuProfile, text: "Профиль").widget,
-          ]),
+        backgroundColor: Blue,
+        hasNotch: true,
+        opacity: .2,
+        currentIndex: page,
+        onTap: (index) => setState(() => page = index!),
+        elevation: 8,
+        tilesPadding: const EdgeInsets.symmetric(
+          vertical: 8.0,
+        ),
+        items: [
+          MenuItem(icon: iconMenuExcursion, text: "Экскурсии").widget,
+          MenuItem(icon: iconMenuTickets, text: "Мои билеты").widget,
+          MenuItem(icon: iconMenuProfile, text: "Профиль").widget,
+        ],
+      ),
       floatingActionButton: floatingActionButton,
-      floatingActionButtonLocation: floatingActionButton.location(),
       body: page == 0
           ? const _City()
           : page == 1
@@ -90,15 +90,13 @@ class _BodyNavigationState extends State<BodyNavigation> {
 }
 
 class _FloatingActionButton extends StatelessWidget {
-  late bool guidePermit = false;
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, AuthState>(
       converter: (store) => store.state.authState,
       builder: (context, store) {
         if (store.isLoggedIn) {
-          if(store.user!.guidePermit){
-            guidePermit = true;
+          if (store.user!.guidePermit) {
             return FloatingActionButton(
               onPressed: () => Navigator.push(
                 context,
@@ -109,26 +107,9 @@ class _FloatingActionButton extends StatelessWidget {
             );
           }
         }
-        guidePermit = false;
         return Container();
       },
     );
-  }
-
-  FloatingActionButtonLocation? location() {
-    if (guidePermit) {
-      return FloatingActionButtonLocation.endDocked;
-    } else {
-      return null;
-    }
-  }
-
-  BubbleBottomBarFabLocation? fabLocation() {
-    if (guidePermit) {
-      return BubbleBottomBarFabLocation.end;
-    } else {
-      return null;
-    }
   }
 }
 

@@ -18,7 +18,7 @@ final Widget iconKey = SvgPicture.asset('assets/icon/key.svg', height: 20, width
 final Widget iconTypeExcursion = SvgPicture.asset('assets/icon/typeExcursion.svg', height: 20, width: 20, allowDrawingOutsideViewBox: true, color: White);
 final Widget iconCity = SvgPicture.asset('assets/icon/city.svg', height: 20, width: 20, allowDrawingOutsideViewBox: true, color: White);
 final Widget iconChoice = SvgPicture.asset('assets/icon/choice.svg', height: 20, width: 20, allowDrawingOutsideViewBox: true, color: White);
-final Widget iconSizer = SvgPicture.asset('assets/icon/size.svg', height: 20, width: 20, allowDrawingOutsideViewBox: true, color: Red);
+final Widget iconSizer = SvgPicture.asset('assets/icon/size.svg', height: 20, width: 20, allowDrawingOutsideViewBox: true, color: White);
 final Widget iconMove = SvgPicture.asset('assets/icon/move.svg', height: 20, width: 20, allowDrawingOutsideViewBox: true, color: White);
 final Widget iconPublication = SvgPicture.asset('assets/icon/publication.svg', height: 20, width: 20, allowDrawingOutsideViewBox: true, color: White);
 

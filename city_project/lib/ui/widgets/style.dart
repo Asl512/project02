@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lan_code/back-end/domain/entities/excursion_entity.dart';
 import 'package:lan_code/ui/common/colors.dart';
 import 'package:lan_code/ui/common/icons.dart';
 import 'package:lan_code/ui/common/images.dart';

@@ -5,6 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:lan_code/back-end/redux/add_excursion/add_excursion_state.dart';
 import 'package:lan_code/back-end/redux/app/app_reducer.dart';
 import 'package:lan_code/back-end/redux/app/app_state.dart';
+import 'package:lan_code/back-end/redux/booking/booking_state.dart';
 import 'package:lan_code/back-end/redux/city/city_state.dart';
 import 'package:lan_code/back-end/redux/excursion/excursion_state.dart';
 import 'package:lan_code/back-end/redux/user/user_state.dart';
@@ -33,6 +34,7 @@ main() async {
       authState: AuthState(),
       addExcursionState: AddExcursionState(),
       insertExcursionState: InsertExcursionState(),
+      bookingState: BookingState(),
     ),
   );
 
