@@ -16,8 +16,8 @@ class NotAuthAction extends AuthAction {}
 class ErrorAuthAction extends AuthAction {}
 
 class GetAuthAction extends AuthAction {
-  final String token;
-  final UserEntity user;
+  final String? token;
+  final UserEntity? user;
 
   GetAuthAction({
     required this.token,
@@ -35,7 +35,6 @@ ThunkAction AuthThunkAction(context) => (Store store) async {
         if (user == null) {
           store.dispatch(ErrorAuthAction());
         } else {
-          store.dispatch(AddExcursionThunkAction());
           store.dispatch(GetAuthAction(
             token: user.id,
             user: user,

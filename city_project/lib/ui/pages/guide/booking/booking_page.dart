@@ -9,13 +9,28 @@ import 'package:lan_code/ui/common/textStyle.dart';
 import 'package:lan_code/ui/pages/guide/booking/book_categories_price.dart';
 import 'package:lan_code/ui/widgets/button_widget.dart';
 import 'package:lan_code/ui/widgets/loading_widget.dart';
+import 'package:lan_code/ui/widgets/page_reload_widget.dart';
 import 'package:lan_code/ui/widgets/style.dart';
 import 'package:lan_code/ui/widgets/text_field_style.dart';
 import 'package:redux/redux.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-class BookingPage extends StatelessWidget {
+class BookingPage extends StatefulWidget {
   const BookingPage({Key? key}) : super(key: key);
+
+  @override
+  State<BookingPage> createState() => _BookingPageState();
+}
+
+class _BookingPageState extends State<BookingPage> {
+  late Store<AppState> _store;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _store = StoreProvider.of<AppState>(context);
+    _store.dispatch(BookingInfoThunkAction(_store.state.excursionInfoState.excursion));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +45,32 @@ class BookingPage extends StatelessWidget {
                 backgroundColor: Grey,
                 elevation: 0.0,
                 leading: IconButton(
-                    icon: const Icon(Icons.arrow_back_ios, size: 20, color: Blue),
-                    onPressed: () => Navigator.pop(context)),
+                  icon: const Icon(Icons.arrow_back_ios, size: 20, color: Blue),
+                  onPressed: () => Navigator.pop(context),
+                ),
                 title: Text("Бронирование", style: Montserrat(size: 25, style: Bold)),
               ),
-              body: const _Body(),
+              body: StoreConnector<AppState, BookingInfoState>(
+                converter: (store) => store.state.bookingInfoState,
+                builder: (context, store) {
+                  if(!store.isAuth){
+                    return PageReloadWidget(
+                      errorText: 'Авторизуйтесь',
+                      func: () => _store.dispatch(
+                          BookingInfoThunkAction(_store.state.excursionInfoState.excursion)),
+                    );
+                  }else if (store.isLoading) {
+                    return const LoadingWidget();
+                  } else if (store.isError) {
+                    return PageReloadWidget(
+                      errorText: 'Ошибка загрузки брони',
+                      func: () => _store.dispatch(
+                          BookingInfoThunkAction(_store.state.excursionInfoState.excursion)),
+                    );
+                  }
+                  return const _Body();
+                },
+              ),
             ),
             if (store.isLoading)
               Positioned(
@@ -108,7 +144,13 @@ class _BodyState extends State<_Body> {
             ),
 
             _StandardTickets(controller: controller),
-            BookingCategoryPrice(controller:controller),
+            if (_store.state.bookingInfoState.categoriesPeople.isNotEmpty)
+              Column(
+                children: [
+                  const SizedBox(height: 20),
+                  BookingCategoryPrice(controller: controller),
+                ],
+              ),
 
             if (_store.state.excursionInfoState.excursion!.type == '3') const Text('YEEEEEEEEEEEP'),
 
@@ -196,7 +238,6 @@ class _BodyState extends State<_Body> {
                         BookingThunkAction(
                           context: context,
                           controller: controller,
-                          idGuide: _store.state.authState.token,
                         ),
                       );
                     },

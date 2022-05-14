@@ -114,7 +114,7 @@ class _BookingCategoryPriceState extends State<BookingCategoryPrice> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const TitleTextFormField(text: 'Цена'),
+                  const TitleTextFormField(text: 'Кол-во'),
                   TextFieldWithShadow(
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.2,
@@ -155,14 +155,9 @@ class _BookingCategoryPriceState extends State<BookingCategoryPrice> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: activeCategory.map((category) {
-                  late String price = category.first.name + ' - ';
-                  late String dop = '';
-                  if (category.last == '0') {
-                    dop = 'бесплатно';
-                  } else {
-                    dop = category.last + ' ' + storeInsert.currency!.abbreviated;
-                  }
-                  price += dop;
+                  late String countTickets = category.first.name + ' - ';
+                  late String dop = category.last + ' шт.';
+                  countTickets += dop;
                   return Container(
                     margin: const EdgeInsets.symmetric(vertical: 5),
                     width: MediaQuery.of(context).size.width,
@@ -176,7 +171,7 @@ class _BookingCategoryPriceState extends State<BookingCategoryPrice> {
                         Padding(
                           padding: const EdgeInsets.only(left: 20),
                           child: Text(
-                            price,
+                            countTickets,
                             style: Montserrat(size: 15, color: White),
                           ),
                         ),
@@ -187,7 +182,6 @@ class _BookingCategoryPriceState extends State<BookingCategoryPrice> {
                               activeCategory
                                   .removeWhere((element) => element.first.id == category.first.id);
                             });
-                            //widget.controller.categoriesPeoplePrice = activeCategory;
                           },
                           icon: const Icon(Icons.clear, color: White),
                         )
@@ -206,15 +200,15 @@ class _BookingCategoryPriceState extends State<BookingCategoryPrice> {
   void validPrice() {
     String errorText = '';
     if (tickets.text == '') {
-      errorText = 'Введите цену';
+      errorText = 'Введите количество';
     } else {
       try {
         int standardPrice = int.parse(tickets.text);
-        if (standardPrice < 0) {
-          errorText = 'Стоимость должна быть больше 0.';
+        if (standardPrice <= 0) {
+          errorText = 'Количество билетов должно быть больше 0.';
         }
       } catch (e) {
-        errorText = 'Не верный формат цены';
+        errorText = 'Не верный формат количества';
       }
     }
 
@@ -229,7 +223,6 @@ class _BookingCategoryPriceState extends State<BookingCategoryPrice> {
         categoryPeople = null;
         tickets.text = '0';
       });
-      //widget.controller.categoriesPeoplePrice = activeCategory;
     } else {
       showTopSnackBar(
         context,
@@ -250,9 +243,7 @@ class _BookingCategoryPriceState extends State<BookingCategoryPrice> {
   }
 
   List<DropdownMenuItem<CategoryPeopleEntity>> dropdownItem() {
-    listCategory = _store.state.excursionInfoState.excursion!.specialPrice
-        .map((e) => e["idCategory"])
-        .toList();
+    listCategory = _store.state.bookingInfoState.categoriesPeople;
     List<DropdownMenuItem<CategoryPeopleEntity>> list = [];
     for (int i = 0; i < listCategory.length; i++) {
       list.add(

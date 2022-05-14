@@ -8,6 +8,7 @@ class BookingInfoState with _$BookingInfoState {
   const factory BookingInfoState({
     @Default(false) bool isError,
     @Default(false) bool isLoading,
+    @Default(false) bool isAuth,
     @Default([]) List<CategoryPeopleEntity> categoriesPeople,
   }) = _BookingInfoState;
 }

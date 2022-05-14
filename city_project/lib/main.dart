@@ -30,11 +30,14 @@ main() async {
       excursionInfoState: ExcursionInfoState(),
       listCitiesState: ListCitiesState(),
       cityState: CityState(),
-      listExcursionsState: ListExcursionsState(),
+      allExcursions: ListExcursionsState(),
+      groupExcursions: ListExcursionsState(),
+      individualExcursions: ListExcursionsState(),
       authState: AuthState(),
       addExcursionState: AddExcursionState(),
       insertExcursionState: InsertExcursionState(),
       bookingState: BookingState(),
+      bookingInfoState: BookingInfoState(),
     ),
   );
 

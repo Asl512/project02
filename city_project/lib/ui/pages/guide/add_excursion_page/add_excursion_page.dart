@@ -74,6 +74,7 @@ class _AddExcursionPageState extends State<AddExcursionPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _store = StoreProvider.of<AppState>(context);
+    _store.dispatch(AddExcursionThunkAction(context));
   }
 
   @override
@@ -102,7 +103,7 @@ class _AddExcursionPageState extends State<AddExcursionPage> {
                   } else if (store.isError) {
                     return PageReloadWidget(
                       errorText: 'Ошибка загрузки страницы',
-                      func: () => _store.dispatch(AddExcursionThunkAction()),
+                      func: () => _store.dispatch(AddExcursionThunkAction(context)),
                     );
                   }
                   return const _Body();
@@ -172,8 +173,7 @@ class _BodyState extends State<_Body> {
                             return const DateOnWeek();
                           } else if (storeInsert.type!.id == '2') {
                             return const DateFixed();
-                          }
-                          if (storeInsert.type!.id == '3') {
+                          }else if (storeInsert.type!.id == '3') {
                             return const DateIndividual();
                           } else {
                             return const ErrorDate();
@@ -238,7 +238,6 @@ class _BodyState extends State<_Body> {
                             InsertThunkAction(
                               context: context,
                               controller: controller,
-                              idGuide: _store.state.authState.token,
                             ),
                           );
                         },

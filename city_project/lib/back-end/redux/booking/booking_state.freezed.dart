@@ -15,6 +15,216 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
+class _$BookingInfoStateTearOff {
+  const _$BookingInfoStateTearOff();
+
+  _BookingInfoState call(
+      {bool isError = false,
+      bool isLoading = false,
+      bool isAuth = false,
+      List<CategoryPeopleEntity> categoriesPeople = const []}) {
+    return _BookingInfoState(
+      isError: isError,
+      isLoading: isLoading,
+      isAuth: isAuth,
+      categoriesPeople: categoriesPeople,
+    );
+  }
+}
+
+/// @nodoc
+const $BookingInfoState = _$BookingInfoStateTearOff();
+
+/// @nodoc
+mixin _$BookingInfoState {
+  bool get isError => throw _privateConstructorUsedError;
+  bool get isLoading => throw _privateConstructorUsedError;
+  bool get isAuth => throw _privateConstructorUsedError;
+  List<CategoryPeopleEntity> get categoriesPeople =>
+      throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $BookingInfoStateCopyWith<BookingInfoState> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $BookingInfoStateCopyWith<$Res> {
+  factory $BookingInfoStateCopyWith(
+          BookingInfoState value, $Res Function(BookingInfoState) then) =
+      _$BookingInfoStateCopyWithImpl<$Res>;
+  $Res call(
+      {bool isError,
+      bool isLoading,
+      bool isAuth,
+      List<CategoryPeopleEntity> categoriesPeople});
+}
+
+/// @nodoc
+class _$BookingInfoStateCopyWithImpl<$Res>
+    implements $BookingInfoStateCopyWith<$Res> {
+  _$BookingInfoStateCopyWithImpl(this._value, this._then);
+
+  final BookingInfoState _value;
+  // ignore: unused_field
+  final $Res Function(BookingInfoState) _then;
+
+  @override
+  $Res call({
+    Object? isError = freezed,
+    Object? isLoading = freezed,
+    Object? isAuth = freezed,
+    Object? categoriesPeople = freezed,
+  }) {
+    return _then(_value.copyWith(
+      isError: isError == freezed
+          ? _value.isError
+          : isError // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isLoading: isLoading == freezed
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isAuth: isAuth == freezed
+          ? _value.isAuth
+          : isAuth // ignore: cast_nullable_to_non_nullable
+              as bool,
+      categoriesPeople: categoriesPeople == freezed
+          ? _value.categoriesPeople
+          : categoriesPeople // ignore: cast_nullable_to_non_nullable
+              as List<CategoryPeopleEntity>,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$BookingInfoStateCopyWith<$Res>
+    implements $BookingInfoStateCopyWith<$Res> {
+  factory _$BookingInfoStateCopyWith(
+          _BookingInfoState value, $Res Function(_BookingInfoState) then) =
+      __$BookingInfoStateCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {bool isError,
+      bool isLoading,
+      bool isAuth,
+      List<CategoryPeopleEntity> categoriesPeople});
+}
+
+/// @nodoc
+class __$BookingInfoStateCopyWithImpl<$Res>
+    extends _$BookingInfoStateCopyWithImpl<$Res>
+    implements _$BookingInfoStateCopyWith<$Res> {
+  __$BookingInfoStateCopyWithImpl(
+      _BookingInfoState _value, $Res Function(_BookingInfoState) _then)
+      : super(_value, (v) => _then(v as _BookingInfoState));
+
+  @override
+  _BookingInfoState get _value => super._value as _BookingInfoState;
+
+  @override
+  $Res call({
+    Object? isError = freezed,
+    Object? isLoading = freezed,
+    Object? isAuth = freezed,
+    Object? categoriesPeople = freezed,
+  }) {
+    return _then(_BookingInfoState(
+      isError: isError == freezed
+          ? _value.isError
+          : isError // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isLoading: isLoading == freezed
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isAuth: isAuth == freezed
+          ? _value.isAuth
+          : isAuth // ignore: cast_nullable_to_non_nullable
+              as bool,
+      categoriesPeople: categoriesPeople == freezed
+          ? _value.categoriesPeople
+          : categoriesPeople // ignore: cast_nullable_to_non_nullable
+              as List<CategoryPeopleEntity>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_BookingInfoState implements _BookingInfoState {
+  const _$_BookingInfoState(
+      {this.isError = false,
+      this.isLoading = false,
+      this.isAuth = false,
+      this.categoriesPeople = const []});
+
+  @JsonKey()
+  @override
+  final bool isError;
+  @JsonKey()
+  @override
+  final bool isLoading;
+  @JsonKey()
+  @override
+  final bool isAuth;
+  @JsonKey()
+  @override
+  final List<CategoryPeopleEntity> categoriesPeople;
+
+  @override
+  String toString() {
+    return 'BookingInfoState(isError: $isError, isLoading: $isLoading, isAuth: $isAuth, categoriesPeople: $categoriesPeople)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _BookingInfoState &&
+            const DeepCollectionEquality().equals(other.isError, isError) &&
+            const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
+            const DeepCollectionEquality().equals(other.isAuth, isAuth) &&
+            const DeepCollectionEquality()
+                .equals(other.categoriesPeople, categoriesPeople));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(isError),
+      const DeepCollectionEquality().hash(isLoading),
+      const DeepCollectionEquality().hash(isAuth),
+      const DeepCollectionEquality().hash(categoriesPeople));
+
+  @JsonKey(ignore: true)
+  @override
+  _$BookingInfoStateCopyWith<_BookingInfoState> get copyWith =>
+      __$BookingInfoStateCopyWithImpl<_BookingInfoState>(this, _$identity);
+}
+
+abstract class _BookingInfoState implements BookingInfoState {
+  const factory _BookingInfoState(
+      {bool isError,
+      bool isLoading,
+      bool isAuth,
+      List<CategoryPeopleEntity> categoriesPeople}) = _$_BookingInfoState;
+
+  @override
+  bool get isError;
+  @override
+  bool get isLoading;
+  @override
+  bool get isAuth;
+  @override
+  List<CategoryPeopleEntity> get categoriesPeople;
+  @override
+  @JsonKey(ignore: true)
+  _$BookingInfoStateCopyWith<_BookingInfoState> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 class _$BookingStateTearOff {
   const _$BookingStateTearOff();
 
