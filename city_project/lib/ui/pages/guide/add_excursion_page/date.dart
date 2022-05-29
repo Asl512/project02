@@ -24,7 +24,7 @@ class DateWidget extends StatelessWidget {
             converter: (store) => store.state.insertExcursionState,
             builder: (context, storeInsert) {
               if (storeInsert.type!.id == '1' || storeInsert.type!.id == '2') {
-                return const _Date();
+                return const _DateAndTime();
               } else if (storeInsert.type!.id == '3') {
                 return const _DateIndividual();
               } else {
@@ -75,8 +75,25 @@ class _DateAndTime extends StatelessWidget {
   }
 }
 
-class _Time extends StatelessWidget {
+class _Time extends StatefulWidget {
   const _Time({Key? key}) : super(key: key);
+
+  @override
+  State<_Time> createState() => _TimeState();
+}
+
+class _TimeState extends State<_Time> {
+  late MaskTextInputFormatter maskTime;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    maskTime = MaskTextInputFormatter(
+      mask: '##:##',
+      filter: {"#": RegExp(r'[0-9]')},
+      type: MaskAutoCompletionType.lazy,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +101,8 @@ class _Time extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.3,
       child: TextFieldWithShadow(
         TextFormField(
+          keyboardType: TextInputType.number,
+          inputFormatters: [maskTime],
           style: Montserrat(color: Blue, size: 15),
           decoration: TextFieldDecoration(
             hintText: "13:00",
@@ -121,6 +140,7 @@ class _DateState extends State<_Date> {
       width: MediaQuery.of(context).size.width * 0.6,
       child: TextFieldWithShadow(
         TextFormField(
+          keyboardType: TextInputType.number,
           style: Montserrat(color: Blue, size: 15),
           inputFormatters: [maskDate],
           decoration: TextFieldDecoration(
