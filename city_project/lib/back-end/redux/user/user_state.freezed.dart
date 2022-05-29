@@ -22,7 +22,7 @@ class _$AuthStateTearOff {
       {bool isLoading = false,
       bool isLoggedIn = false,
       bool isError = false,
-      String token = 'null',
+      String? token,
       UserEntity? user}) {
     return _AuthState(
       isLoading: isLoading,
@@ -42,7 +42,7 @@ mixin _$AuthState {
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isLoggedIn => throw _privateConstructorUsedError;
   bool get isError => throw _privateConstructorUsedError;
-  String get token => throw _privateConstructorUsedError;
+  String? get token => throw _privateConstructorUsedError;
   UserEntity? get user => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -58,7 +58,7 @@ abstract class $AuthStateCopyWith<$Res> {
       {bool isLoading,
       bool isLoggedIn,
       bool isError,
-      String token,
+      String? token,
       UserEntity? user});
 }
 
@@ -94,7 +94,7 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
       token: token == freezed
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       user: user == freezed
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -113,7 +113,7 @@ abstract class _$AuthStateCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
       {bool isLoading,
       bool isLoggedIn,
       bool isError,
-      String token,
+      String? token,
       UserEntity? user});
 }
 
@@ -150,7 +150,7 @@ class __$AuthStateCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
       token: token == freezed
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       user: user == freezed
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -166,7 +166,7 @@ class _$_AuthState implements _AuthState {
       {this.isLoading = false,
       this.isLoggedIn = false,
       this.isError = false,
-      this.token = 'null',
+      this.token,
       this.user});
 
   @JsonKey()
@@ -178,9 +178,8 @@ class _$_AuthState implements _AuthState {
   @JsonKey()
   @override
   final bool isError;
-  @JsonKey()
   @override
-  final String token;
+  final String? token;
   @override
   final UserEntity? user;
 
@@ -222,7 +221,7 @@ abstract class _AuthState implements AuthState {
       {bool isLoading,
       bool isLoggedIn,
       bool isError,
-      String token,
+      String? token,
       UserEntity? user}) = _$_AuthState;
 
   @override
@@ -232,7 +231,7 @@ abstract class _AuthState implements AuthState {
   @override
   bool get isError;
   @override
-  String get token;
+  String? get token;
   @override
   UserEntity? get user;
   @override

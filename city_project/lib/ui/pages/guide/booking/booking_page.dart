@@ -9,13 +9,28 @@ import 'package:lan_code/ui/common/textStyle.dart';
 import 'package:lan_code/ui/pages/guide/booking/book_categories_price.dart';
 import 'package:lan_code/ui/widgets/button_widget.dart';
 import 'package:lan_code/ui/widgets/loading_widget.dart';
+import 'package:lan_code/ui/widgets/page_reload_widget.dart';
 import 'package:lan_code/ui/widgets/style.dart';
 import 'package:lan_code/ui/widgets/text_field_style.dart';
 import 'package:redux/redux.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-class BookingPage extends StatelessWidget {
+class BookingPage extends StatefulWidget {
   const BookingPage({Key? key}) : super(key: key);
+
+  @override
+  State<BookingPage> createState() => _BookingPageState();
+}
+
+class _BookingPageState extends State<BookingPage> {
+  late Store<AppState> _store;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _store = StoreProvider.of<AppState>(context);
+    _store.dispatch(BookingInfoThunkAction(_store.state.excursionInfoState.excursion));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +45,32 @@ class BookingPage extends StatelessWidget {
                 backgroundColor: Grey,
                 elevation: 0.0,
                 leading: IconButton(
-                    icon: const Icon(Icons.arrow_back_ios, size: 20, color: Blue),
-                    onPressed: () => Navigator.pop(context)),
+                  icon: const Icon(Icons.arrow_back_ios, size: 20, color: Blue),
+                  onPressed: () => Navigator.pop(context),
+                ),
                 title: Text("Бронирование", style: Montserrat(size: 25, style: Bold)),
               ),
-              body: const _Body(),
+              body: StoreConnector<AppState, BookingInfoState>(
+                converter: (store) => store.state.bookingInfoState,
+                builder: (context, store) {
+                  if (!store.isAuth) {
+                    return PageReloadWidget(
+                      errorText: 'Авторизуйтесь',
+                      func: () => _store.dispatch(
+                          BookingInfoThunkAction(_store.state.excursionInfoState.excursion)),
+                    );
+                  } else if (store.isLoading) {
+                    return const LoadingWidget();
+                  } else if (store.isError) {
+                    return PageReloadWidget(
+                      errorText: 'Ошибка загрузки брони',
+                      func: () => _store.dispatch(
+                          BookingInfoThunkAction(_store.state.excursionInfoState.excursion)),
+                    );
+                  }
+                  return const _Body();
+                },
+              ),
             ),
             if (store.isLoading)
               Positioned(
@@ -108,7 +144,13 @@ class _BodyState extends State<_Body> {
             ),
 
             _StandardTickets(controller: controller),
-            BookingCategoryPrice(controller:controller),
+            if (_store.state.bookingInfoState.categoriesPeople.isNotEmpty)
+              Column(
+                children: [
+                  const SizedBox(height: 20),
+                  BookingCategoryPrice(controller: controller),
+                ],
+              ),
 
             if (_store.state.excursionInfoState.excursion!.type == '3') const Text('YEEEEEEEEEEEP'),
 
@@ -119,46 +161,47 @@ class _BodyState extends State<_Body> {
             //вывод оставшихся мест
             ///DATES
             Container(
-                margin: const EdgeInsets.only(top: 30),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const TitleTextFormField(text: "Даты", required: true),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(Radius.circular(10)),
-                          color: White,
-                          boxShadow: [ShadowForContainer()],
-                          border: false ? Border.all(color: Red) : Border.all(color: White)),
-                      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
-                      child: SfDateRangePicker(
-                        view: DateRangePickerView.month,
-                        monthViewSettings: const DateRangePickerMonthViewSettings(
-                            firstDayOfWeek: 1, dayFormat: 'EEE'),
-                        selectableDayPredicate: (DateTime dateTime) {
-                          DateTime start = DateTime(2022, 03, 03);
-                          DateTime end = DateTime(2022, 03, 25);
-                          if (dateTime.isAfter(start) && dateTime.isBefore(end)) return true;
-                          return false;
-                        },
-                        enablePastDates: false,
-                        selectionMode: DateRangePickerSelectionMode.single,
-                        onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {},
-                        selectionColor: Blue,
-                        todayHighlightColor: Blue,
-                      ),
+              margin: const EdgeInsets.only(top: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const TitleTextFormField(text: "Даты", required: true),
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                        color: White,
+                        boxShadow: [ShadowForContainer()],
+                        border: false ? Border.all(color: Red) : Border.all(color: White)),
+                    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+                    child: SfDateRangePicker(
+                      view: DateRangePickerView.month,
+                      monthViewSettings: const DateRangePickerMonthViewSettings(
+                          firstDayOfWeek: 1, dayFormat: 'EEE'),
+                      selectableDayPredicate: (DateTime dateTime) {
+                        DateTime start = DateTime(2022, 03, 03);
+                        DateTime end = DateTime(2022, 03, 25);
+                        if (dateTime.isAfter(start) && dateTime.isBefore(end)) return true;
+                        return false;
+                      },
+                      enablePastDates: false,
+                      selectionMode: DateRangePickerSelectionMode.single,
+                      onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {},
+                      selectionColor: Blue,
+                      todayHighlightColor: Blue,
                     ),
-                    false
-                        ? Container(
-                            margin: const EdgeInsets.only(top: 10, left: 15),
-                            child: RichText(
-                              text: TextSpan(
-                                  text: "Ошибка даты".toString(),
-                                  style: Montserrat(size: 13, color: Red)),
-                            ))
-                        : Container()
-                  ],
-                )),
+                  ),
+                  false
+                      ? Container(
+                          margin: const EdgeInsets.only(top: 10, left: 15),
+                          child: RichText(
+                            text: TextSpan(
+                                text: "Ошибка даты".toString(),
+                                style: Montserrat(size: 13, color: Red)),
+                          ))
+                      : Container()
+                ],
+              ),
+            ),
 
             -1 > 0
                 ? Column(
@@ -196,7 +239,6 @@ class _BodyState extends State<_Body> {
                         BookingThunkAction(
                           context: context,
                           controller: controller,
-                          idGuide: _store.state.authState.token,
                         ),
                       );
                     },

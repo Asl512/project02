@@ -3,7 +3,6 @@ import 'package:lan_code/back-end/redux/add_excursion/add_excursion_reducer.dart
 import 'package:lan_code/back-end/redux/app/app_state.dart';
 import 'package:lan_code/back-end/redux/booking/booking_action.dart';
 import 'package:lan_code/back-end/redux/booking/booking_reducer.dart';
-import 'package:lan_code/back-end/redux/booking/booking_state.dart';
 import 'package:lan_code/back-end/redux/city/city_actions.dart';
 import 'package:lan_code/back-end/redux/city/city_reducer.dart';
 import 'package:lan_code/back-end/redux/excursion/excursion_actions.dart';
@@ -24,9 +23,15 @@ AppState appReducer(AppState state, dynamic action) {
   } else if (action is CityAction) {
     final nextState = cityReducer(state.cityState, action);
     return state.copyWith(cityState: nextState);
-  } else if (action is ListExcursionsAction) {
-    final nextState = listExcursionsReducer(state.listExcursionsState, action);
-    return state.copyWith(listExcursionsState: nextState);
+  } else if (action is AllExcursionsAction) {
+    final nextState = allExcursionsReducer(state.allExcursions, action);
+    return state.copyWith(allExcursions: nextState);
+  } else if (action is GroupExcursionsAction) {
+    final nextState = groupExcursionsReducer(state.groupExcursions, action);
+    return state.copyWith(groupExcursions: nextState);
+  } else if (action is IndividualExcursionsAction) {
+    final nextState = individualExcursionsReducer(state.individualExcursions, action);
+    return state.copyWith(individualExcursions: nextState);
   } else if (action is ExcursionInfoAction) {
     final nextState = excursionInfoReducer(state.excursionInfoState, action);
     return state.copyWith(excursionInfoState: nextState);

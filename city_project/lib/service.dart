@@ -1,4 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:lan_code/back-end/redux/app/app_state.dart';
+import 'package:lan_code/back-end/redux/user/user_actions.dart';
+import 'package:redux/redux.dart';
 
 class AuthService {
   final FirebaseAuth fauth = FirebaseAuth.instance;
@@ -31,8 +36,10 @@ class AuthService {
     }
   }
 
-  Future layout() async {
+  Future layout(BuildContext context) async {
     await fauth.signOut();
+    Store store = StoreProvider.of<AppState>(context);
+    store.dispatch(GetAuthAction(user: null, token: null));
   }
 
   Stream<UserMeth?> get currentUser {

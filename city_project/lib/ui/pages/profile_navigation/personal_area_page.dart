@@ -132,7 +132,7 @@ class PersonalAreaPage extends StatelessWidget {
                       textColor: White,
                       buttonColor: Red,
                       func: () {
-                        authService.layout();
+                        authService.layout(context);
                       },
                     )
                   ],

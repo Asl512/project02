@@ -22,11 +22,37 @@ class CityPage extends StatefulWidget {
 
 class _CityPageState extends State<CityPage> with TickerProviderStateMixin {
   late TabController _tabController;
+  late Store _store;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    _store = StoreProvider.of<AppState>(context);
     _tabController = TabController(length: 3, vsync: this);
+    if (_store.state.allExcursions.excursions.isEmpty) {
+      _store.dispatch(GetAllExcursionsThunkAction());
+    }
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) {
+        switch (_tabController.index) {
+          case 0:
+            if (_store.state.allExcursions.excursions.isEmpty) {
+              _store.dispatch(GetAllExcursionsThunkAction());
+            }
+            break;
+          case 1:
+            if (_store.state.groupExcursions.excursions.isEmpty) {
+              _store.dispatch(GetGroupExcursionsThunkAction());
+            }
+            break;
+          case 2:
+            if (_store.state.individualExcursions.excursions.isEmpty) {
+              _store.dispatch(GetIndividualExcursionsThunkAction());
+            }
+            break;
+        }
+      }
+    });
   }
 
   @override
@@ -65,10 +91,10 @@ class _CityPageState extends State<CityPage> with TickerProviderStateMixin {
           backgroundColor: Grey,
           body: TabBarView(
             controller: _tabController,
-            children: const [
-              _BodyExcursions(),
-              _BodyExcursions(type: '12'),
-              _BodyExcursions(type: '3'),
+            children: [
+              _BodyAllExcursions(storeApp: _store),
+              _BodyGroupExcursions(storeApp: _store),
+              _BodyIndividualExcursions(storeApp: _store),
             ],
           ),
         ),
@@ -161,58 +187,34 @@ class _Header extends StatelessWidget {
   }
 }
 
-class _BodyExcursions extends StatefulWidget {
-  final String? type;
+class _BodyAllExcursions extends StatelessWidget {
+  final Store storeApp;
 
-  const _BodyExcursions({
-    this.type,
+  const _BodyAllExcursions({
     Key? key,
+    required this.storeApp,
   }) : super(key: key);
-
-  @override
-  State<_BodyExcursions> createState() => _BodyExcursionsState();
-}
-
-class _BodyExcursionsState extends State<_BodyExcursions> {
-  late Store<AppState> _store;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    _store = StoreProvider.of<AppState>(context);
-    _store.dispatch(GetListExcursionsThunkAction(type: widget.type));
-  }
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       color: Blue,
       onRefresh: () => Future(() {
-        _store.dispatch(GetListExcursionsThunkAction(type: widget.type));
+        storeApp.dispatch(GetAllExcursionsThunkAction());
       }),
       child: StoreConnector<AppState, ListExcursionsState>(
-        converter: (store) => store.state.listExcursionsState,
+        converter: (store) => store.state.allExcursions,
         builder: (context, store) {
           if (store.isLoading) {
             return const LoadingWidget();
           } else if (store.isError) {
             return PageReloadWidget(
               errorText: 'Ошибка загрузки экскурсий',
-              func: _store.dispatch(GetListExcursionsThunkAction(type: widget.type)),
+              func: storeApp.dispatch(GetAllExcursionsThunkAction()),
             );
           }
           if (store.excursions.isEmpty) {
-            return SizedBox(
-              height: MediaQuery.of(context).size.height / 1.25,
-              child: Center(
-                child: Text(
-                  'Экскурсии не найдены',
-                  style: Montserrat(style: Bold, size: 30),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            );
+            return const _EmptyExcursion();
           }
           List<Widget> _excursionsCard = [];
           for (int i = 0; i < store.excursions.length; i++) {
@@ -225,6 +227,114 @@ class _BodyExcursionsState extends State<_BodyExcursions> {
           }
           return ListView(children: _excursionsCard);
         },
+      ),
+    );
+  }
+}
+
+class _BodyGroupExcursions extends StatelessWidget {
+  final Store storeApp;
+
+  const _BodyGroupExcursions({
+    Key? key,
+    required this.storeApp,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+      color: Blue,
+      onRefresh: () => Future(() {
+        storeApp.dispatch(GetGroupExcursionsThunkAction());
+      }),
+      child: StoreConnector<AppState, ListExcursionsState>(
+        converter: (store) => store.state.groupExcursions,
+        builder: (context, store) {
+          if (store.isLoading) {
+            return const LoadingWidget();
+          } else if (store.isError) {
+            return PageReloadWidget(
+              errorText: 'Ошибка загрузки экскурсий',
+              func: storeApp.dispatch(GetGroupExcursionsThunkAction()),
+            );
+          }
+          if (store.excursions.isEmpty) {
+            return const _EmptyExcursion();
+          }
+          List<Widget> _excursionsCard = [];
+          for (int i = 0; i < store.excursions.length; i++) {
+            _excursionsCard.add(ExcursionCardWidget(
+              excursionEntity: store.excursions[i],
+              userEntity: store.users[i],
+              typeEntity: store.types[i],
+              currencyEntity: store.currencies[i],
+            ));
+          }
+          return ListView(children: _excursionsCard);
+        },
+      ),
+    );
+  }
+}
+
+class _BodyIndividualExcursions extends StatelessWidget {
+  final Store storeApp;
+
+  const _BodyIndividualExcursions({
+    Key? key,
+    required this.storeApp,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+      color: Blue,
+      onRefresh: () => Future(() {
+        storeApp.dispatch(GetIndividualExcursionsThunkAction());
+      }),
+      child: StoreConnector<AppState, ListExcursionsState>(
+        converter: (store) => store.state.individualExcursions,
+        builder: (context, store) {
+          if (store.isLoading) {
+            return const LoadingWidget();
+          } else if (store.isError) {
+            return PageReloadWidget(
+              errorText: 'Ошибка загрузки экскурсий',
+              func: storeApp.dispatch(GetIndividualExcursionsThunkAction()),
+            );
+          }
+          if (store.excursions.isEmpty) {
+            return const _EmptyExcursion();
+          }
+          List<Widget> _excursionsCard = [];
+          for (int i = 0; i < store.excursions.length; i++) {
+            _excursionsCard.add(ExcursionCardWidget(
+              excursionEntity: store.excursions[i],
+              userEntity: store.users[i],
+              typeEntity: store.types[i],
+              currencyEntity: store.currencies[i],
+            ));
+          }
+          return ListView(children: _excursionsCard);
+        },
+      ),
+    );
+  }
+}
+
+class _EmptyExcursion extends StatelessWidget {
+  const _EmptyExcursion({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height / 1.25,
+      child: Center(
+        child: Text(
+          'Экскурсии не найдены',
+          style: Montserrat(style: Bold, size: 30),
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }

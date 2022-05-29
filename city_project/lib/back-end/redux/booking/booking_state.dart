@@ -1,6 +1,17 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lan_code/back-end/domain/entities/categorie_people_entity.dart';
 
 part 'booking_state.freezed.dart';
+
+@freezed
+class BookingInfoState with _$BookingInfoState {
+  const factory BookingInfoState({
+    @Default(false) bool isError,
+    @Default(false) bool isLoading,
+    @Default(false) bool isAuth,
+    @Default([]) List<CategoryPeopleEntity> categoriesPeople,
+  }) = _BookingInfoState;
+}
 
 @freezed
 class BookingState with _$BookingState {

@@ -25,19 +25,19 @@ import 'package:lan_code/back-end/domain/useCases/user_useCase.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 
-abstract class ListExcursionsAction {}
+abstract class AllExcursionsAction {}
 
-class LoadListExcursionsAction extends ListExcursionsAction {}
+class LoadAllExcursionsAction extends AllExcursionsAction {}
 
-class ErrorListExcursionsAction extends ListExcursionsAction {}
+class ErrorAllExcursionsAction extends AllExcursionsAction {}
 
-class GetListExcursionsAction extends ListExcursionsAction {
+class GetAllExcursionsAction extends AllExcursionsAction {
   final List<ExcursionEntity> excursions;
   final List<UserEntity> users;
   final List<TypeEntity> types;
   final List<CurrencyEntity> currencies;
 
-  GetListExcursionsAction({
+  GetAllExcursionsAction({
     required this.excursions,
     required this.users,
     required this.types,
@@ -45,19 +45,15 @@ class GetListExcursionsAction extends ListExcursionsAction {
   });
 }
 
-ThunkAction GetListExcursionsThunkAction({String? type}) => (Store store) async {
-      store.dispatch(LoadListExcursionsAction());
+ThunkAction GetAllExcursionsThunkAction() => (Store store) async {
+      store.dispatch(LoadAllExcursionsAction());
       List<ExcursionEntity>? responseExcursions;
 
-      if (type == null) {
-        responseExcursions = await GetAllExcursion(ExcursionDataRepository()).call();
-      } else {
-        responseExcursions = await GetExcursionByType(ExcursionDataRepository()).call(type);
-      }
+      responseExcursions = await GetAllExcursion(ExcursionDataRepository()).call();
 
       if (responseExcursions != null) {
         if (responseExcursions.isEmpty) {
-          store.dispatch(GetListExcursionsAction(
+          store.dispatch(GetAllExcursionsAction(
             excursions: [],
             users: [],
             types: [],
@@ -68,9 +64,9 @@ ThunkAction GetListExcursionsThunkAction({String? type}) => (Store store) async 
         if (data["users"]!.length != responseExcursions.length ||
             data["types"]!.length != responseExcursions.length ||
             data["currencies"]!.length != responseExcursions.length) {
-          store.dispatch(ErrorListExcursionsAction());
+          store.dispatch(ErrorAllExcursionsAction());
         } else {
-          store.dispatch(GetListExcursionsAction(
+          store.dispatch(GetAllExcursionsAction(
             excursions: responseExcursions,
             users: data["users"] as List<UserEntity>,
             types: data["types"] as List<TypeEntity>,
@@ -78,7 +74,113 @@ ThunkAction GetListExcursionsThunkAction({String? type}) => (Store store) async 
           ));
         }
       } else {
-        store.dispatch(ErrorListExcursionsAction());
+        store.dispatch(ErrorAllExcursionsAction());
+      }
+    };
+
+abstract class GroupExcursionsAction {}
+
+class LoadGroupExcursionsAction extends GroupExcursionsAction {}
+
+class ErrorGroupExcursionsAction extends GroupExcursionsAction {}
+
+class GetGroupExcursionsAction extends GroupExcursionsAction {
+  final List<ExcursionEntity> excursions;
+  final List<UserEntity> users;
+  final List<TypeEntity> types;
+  final List<CurrencyEntity> currencies;
+
+  GetGroupExcursionsAction({
+    required this.excursions,
+    required this.users,
+    required this.types,
+    required this.currencies,
+  });
+}
+
+ThunkAction GetGroupExcursionsThunkAction() => (Store store) async {
+      store.dispatch(LoadGroupExcursionsAction());
+      List<ExcursionEntity>? responseExcursions;
+
+      responseExcursions = await GetExcursionByType(ExcursionDataRepository()).call('12');
+
+      if (responseExcursions != null) {
+        if (responseExcursions.isEmpty) {
+          store.dispatch(GetGroupExcursionsAction(
+            excursions: [],
+            users: [],
+            types: [],
+            currencies: [],
+          ));
+        }
+        Map<String, List> data = await getDataExcursion(responseExcursions);
+        if (data["users"]!.length != responseExcursions.length ||
+            data["types"]!.length != responseExcursions.length ||
+            data["currencies"]!.length != responseExcursions.length) {
+          store.dispatch(ErrorGroupExcursionsAction());
+        } else {
+          store.dispatch(GetGroupExcursionsAction(
+            excursions: responseExcursions,
+            users: data["users"] as List<UserEntity>,
+            types: data["types"] as List<TypeEntity>,
+            currencies: data["currencies"] as List<CurrencyEntity>,
+          ));
+        }
+      } else {
+        store.dispatch(ErrorGroupExcursionsAction());
+      }
+    };
+
+abstract class IndividualExcursionsAction {}
+
+class LoadIndividualExcursionsAction extends IndividualExcursionsAction {}
+
+class ErrorIndividualExcursionsAction extends IndividualExcursionsAction {}
+
+class GetIndividualExcursionsAction extends IndividualExcursionsAction {
+  final List<ExcursionEntity> excursions;
+  final List<UserEntity> users;
+  final List<TypeEntity> types;
+  final List<CurrencyEntity> currencies;
+
+  GetIndividualExcursionsAction({
+    required this.excursions,
+    required this.users,
+    required this.types,
+    required this.currencies,
+  });
+}
+
+ThunkAction GetIndividualExcursionsThunkAction() => (Store store) async {
+      store.dispatch(LoadIndividualExcursionsAction());
+      List<ExcursionEntity>? responseExcursions;
+
+      responseExcursions = await GetExcursionByType(ExcursionDataRepository()).call('3');
+
+      if (responseExcursions != null) {
+        if (responseExcursions.isEmpty) {
+          store.dispatch(GetIndividualExcursionsAction(
+            excursions: [],
+            users: [],
+            types: [],
+            currencies: [],
+          ));
+        }
+        Map<String, List> data = await getDataExcursion(responseExcursions);
+        if (data["users"]!.length != responseExcursions.length ||
+            data["types"]!.length != responseExcursions.length ||
+            data["currencies"]!.length != responseExcursions.length) {
+          store.dispatch(ErrorIndividualExcursionsAction());
+        } else {
+          store.dispatch(GetIndividualExcursionsAction(
+            excursions: responseExcursions,
+            users: data["users"] as List<UserEntity>,
+            types: data["types"] as List<TypeEntity>,
+            currencies: data["currencies"] as List<CurrencyEntity>,
+          ));
+        }
+      } else {
+        store.dispatch(ErrorIndividualExcursionsAction());
       }
     };
 
@@ -174,7 +276,7 @@ ThunkAction GetExcursionInfoThunkAction({
 }) =>
     (Store store) async {
       store.dispatch(LoadExcursionInfoAction(
-        currency:currency,
+        currency: currency,
         excursion: excursion,
         user: user,
         type: type,

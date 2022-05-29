@@ -9,7 +9,7 @@ class AuthState with _$AuthState {
     @Default(false) bool isLoading,
     @Default(false) bool isLoggedIn,
     @Default(false) bool isError,
-    @Default('null') String token,
+    String? token,
     UserEntity? user,
   }) = _AuthState;
 }

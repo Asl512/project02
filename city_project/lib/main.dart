@@ -31,13 +31,16 @@ main() async {
       excursionInfoState: ExcursionInfoState(),
       listCitiesState: ListCitiesState(),
       cityState: CityState(),
-      listExcursionsState: ListExcursionsState(),
+      allExcursions: ListExcursionsState(),
+      groupExcursions: ListExcursionsState(),
+      individualExcursions: ListExcursionsState(),
       authState: AuthState(),
       addExcursionState: AddExcursionState(),
       insertExcursionState: InsertExcursionState(),
       bookingState: BookingState(),
       guidActiveExcursions: ListExcursionsState(),
       guidModerateExcursions: ListExcursionsState(),
+      bookingInfoState: BookingInfoState(),
     ),
   );
 
@@ -47,7 +50,10 @@ main() async {
       child: StreamProvider<UserMeth?>.value(
         value: AuthService().currentUser,
         initialData: null,
-        child: const MaterialApp(home: test()),
+        child: const MaterialApp(
+          home: Navigation(),
+          debugShowCheckedModeBanner: false,
+        ),
       ),
     ),
   );

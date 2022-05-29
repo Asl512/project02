@@ -2,10 +2,22 @@ import 'package:lan_code/back-end/redux/excursion/excursion_actions.dart';
 import 'package:lan_code/back-end/redux/excursion/excursion_state.dart';
 import 'package:redux/redux.dart';
 
-Reducer<ListExcursionsState> listExcursionsReducer = combineReducers([
-  TypedReducer<ListExcursionsState, LoadListExcursionsAction>(_loadListExcursions),
-  TypedReducer<ListExcursionsState, ErrorListExcursionsAction>(_errorListExcursions),
-  TypedReducer<ListExcursionsState, GetListExcursionsAction>(_getListExcursions),
+Reducer<ListExcursionsState> allExcursionsReducer = combineReducers([
+  TypedReducer<ListExcursionsState, LoadAllExcursionsAction>(_loadAllExcursion),
+  TypedReducer<ListExcursionsState, ErrorAllExcursionsAction>(_errorAllExcursions),
+  TypedReducer<ListExcursionsState, GetAllExcursionsAction>(_getAllExcursions),
+]);
+
+Reducer<ListExcursionsState> groupExcursionsReducer = combineReducers([
+  TypedReducer<ListExcursionsState, LoadGroupExcursionsAction>(_loadGroupExcursion),
+  TypedReducer<ListExcursionsState, ErrorGroupExcursionsAction>(_errorGroupExcursions),
+  TypedReducer<ListExcursionsState, GetGroupExcursionsAction>(_getGroupExcursions),
+]);
+
+Reducer<ListExcursionsState> individualExcursionsReducer = combineReducers([
+  TypedReducer<ListExcursionsState, LoadIndividualExcursionsAction>(_loadIndividualExcursion),
+  TypedReducer<ListExcursionsState, ErrorIndividualExcursionsAction>(_errorIndividualExcursions),
+  TypedReducer<ListExcursionsState, GetIndividualExcursionsAction>(_getIndividualExcursions),
 ]);
 
 Reducer<ExcursionInfoState> excursionInfoReducer = combineReducers([
@@ -14,29 +26,92 @@ Reducer<ExcursionInfoState> excursionInfoReducer = combineReducers([
   TypedReducer<ExcursionInfoState, GetExcursionInfoAction>(_getExcursionInfo),
 ]);
 
-//List excursions
-
-ListExcursionsState _loadListExcursions(
+//All excursions
+ListExcursionsState _loadAllExcursion(
   ListExcursionsState state,
-  LoadListExcursionsAction action,
+  LoadAllExcursionsAction action,
 ) =>
     state.copyWith(
       isLoading: true,
       isError: false,
     );
 
-ListExcursionsState _errorListExcursions(
+ListExcursionsState _errorAllExcursions(
   ListExcursionsState state,
-  ErrorListExcursionsAction action,
+  ErrorAllExcursionsAction action,
 ) =>
     state.copyWith(
       isLoading: false,
       isError: true,
     );
 
-ListExcursionsState _getListExcursions(
+ListExcursionsState _getAllExcursions(
   ListExcursionsState state,
-  GetListExcursionsAction action,
+  GetAllExcursionsAction action,
+) =>
+    state.copyWith(
+      excursions: action.excursions,
+      currencies: action.currencies,
+      users: action.users,
+      types: action.types,
+      isLoading: false,
+      isError: false,
+    );
+
+//Group excursions
+ListExcursionsState _loadGroupExcursion(
+  ListExcursionsState state,
+  LoadGroupExcursionsAction action,
+) =>
+    state.copyWith(
+      isLoading: true,
+      isError: false,
+    );
+
+ListExcursionsState _errorGroupExcursions(
+  ListExcursionsState state,
+  ErrorGroupExcursionsAction action,
+) =>
+    state.copyWith(
+      isLoading: false,
+      isError: true,
+    );
+
+ListExcursionsState _getGroupExcursions(
+  ListExcursionsState state,
+  GetGroupExcursionsAction action,
+) =>
+    state.copyWith(
+      excursions: action.excursions,
+      currencies: action.currencies,
+      users: action.users,
+      types: action.types,
+      isLoading: false,
+      isError: false,
+    );
+
+//Individual excursions
+ListExcursionsState _loadIndividualExcursion(
+  ListExcursionsState state,
+  LoadIndividualExcursionsAction action,
+) =>
+    state.copyWith(
+      isLoading: true,
+      isError: false,
+    );
+
+ListExcursionsState _errorIndividualExcursions(
+  ListExcursionsState state,
+  ErrorIndividualExcursionsAction action,
+) =>
+    state.copyWith(
+      isLoading: false,
+      isError: true,
+    );
+
+ListExcursionsState _getIndividualExcursions(
+  ListExcursionsState state,
+  GetIndividualExcursionsAction action,
 ) =>
     state.copyWith(
       excursions: action.excursions,
@@ -48,7 +123,6 @@ ListExcursionsState _getListExcursions(
     );
 
 //Excursion Info
-
 ExcursionInfoState _loadExcursionInfo(
   ExcursionInfoState state,
   LoadExcursionInfoAction action,

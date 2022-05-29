@@ -10,9 +10,13 @@ part 'app_state.freezed.dart';
 @freezed
 class AppState with _$AppState {
   const factory AppState({
+    //Feed
+    required ListExcursionsState allExcursions,
+    required ListExcursionsState groupExcursions,
+    required ListExcursionsState individualExcursions,
+    //
     required ListCitiesState listCitiesState,
     required CityState cityState,
-    required ListExcursionsState listExcursionsState,
     required ExcursionInfoState excursionInfoState,
     required AuthState authState,
     required AddExcursionState addExcursionState,
@@ -20,5 +24,6 @@ class AppState with _$AppState {
     required BookingState bookingState,
     required ListExcursionsState guidActiveExcursions,
     required ListExcursionsState guidModerateExcursions,
+    required BookingInfoState bookingInfoState,
   }) = _AppState;
 }
