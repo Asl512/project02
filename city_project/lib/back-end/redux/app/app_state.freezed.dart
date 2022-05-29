@@ -26,7 +26,9 @@ class _$AppStateTearOff {
       required AuthState authState,
       required AddExcursionState addExcursionState,
       required InsertExcursionState insertExcursionState,
-      required BookingState bookingState}) {
+      required BookingState bookingState,
+      required ListExcursionsState guidActiveExcursions,
+      required ListExcursionsState guidModerateExcursions}) {
     return _AppState(
       listCitiesState: listCitiesState,
       cityState: cityState,
@@ -36,6 +38,8 @@ class _$AppStateTearOff {
       addExcursionState: addExcursionState,
       insertExcursionState: insertExcursionState,
       bookingState: bookingState,
+      guidActiveExcursions: guidActiveExcursions,
+      guidModerateExcursions: guidModerateExcursions,
     );
   }
 }
@@ -56,6 +60,10 @@ mixin _$AppState {
   InsertExcursionState get insertExcursionState =>
       throw _privateConstructorUsedError;
   BookingState get bookingState => throw _privateConstructorUsedError;
+  ListExcursionsState get guidActiveExcursions =>
+      throw _privateConstructorUsedError;
+  ListExcursionsState get guidModerateExcursions =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AppStateCopyWith<AppState> get copyWith =>
@@ -74,7 +82,9 @@ abstract class $AppStateCopyWith<$Res> {
       AuthState authState,
       AddExcursionState addExcursionState,
       InsertExcursionState insertExcursionState,
-      BookingState bookingState});
+      BookingState bookingState,
+      ListExcursionsState guidActiveExcursions,
+      ListExcursionsState guidModerateExcursions});
 
   $ListCitiesStateCopyWith<$Res> get listCitiesState;
   $CityStateCopyWith<$Res> get cityState;
@@ -84,6 +94,8 @@ abstract class $AppStateCopyWith<$Res> {
   $AddExcursionStateCopyWith<$Res> get addExcursionState;
   $InsertExcursionStateCopyWith<$Res> get insertExcursionState;
   $BookingStateCopyWith<$Res> get bookingState;
+  $ListExcursionsStateCopyWith<$Res> get guidActiveExcursions;
+  $ListExcursionsStateCopyWith<$Res> get guidModerateExcursions;
 }
 
 /// @nodoc
@@ -104,6 +116,8 @@ class _$AppStateCopyWithImpl<$Res> implements $AppStateCopyWith<$Res> {
     Object? addExcursionState = freezed,
     Object? insertExcursionState = freezed,
     Object? bookingState = freezed,
+    Object? guidActiveExcursions = freezed,
+    Object? guidModerateExcursions = freezed,
   }) {
     return _then(_value.copyWith(
       listCitiesState: listCitiesState == freezed
@@ -138,6 +152,14 @@ class _$AppStateCopyWithImpl<$Res> implements $AppStateCopyWith<$Res> {
           ? _value.bookingState
           : bookingState // ignore: cast_nullable_to_non_nullable
               as BookingState,
+      guidActiveExcursions: guidActiveExcursions == freezed
+          ? _value.guidActiveExcursions
+          : guidActiveExcursions // ignore: cast_nullable_to_non_nullable
+              as ListExcursionsState,
+      guidModerateExcursions: guidModerateExcursions == freezed
+          ? _value.guidModerateExcursions
+          : guidModerateExcursions // ignore: cast_nullable_to_non_nullable
+              as ListExcursionsState,
     ));
   }
 
@@ -199,6 +221,22 @@ class _$AppStateCopyWithImpl<$Res> implements $AppStateCopyWith<$Res> {
       return _then(_value.copyWith(bookingState: value));
     });
   }
+
+  @override
+  $ListExcursionsStateCopyWith<$Res> get guidActiveExcursions {
+    return $ListExcursionsStateCopyWith<$Res>(_value.guidActiveExcursions,
+        (value) {
+      return _then(_value.copyWith(guidActiveExcursions: value));
+    });
+  }
+
+  @override
+  $ListExcursionsStateCopyWith<$Res> get guidModerateExcursions {
+    return $ListExcursionsStateCopyWith<$Res>(_value.guidModerateExcursions,
+        (value) {
+      return _then(_value.copyWith(guidModerateExcursions: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -214,7 +252,9 @@ abstract class _$AppStateCopyWith<$Res> implements $AppStateCopyWith<$Res> {
       AuthState authState,
       AddExcursionState addExcursionState,
       InsertExcursionState insertExcursionState,
-      BookingState bookingState});
+      BookingState bookingState,
+      ListExcursionsState guidActiveExcursions,
+      ListExcursionsState guidModerateExcursions});
 
   @override
   $ListCitiesStateCopyWith<$Res> get listCitiesState;
@@ -232,6 +272,10 @@ abstract class _$AppStateCopyWith<$Res> implements $AppStateCopyWith<$Res> {
   $InsertExcursionStateCopyWith<$Res> get insertExcursionState;
   @override
   $BookingStateCopyWith<$Res> get bookingState;
+  @override
+  $ListExcursionsStateCopyWith<$Res> get guidActiveExcursions;
+  @override
+  $ListExcursionsStateCopyWith<$Res> get guidModerateExcursions;
 }
 
 /// @nodoc
@@ -253,6 +297,8 @@ class __$AppStateCopyWithImpl<$Res> extends _$AppStateCopyWithImpl<$Res>
     Object? addExcursionState = freezed,
     Object? insertExcursionState = freezed,
     Object? bookingState = freezed,
+    Object? guidActiveExcursions = freezed,
+    Object? guidModerateExcursions = freezed,
   }) {
     return _then(_AppState(
       listCitiesState: listCitiesState == freezed
@@ -287,6 +333,14 @@ class __$AppStateCopyWithImpl<$Res> extends _$AppStateCopyWithImpl<$Res>
           ? _value.bookingState
           : bookingState // ignore: cast_nullable_to_non_nullable
               as BookingState,
+      guidActiveExcursions: guidActiveExcursions == freezed
+          ? _value.guidActiveExcursions
+          : guidActiveExcursions // ignore: cast_nullable_to_non_nullable
+              as ListExcursionsState,
+      guidModerateExcursions: guidModerateExcursions == freezed
+          ? _value.guidModerateExcursions
+          : guidModerateExcursions // ignore: cast_nullable_to_non_nullable
+              as ListExcursionsState,
     ));
   }
 }
@@ -302,7 +356,9 @@ class _$_AppState implements _AppState {
       required this.authState,
       required this.addExcursionState,
       required this.insertExcursionState,
-      required this.bookingState});
+      required this.bookingState,
+      required this.guidActiveExcursions,
+      required this.guidModerateExcursions});
 
   @override
   final ListCitiesState listCitiesState;
@@ -320,10 +376,14 @@ class _$_AppState implements _AppState {
   final InsertExcursionState insertExcursionState;
   @override
   final BookingState bookingState;
+  @override
+  final ListExcursionsState guidActiveExcursions;
+  @override
+  final ListExcursionsState guidModerateExcursions;
 
   @override
   String toString() {
-    return 'AppState(listCitiesState: $listCitiesState, cityState: $cityState, listExcursionsState: $listExcursionsState, excursionInfoState: $excursionInfoState, authState: $authState, addExcursionState: $addExcursionState, insertExcursionState: $insertExcursionState, bookingState: $bookingState)';
+    return 'AppState(listCitiesState: $listCitiesState, cityState: $cityState, listExcursionsState: $listExcursionsState, excursionInfoState: $excursionInfoState, authState: $authState, addExcursionState: $addExcursionState, insertExcursionState: $insertExcursionState, bookingState: $bookingState, guidActiveExcursions: $guidActiveExcursions, guidModerateExcursions: $guidModerateExcursions)';
   }
 
   @override
@@ -344,7 +404,11 @@ class _$_AppState implements _AppState {
             const DeepCollectionEquality()
                 .equals(other.insertExcursionState, insertExcursionState) &&
             const DeepCollectionEquality()
-                .equals(other.bookingState, bookingState));
+                .equals(other.bookingState, bookingState) &&
+            const DeepCollectionEquality()
+                .equals(other.guidActiveExcursions, guidActiveExcursions) &&
+            const DeepCollectionEquality()
+                .equals(other.guidModerateExcursions, guidModerateExcursions));
   }
 
   @override
@@ -357,7 +421,9 @@ class _$_AppState implements _AppState {
       const DeepCollectionEquality().hash(authState),
       const DeepCollectionEquality().hash(addExcursionState),
       const DeepCollectionEquality().hash(insertExcursionState),
-      const DeepCollectionEquality().hash(bookingState));
+      const DeepCollectionEquality().hash(bookingState),
+      const DeepCollectionEquality().hash(guidActiveExcursions),
+      const DeepCollectionEquality().hash(guidModerateExcursions));
 
   @JsonKey(ignore: true)
   @override
@@ -374,7 +440,9 @@ abstract class _AppState implements AppState {
       required AuthState authState,
       required AddExcursionState addExcursionState,
       required InsertExcursionState insertExcursionState,
-      required BookingState bookingState}) = _$_AppState;
+      required BookingState bookingState,
+      required ListExcursionsState guidActiveExcursions,
+      required ListExcursionsState guidModerateExcursions}) = _$_AppState;
 
   @override
   ListCitiesState get listCitiesState;
@@ -392,6 +460,10 @@ abstract class _AppState implements AppState {
   InsertExcursionState get insertExcursionState;
   @override
   BookingState get bookingState;
+  @override
+  ListExcursionsState get guidActiveExcursions;
+  @override
+  ListExcursionsState get guidModerateExcursions;
   @override
   @JsonKey(ignore: true)
   _$AppStateCopyWith<_AppState> get copyWith =>
