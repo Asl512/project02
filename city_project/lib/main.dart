@@ -5,10 +5,12 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:lan_code/back-end/redux/add_excursion/add_excursion_state.dart';
 import 'package:lan_code/back-end/redux/app/app_reducer.dart';
 import 'package:lan_code/back-end/redux/app/app_state.dart';
+import 'package:lan_code/back-end/redux/booking/booking_state.dart';
 import 'package:lan_code/back-end/redux/city/city_state.dart';
 import 'package:lan_code/back-end/redux/excursion/excursion_state.dart';
 import 'package:lan_code/back-end/redux/user/user_state.dart';
 import 'package:lan_code/service.dart';
+import 'package:lan_code/test.dart';
 import 'package:provider/provider.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
@@ -33,6 +35,9 @@ main() async {
       authState: AuthState(),
       addExcursionState: AddExcursionState(),
       insertExcursionState: InsertExcursionState(),
+      bookingState: BookingState(),
+      guidActiveExcursions: ListExcursionsState(),
+      guidModerateExcursions: ListExcursionsState(),
     ),
   );
 
@@ -42,7 +47,7 @@ main() async {
       child: StreamProvider<UserMeth?>.value(
         value: AuthService().currentUser,
         initialData: null,
-        child: const MaterialApp(home: Navigation()),
+        child: const MaterialApp(home: test()),
       ),
     ),
   );

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:lan_code/back-end/redux/app/app_state.dart';
-import 'package:lan_code/back-end/redux/city/city_actions.dart';
 import 'package:lan_code/service.dart';
 import 'package:lan_code/ui/common/colors.dart';
 import 'package:lan_code/ui/common/icons.dart';
@@ -14,7 +11,6 @@ import 'package:lan_code/ui/widgets/libary/customSnackBar.dart';
 import 'package:lan_code/ui/widgets/libary/topSnackBart.dart';
 import 'package:lan_code/ui/widgets/loading_widget.dart';
 import 'package:lan_code/ui/widgets/text_field_style.dart';
-import 'package:redux/redux.dart';
 
 import 'recovery/first_step_age.dart';
 
@@ -217,8 +213,6 @@ class _AuthorizationPageState extends State<AuthorizationPage> {
                 message: "Вы ввели не правильные данные",
                 textStyle: Montserrat(size: 15, color: White)));
       } else {
-        Store<AppState> _store = StoreProvider.of<AppState>(context);
-        _store.dispatch(GetCityThunkAction());
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (_) => const Navigation(index: 2)),

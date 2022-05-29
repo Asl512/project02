@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lan_code/back-end/domain/entities/currency_entity.dart';
 import 'package:lan_code/back-end/domain/entities/excursion_entity.dart';
 import 'package:lan_code/back-end/domain/entities/photos_excursion_entity.dart';
 import 'package:lan_code/back-end/domain/entities/review_entity.dart';
@@ -15,6 +16,7 @@ class ListExcursionsState with _$ListExcursionsState {
   @Default([]) List<ExcursionEntity> excursions,
   @Default([]) List<UserEntity> users,
   @Default([]) List<TypeEntity> types,
+    @Default([]) List<CurrencyEntity> currencies,
   @Default(false) bool isError,
   @Default(false) bool isLoading,
   }) = _ListExcursionsState;
@@ -26,6 +28,7 @@ class ExcursionInfoState with _$ExcursionInfoState {
     ExcursionEntity? excursion,
     UserEntity? user,
     TypeEntity? type,
+    CurrencyEntity? currency,
     PhotosExcursionEntity? photos,
     List<ReviewsEntity>? reviews,
     List<UserEntity>? userReview,

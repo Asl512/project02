@@ -24,7 +24,9 @@ class _$AddExcursionStateTearOff {
       List<CityEntity> cities = const [],
       List<TypeEntity> types = const [],
       List<TagEntity> tags = const [],
-      List<TypeMoveEntity> typesMove = const []}) {
+      List<TypeMoveEntity> typesMove = const [],
+      List<CurrencyEntity> currencies = const [],
+      List<CategoryPeopleEntity> categoriesPeople = const []}) {
     return _AddExcursionState(
       isError: isError,
       isLoading: isLoading,
@@ -32,6 +34,8 @@ class _$AddExcursionStateTearOff {
       types: types,
       tags: tags,
       typesMove: typesMove,
+      currencies: currencies,
+      categoriesPeople: categoriesPeople,
     );
   }
 }
@@ -47,6 +51,9 @@ mixin _$AddExcursionState {
   List<TypeEntity> get types => throw _privateConstructorUsedError;
   List<TagEntity> get tags => throw _privateConstructorUsedError;
   List<TypeMoveEntity> get typesMove => throw _privateConstructorUsedError;
+  List<CurrencyEntity> get currencies => throw _privateConstructorUsedError;
+  List<CategoryPeopleEntity> get categoriesPeople =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AddExcursionStateCopyWith<AddExcursionState> get copyWith =>
@@ -64,7 +71,9 @@ abstract class $AddExcursionStateCopyWith<$Res> {
       List<CityEntity> cities,
       List<TypeEntity> types,
       List<TagEntity> tags,
-      List<TypeMoveEntity> typesMove});
+      List<TypeMoveEntity> typesMove,
+      List<CurrencyEntity> currencies,
+      List<CategoryPeopleEntity> categoriesPeople});
 }
 
 /// @nodoc
@@ -84,6 +93,8 @@ class _$AddExcursionStateCopyWithImpl<$Res>
     Object? types = freezed,
     Object? tags = freezed,
     Object? typesMove = freezed,
+    Object? currencies = freezed,
+    Object? categoriesPeople = freezed,
   }) {
     return _then(_value.copyWith(
       isError: isError == freezed
@@ -110,6 +121,14 @@ class _$AddExcursionStateCopyWithImpl<$Res>
           ? _value.typesMove
           : typesMove // ignore: cast_nullable_to_non_nullable
               as List<TypeMoveEntity>,
+      currencies: currencies == freezed
+          ? _value.currencies
+          : currencies // ignore: cast_nullable_to_non_nullable
+              as List<CurrencyEntity>,
+      categoriesPeople: categoriesPeople == freezed
+          ? _value.categoriesPeople
+          : categoriesPeople // ignore: cast_nullable_to_non_nullable
+              as List<CategoryPeopleEntity>,
     ));
   }
 }
@@ -127,7 +146,9 @@ abstract class _$AddExcursionStateCopyWith<$Res>
       List<CityEntity> cities,
       List<TypeEntity> types,
       List<TagEntity> tags,
-      List<TypeMoveEntity> typesMove});
+      List<TypeMoveEntity> typesMove,
+      List<CurrencyEntity> currencies,
+      List<CategoryPeopleEntity> categoriesPeople});
 }
 
 /// @nodoc
@@ -149,6 +170,8 @@ class __$AddExcursionStateCopyWithImpl<$Res>
     Object? types = freezed,
     Object? tags = freezed,
     Object? typesMove = freezed,
+    Object? currencies = freezed,
+    Object? categoriesPeople = freezed,
   }) {
     return _then(_AddExcursionState(
       isError: isError == freezed
@@ -175,6 +198,14 @@ class __$AddExcursionStateCopyWithImpl<$Res>
           ? _value.typesMove
           : typesMove // ignore: cast_nullable_to_non_nullable
               as List<TypeMoveEntity>,
+      currencies: currencies == freezed
+          ? _value.currencies
+          : currencies // ignore: cast_nullable_to_non_nullable
+              as List<CurrencyEntity>,
+      categoriesPeople: categoriesPeople == freezed
+          ? _value.categoriesPeople
+          : categoriesPeople // ignore: cast_nullable_to_non_nullable
+              as List<CategoryPeopleEntity>,
     ));
   }
 }
@@ -188,7 +219,9 @@ class _$_AddExcursionState implements _AddExcursionState {
       this.cities = const [],
       this.types = const [],
       this.tags = const [],
-      this.typesMove = const []});
+      this.typesMove = const [],
+      this.currencies = const [],
+      this.categoriesPeople = const []});
 
   @JsonKey()
   @override
@@ -208,10 +241,16 @@ class _$_AddExcursionState implements _AddExcursionState {
   @JsonKey()
   @override
   final List<TypeMoveEntity> typesMove;
+  @JsonKey()
+  @override
+  final List<CurrencyEntity> currencies;
+  @JsonKey()
+  @override
+  final List<CategoryPeopleEntity> categoriesPeople;
 
   @override
   String toString() {
-    return 'AddExcursionState(isError: $isError, isLoading: $isLoading, cities: $cities, types: $types, tags: $tags, typesMove: $typesMove)';
+    return 'AddExcursionState(isError: $isError, isLoading: $isLoading, cities: $cities, types: $types, tags: $tags, typesMove: $typesMove, currencies: $currencies, categoriesPeople: $categoriesPeople)';
   }
 
   @override
@@ -224,7 +263,11 @@ class _$_AddExcursionState implements _AddExcursionState {
             const DeepCollectionEquality().equals(other.cities, cities) &&
             const DeepCollectionEquality().equals(other.types, types) &&
             const DeepCollectionEquality().equals(other.tags, tags) &&
-            const DeepCollectionEquality().equals(other.typesMove, typesMove));
+            const DeepCollectionEquality().equals(other.typesMove, typesMove) &&
+            const DeepCollectionEquality()
+                .equals(other.currencies, currencies) &&
+            const DeepCollectionEquality()
+                .equals(other.categoriesPeople, categoriesPeople));
   }
 
   @override
@@ -235,7 +278,9 @@ class _$_AddExcursionState implements _AddExcursionState {
       const DeepCollectionEquality().hash(cities),
       const DeepCollectionEquality().hash(types),
       const DeepCollectionEquality().hash(tags),
-      const DeepCollectionEquality().hash(typesMove));
+      const DeepCollectionEquality().hash(typesMove),
+      const DeepCollectionEquality().hash(currencies),
+      const DeepCollectionEquality().hash(categoriesPeople));
 
   @JsonKey(ignore: true)
   @override
@@ -250,7 +295,9 @@ abstract class _AddExcursionState implements AddExcursionState {
       List<CityEntity> cities,
       List<TypeEntity> types,
       List<TagEntity> tags,
-      List<TypeMoveEntity> typesMove}) = _$_AddExcursionState;
+      List<TypeMoveEntity> typesMove,
+      List<CurrencyEntity> currencies,
+      List<CategoryPeopleEntity> categoriesPeople}) = _$_AddExcursionState;
 
   @override
   bool get isError;
@@ -265,6 +312,10 @@ abstract class _AddExcursionState implements AddExcursionState {
   @override
   List<TypeMoveEntity> get typesMove;
   @override
+  List<CurrencyEntity> get currencies;
+  @override
+  List<CategoryPeopleEntity> get categoriesPeople;
+  @override
   @JsonKey(ignore: true)
   _$AddExcursionStateCopyWith<_AddExcursionState> get copyWith =>
       throw _privateConstructorUsedError;
@@ -275,59 +326,29 @@ class _$InsertExcursionStateTearOff {
   const _$InsertExcursionStateTearOff();
 
   _InsertExcursionState call(
-      {bool isError = false,
+      {bool isLoading = false,
+      TypeEntity? type,
+      CurrencyEntity? currency,
       List<dynamic> errorName = const [false, 'errorName'],
       List<dynamic> errorCity = const [false, 'errorCity'],
       List<dynamic> errorGroupSize = const [false, 'errorGroupSize'],
       List<dynamic> errorDuration = const [false, 'errorDuration'],
+      List<dynamic> errorDescription = const [false, 'errorDescription'],
       List<dynamic> errorMeetPoint = const [false, 'errorMeetPoint'],
       List<dynamic> errorStandardPrice = const [false, 'errorStandardPrice'],
-      List<dynamic> errorTypesMove = const [false, 'errorTypesMove'],
-      bool isLoading = false,
-      CityEntity? city,
-      TypeEntity? type,
-      String name = '',
-      String description = 'null',
-      String photo = 'null',
-      int groupSize = 0,
-      String guide = '',
-      bool moment = false,
-      String duration = '',
-      double rating = 0.0,
-      String meetPoint = '',
-      int standardPrice = 0,
-      String addServices = 'null',
-      String included = 'null',
-      String organizationalDetails = 'null',
-      List<TagEntity> tags = const [],
-      List<TypeMoveEntity> typesMove = const []}) {
+      List<dynamic> errorTypesMove = const [false, 'errorTypesMove']}) {
     return _InsertExcursionState(
-      isError: isError,
+      isLoading: isLoading,
+      type: type,
+      currency: currency,
       errorName: errorName,
       errorCity: errorCity,
       errorGroupSize: errorGroupSize,
       errorDuration: errorDuration,
+      errorDescription: errorDescription,
       errorMeetPoint: errorMeetPoint,
       errorStandardPrice: errorStandardPrice,
       errorTypesMove: errorTypesMove,
-      isLoading: isLoading,
-      city: city,
-      type: type,
-      name: name,
-      description: description,
-      photo: photo,
-      groupSize: groupSize,
-      guide: guide,
-      moment: moment,
-      duration: duration,
-      rating: rating,
-      meetPoint: meetPoint,
-      standardPrice: standardPrice,
-      addServices: addServices,
-      included: included,
-      organizationalDetails: organizationalDetails,
-      tags: tags,
-      typesMove: typesMove,
     );
   }
 }
@@ -337,32 +358,17 @@ const $InsertExcursionState = _$InsertExcursionStateTearOff();
 
 /// @nodoc
 mixin _$InsertExcursionState {
-  bool get isError => throw _privateConstructorUsedError;
+  bool get isLoading => throw _privateConstructorUsedError;
+  TypeEntity? get type => throw _privateConstructorUsedError;
+  CurrencyEntity? get currency => throw _privateConstructorUsedError;
   List<dynamic> get errorName => throw _privateConstructorUsedError;
   List<dynamic> get errorCity => throw _privateConstructorUsedError;
   List<dynamic> get errorGroupSize => throw _privateConstructorUsedError;
   List<dynamic> get errorDuration => throw _privateConstructorUsedError;
+  List<dynamic> get errorDescription => throw _privateConstructorUsedError;
   List<dynamic> get errorMeetPoint => throw _privateConstructorUsedError;
   List<dynamic> get errorStandardPrice => throw _privateConstructorUsedError;
   List<dynamic> get errorTypesMove => throw _privateConstructorUsedError;
-  bool get isLoading => throw _privateConstructorUsedError;
-  CityEntity? get city => throw _privateConstructorUsedError;
-  TypeEntity? get type => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
-  String get photo => throw _privateConstructorUsedError;
-  int get groupSize => throw _privateConstructorUsedError;
-  String get guide => throw _privateConstructorUsedError;
-  bool get moment => throw _privateConstructorUsedError;
-  String get duration => throw _privateConstructorUsedError;
-  double get rating => throw _privateConstructorUsedError;
-  String get meetPoint => throw _privateConstructorUsedError;
-  int get standardPrice => throw _privateConstructorUsedError;
-  String get addServices => throw _privateConstructorUsedError;
-  String get included => throw _privateConstructorUsedError;
-  String get organizationalDetails => throw _privateConstructorUsedError;
-  List<TagEntity> get tags => throw _privateConstructorUsedError;
-  List<TypeMoveEntity> get typesMove => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $InsertExcursionStateCopyWith<InsertExcursionState> get copyWith =>
@@ -375,32 +381,17 @@ abstract class $InsertExcursionStateCopyWith<$Res> {
           $Res Function(InsertExcursionState) then) =
       _$InsertExcursionStateCopyWithImpl<$Res>;
   $Res call(
-      {bool isError,
+      {bool isLoading,
+      TypeEntity? type,
+      CurrencyEntity? currency,
       List<dynamic> errorName,
       List<dynamic> errorCity,
       List<dynamic> errorGroupSize,
       List<dynamic> errorDuration,
+      List<dynamic> errorDescription,
       List<dynamic> errorMeetPoint,
       List<dynamic> errorStandardPrice,
-      List<dynamic> errorTypesMove,
-      bool isLoading,
-      CityEntity? city,
-      TypeEntity? type,
-      String name,
-      String description,
-      String photo,
-      int groupSize,
-      String guide,
-      bool moment,
-      String duration,
-      double rating,
-      String meetPoint,
-      int standardPrice,
-      String addServices,
-      String included,
-      String organizationalDetails,
-      List<TagEntity> tags,
-      List<TypeMoveEntity> typesMove});
+      List<dynamic> errorTypesMove});
 }
 
 /// @nodoc
@@ -414,38 +405,31 @@ class _$InsertExcursionStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? isError = freezed,
+    Object? isLoading = freezed,
+    Object? type = freezed,
+    Object? currency = freezed,
     Object? errorName = freezed,
     Object? errorCity = freezed,
     Object? errorGroupSize = freezed,
     Object? errorDuration = freezed,
+    Object? errorDescription = freezed,
     Object? errorMeetPoint = freezed,
     Object? errorStandardPrice = freezed,
     Object? errorTypesMove = freezed,
-    Object? isLoading = freezed,
-    Object? city = freezed,
-    Object? type = freezed,
-    Object? name = freezed,
-    Object? description = freezed,
-    Object? photo = freezed,
-    Object? groupSize = freezed,
-    Object? guide = freezed,
-    Object? moment = freezed,
-    Object? duration = freezed,
-    Object? rating = freezed,
-    Object? meetPoint = freezed,
-    Object? standardPrice = freezed,
-    Object? addServices = freezed,
-    Object? included = freezed,
-    Object? organizationalDetails = freezed,
-    Object? tags = freezed,
-    Object? typesMove = freezed,
   }) {
     return _then(_value.copyWith(
-      isError: isError == freezed
-          ? _value.isError
-          : isError // ignore: cast_nullable_to_non_nullable
+      isLoading: isLoading == freezed
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as TypeEntity?,
+      currency: currency == freezed
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as CurrencyEntity?,
       errorName: errorName == freezed
           ? _value.errorName
           : errorName // ignore: cast_nullable_to_non_nullable
@@ -462,6 +446,10 @@ class _$InsertExcursionStateCopyWithImpl<$Res>
           ? _value.errorDuration
           : errorDuration // ignore: cast_nullable_to_non_nullable
               as List<dynamic>,
+      errorDescription: errorDescription == freezed
+          ? _value.errorDescription
+          : errorDescription // ignore: cast_nullable_to_non_nullable
+              as List<dynamic>,
       errorMeetPoint: errorMeetPoint == freezed
           ? _value.errorMeetPoint
           : errorMeetPoint // ignore: cast_nullable_to_non_nullable
@@ -474,78 +462,6 @@ class _$InsertExcursionStateCopyWithImpl<$Res>
           ? _value.errorTypesMove
           : errorTypesMove // ignore: cast_nullable_to_non_nullable
               as List<dynamic>,
-      isLoading: isLoading == freezed
-          ? _value.isLoading
-          : isLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
-      city: city == freezed
-          ? _value.city
-          : city // ignore: cast_nullable_to_non_nullable
-              as CityEntity?,
-      type: type == freezed
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as TypeEntity?,
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: description == freezed
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      photo: photo == freezed
-          ? _value.photo
-          : photo // ignore: cast_nullable_to_non_nullable
-              as String,
-      groupSize: groupSize == freezed
-          ? _value.groupSize
-          : groupSize // ignore: cast_nullable_to_non_nullable
-              as int,
-      guide: guide == freezed
-          ? _value.guide
-          : guide // ignore: cast_nullable_to_non_nullable
-              as String,
-      moment: moment == freezed
-          ? _value.moment
-          : moment // ignore: cast_nullable_to_non_nullable
-              as bool,
-      duration: duration == freezed
-          ? _value.duration
-          : duration // ignore: cast_nullable_to_non_nullable
-              as String,
-      rating: rating == freezed
-          ? _value.rating
-          : rating // ignore: cast_nullable_to_non_nullable
-              as double,
-      meetPoint: meetPoint == freezed
-          ? _value.meetPoint
-          : meetPoint // ignore: cast_nullable_to_non_nullable
-              as String,
-      standardPrice: standardPrice == freezed
-          ? _value.standardPrice
-          : standardPrice // ignore: cast_nullable_to_non_nullable
-              as int,
-      addServices: addServices == freezed
-          ? _value.addServices
-          : addServices // ignore: cast_nullable_to_non_nullable
-              as String,
-      included: included == freezed
-          ? _value.included
-          : included // ignore: cast_nullable_to_non_nullable
-              as String,
-      organizationalDetails: organizationalDetails == freezed
-          ? _value.organizationalDetails
-          : organizationalDetails // ignore: cast_nullable_to_non_nullable
-              as String,
-      tags: tags == freezed
-          ? _value.tags
-          : tags // ignore: cast_nullable_to_non_nullable
-              as List<TagEntity>,
-      typesMove: typesMove == freezed
-          ? _value.typesMove
-          : typesMove // ignore: cast_nullable_to_non_nullable
-              as List<TypeMoveEntity>,
     ));
   }
 }
@@ -558,32 +474,17 @@ abstract class _$InsertExcursionStateCopyWith<$Res>
       __$InsertExcursionStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {bool isError,
+      {bool isLoading,
+      TypeEntity? type,
+      CurrencyEntity? currency,
       List<dynamic> errorName,
       List<dynamic> errorCity,
       List<dynamic> errorGroupSize,
       List<dynamic> errorDuration,
+      List<dynamic> errorDescription,
       List<dynamic> errorMeetPoint,
       List<dynamic> errorStandardPrice,
-      List<dynamic> errorTypesMove,
-      bool isLoading,
-      CityEntity? city,
-      TypeEntity? type,
-      String name,
-      String description,
-      String photo,
-      int groupSize,
-      String guide,
-      bool moment,
-      String duration,
-      double rating,
-      String meetPoint,
-      int standardPrice,
-      String addServices,
-      String included,
-      String organizationalDetails,
-      List<TagEntity> tags,
-      List<TypeMoveEntity> typesMove});
+      List<dynamic> errorTypesMove});
 }
 
 /// @nodoc
@@ -599,38 +500,31 @@ class __$InsertExcursionStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? isError = freezed,
+    Object? isLoading = freezed,
+    Object? type = freezed,
+    Object? currency = freezed,
     Object? errorName = freezed,
     Object? errorCity = freezed,
     Object? errorGroupSize = freezed,
     Object? errorDuration = freezed,
+    Object? errorDescription = freezed,
     Object? errorMeetPoint = freezed,
     Object? errorStandardPrice = freezed,
     Object? errorTypesMove = freezed,
-    Object? isLoading = freezed,
-    Object? city = freezed,
-    Object? type = freezed,
-    Object? name = freezed,
-    Object? description = freezed,
-    Object? photo = freezed,
-    Object? groupSize = freezed,
-    Object? guide = freezed,
-    Object? moment = freezed,
-    Object? duration = freezed,
-    Object? rating = freezed,
-    Object? meetPoint = freezed,
-    Object? standardPrice = freezed,
-    Object? addServices = freezed,
-    Object? included = freezed,
-    Object? organizationalDetails = freezed,
-    Object? tags = freezed,
-    Object? typesMove = freezed,
   }) {
     return _then(_InsertExcursionState(
-      isError: isError == freezed
-          ? _value.isError
-          : isError // ignore: cast_nullable_to_non_nullable
+      isLoading: isLoading == freezed
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as TypeEntity?,
+      currency: currency == freezed
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as CurrencyEntity?,
       errorName: errorName == freezed
           ? _value.errorName
           : errorName // ignore: cast_nullable_to_non_nullable
@@ -647,6 +541,10 @@ class __$InsertExcursionStateCopyWithImpl<$Res>
           ? _value.errorDuration
           : errorDuration // ignore: cast_nullable_to_non_nullable
               as List<dynamic>,
+      errorDescription: errorDescription == freezed
+          ? _value.errorDescription
+          : errorDescription // ignore: cast_nullable_to_non_nullable
+              as List<dynamic>,
       errorMeetPoint: errorMeetPoint == freezed
           ? _value.errorMeetPoint
           : errorMeetPoint // ignore: cast_nullable_to_non_nullable
@@ -659,78 +557,6 @@ class __$InsertExcursionStateCopyWithImpl<$Res>
           ? _value.errorTypesMove
           : errorTypesMove // ignore: cast_nullable_to_non_nullable
               as List<dynamic>,
-      isLoading: isLoading == freezed
-          ? _value.isLoading
-          : isLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
-      city: city == freezed
-          ? _value.city
-          : city // ignore: cast_nullable_to_non_nullable
-              as CityEntity?,
-      type: type == freezed
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as TypeEntity?,
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: description == freezed
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      photo: photo == freezed
-          ? _value.photo
-          : photo // ignore: cast_nullable_to_non_nullable
-              as String,
-      groupSize: groupSize == freezed
-          ? _value.groupSize
-          : groupSize // ignore: cast_nullable_to_non_nullable
-              as int,
-      guide: guide == freezed
-          ? _value.guide
-          : guide // ignore: cast_nullable_to_non_nullable
-              as String,
-      moment: moment == freezed
-          ? _value.moment
-          : moment // ignore: cast_nullable_to_non_nullable
-              as bool,
-      duration: duration == freezed
-          ? _value.duration
-          : duration // ignore: cast_nullable_to_non_nullable
-              as String,
-      rating: rating == freezed
-          ? _value.rating
-          : rating // ignore: cast_nullable_to_non_nullable
-              as double,
-      meetPoint: meetPoint == freezed
-          ? _value.meetPoint
-          : meetPoint // ignore: cast_nullable_to_non_nullable
-              as String,
-      standardPrice: standardPrice == freezed
-          ? _value.standardPrice
-          : standardPrice // ignore: cast_nullable_to_non_nullable
-              as int,
-      addServices: addServices == freezed
-          ? _value.addServices
-          : addServices // ignore: cast_nullable_to_non_nullable
-              as String,
-      included: included == freezed
-          ? _value.included
-          : included // ignore: cast_nullable_to_non_nullable
-              as String,
-      organizationalDetails: organizationalDetails == freezed
-          ? _value.organizationalDetails
-          : organizationalDetails // ignore: cast_nullable_to_non_nullable
-              as String,
-      tags: tags == freezed
-          ? _value.tags
-          : tags // ignore: cast_nullable_to_non_nullable
-              as List<TagEntity>,
-      typesMove: typesMove == freezed
-          ? _value.typesMove
-          : typesMove // ignore: cast_nullable_to_non_nullable
-              as List<TypeMoveEntity>,
     ));
   }
 }
@@ -739,36 +565,25 @@ class __$InsertExcursionStateCopyWithImpl<$Res>
 
 class _$_InsertExcursionState implements _InsertExcursionState {
   const _$_InsertExcursionState(
-      {this.isError = false,
+      {this.isLoading = false,
+      this.type,
+      this.currency,
       this.errorName = const [false, 'errorName'],
       this.errorCity = const [false, 'errorCity'],
       this.errorGroupSize = const [false, 'errorGroupSize'],
       this.errorDuration = const [false, 'errorDuration'],
+      this.errorDescription = const [false, 'errorDescription'],
       this.errorMeetPoint = const [false, 'errorMeetPoint'],
       this.errorStandardPrice = const [false, 'errorStandardPrice'],
-      this.errorTypesMove = const [false, 'errorTypesMove'],
-      this.isLoading = false,
-      this.city,
-      this.type,
-      this.name = '',
-      this.description = 'null',
-      this.photo = 'null',
-      this.groupSize = 0,
-      this.guide = '',
-      this.moment = false,
-      this.duration = '',
-      this.rating = 0.0,
-      this.meetPoint = '',
-      this.standardPrice = 0,
-      this.addServices = 'null',
-      this.included = 'null',
-      this.organizationalDetails = 'null',
-      this.tags = const [],
-      this.typesMove = const []});
+      this.errorTypesMove = const [false, 'errorTypesMove']});
 
   @JsonKey()
   @override
-  final bool isError;
+  final bool isLoading;
+  @override
+  final TypeEntity? type;
+  @override
+  final CurrencyEntity? currency;
   @JsonKey()
   @override
   final List<dynamic> errorName;
@@ -783,6 +598,9 @@ class _$_InsertExcursionState implements _InsertExcursionState {
   final List<dynamic> errorDuration;
   @JsonKey()
   @override
+  final List<dynamic> errorDescription;
+  @JsonKey()
+  @override
   final List<dynamic> errorMeetPoint;
   @JsonKey()
   @override
@@ -790,62 +608,10 @@ class _$_InsertExcursionState implements _InsertExcursionState {
   @JsonKey()
   @override
   final List<dynamic> errorTypesMove;
-  @JsonKey()
-  @override
-  final bool isLoading;
-  @override
-  final CityEntity? city;
-  @override
-  final TypeEntity? type;
-  @JsonKey()
-  @override
-  final String name;
-  @JsonKey()
-  @override
-  final String description;
-  @JsonKey()
-  @override
-  final String photo;
-  @JsonKey()
-  @override
-  final int groupSize;
-  @JsonKey()
-  @override
-  final String guide;
-  @JsonKey()
-  @override
-  final bool moment;
-  @JsonKey()
-  @override
-  final String duration;
-  @JsonKey()
-  @override
-  final double rating;
-  @JsonKey()
-  @override
-  final String meetPoint;
-  @JsonKey()
-  @override
-  final int standardPrice;
-  @JsonKey()
-  @override
-  final String addServices;
-  @JsonKey()
-  @override
-  final String included;
-  @JsonKey()
-  @override
-  final String organizationalDetails;
-  @JsonKey()
-  @override
-  final List<TagEntity> tags;
-  @JsonKey()
-  @override
-  final List<TypeMoveEntity> typesMove;
 
   @override
   String toString() {
-    return 'InsertExcursionState(isError: $isError, errorName: $errorName, errorCity: $errorCity, errorGroupSize: $errorGroupSize, errorDuration: $errorDuration, errorMeetPoint: $errorMeetPoint, errorStandardPrice: $errorStandardPrice, errorTypesMove: $errorTypesMove, isLoading: $isLoading, city: $city, type: $type, name: $name, description: $description, photo: $photo, groupSize: $groupSize, guide: $guide, moment: $moment, duration: $duration, rating: $rating, meetPoint: $meetPoint, standardPrice: $standardPrice, addServices: $addServices, included: $included, organizationalDetails: $organizationalDetails, tags: $tags, typesMove: $typesMove)';
+    return 'InsertExcursionState(isLoading: $isLoading, type: $type, currency: $currency, errorName: $errorName, errorCity: $errorCity, errorGroupSize: $errorGroupSize, errorDuration: $errorDuration, errorDescription: $errorDescription, errorMeetPoint: $errorMeetPoint, errorStandardPrice: $errorStandardPrice, errorTypesMove: $errorTypesMove)';
   }
 
   @override
@@ -853,7 +619,9 @@ class _$_InsertExcursionState implements _InsertExcursionState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _InsertExcursionState &&
-            const DeepCollectionEquality().equals(other.isError, isError) &&
+            const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
+            const DeepCollectionEquality().equals(other.type, type) &&
+            const DeepCollectionEquality().equals(other.currency, currency) &&
             const DeepCollectionEquality().equals(other.errorName, errorName) &&
             const DeepCollectionEquality().equals(other.errorCity, errorCity) &&
             const DeepCollectionEquality()
@@ -861,65 +629,29 @@ class _$_InsertExcursionState implements _InsertExcursionState {
             const DeepCollectionEquality()
                 .equals(other.errorDuration, errorDuration) &&
             const DeepCollectionEquality()
+                .equals(other.errorDescription, errorDescription) &&
+            const DeepCollectionEquality()
                 .equals(other.errorMeetPoint, errorMeetPoint) &&
             const DeepCollectionEquality()
                 .equals(other.errorStandardPrice, errorStandardPrice) &&
             const DeepCollectionEquality()
-                .equals(other.errorTypesMove, errorTypesMove) &&
-            const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
-            const DeepCollectionEquality().equals(other.city, city) &&
-            const DeepCollectionEquality().equals(other.type, type) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality()
-                .equals(other.description, description) &&
-            const DeepCollectionEquality().equals(other.photo, photo) &&
-            const DeepCollectionEquality().equals(other.groupSize, groupSize) &&
-            const DeepCollectionEquality().equals(other.guide, guide) &&
-            const DeepCollectionEquality().equals(other.moment, moment) &&
-            const DeepCollectionEquality().equals(other.duration, duration) &&
-            const DeepCollectionEquality().equals(other.rating, rating) &&
-            const DeepCollectionEquality().equals(other.meetPoint, meetPoint) &&
-            const DeepCollectionEquality()
-                .equals(other.standardPrice, standardPrice) &&
-            const DeepCollectionEquality()
-                .equals(other.addServices, addServices) &&
-            const DeepCollectionEquality().equals(other.included, included) &&
-            const DeepCollectionEquality()
-                .equals(other.organizationalDetails, organizationalDetails) &&
-            const DeepCollectionEquality().equals(other.tags, tags) &&
-            const DeepCollectionEquality().equals(other.typesMove, typesMove));
+                .equals(other.errorTypesMove, errorTypesMove));
   }
 
   @override
-  int get hashCode => Object.hashAll([
-        runtimeType,
-        const DeepCollectionEquality().hash(isError),
-        const DeepCollectionEquality().hash(errorName),
-        const DeepCollectionEquality().hash(errorCity),
-        const DeepCollectionEquality().hash(errorGroupSize),
-        const DeepCollectionEquality().hash(errorDuration),
-        const DeepCollectionEquality().hash(errorMeetPoint),
-        const DeepCollectionEquality().hash(errorStandardPrice),
-        const DeepCollectionEquality().hash(errorTypesMove),
-        const DeepCollectionEquality().hash(isLoading),
-        const DeepCollectionEquality().hash(city),
-        const DeepCollectionEquality().hash(type),
-        const DeepCollectionEquality().hash(name),
-        const DeepCollectionEquality().hash(description),
-        const DeepCollectionEquality().hash(photo),
-        const DeepCollectionEquality().hash(groupSize),
-        const DeepCollectionEquality().hash(guide),
-        const DeepCollectionEquality().hash(moment),
-        const DeepCollectionEquality().hash(duration),
-        const DeepCollectionEquality().hash(rating),
-        const DeepCollectionEquality().hash(meetPoint),
-        const DeepCollectionEquality().hash(standardPrice),
-        const DeepCollectionEquality().hash(addServices),
-        const DeepCollectionEquality().hash(included),
-        const DeepCollectionEquality().hash(organizationalDetails),
-        const DeepCollectionEquality().hash(tags),
-        const DeepCollectionEquality().hash(typesMove)
-      ]);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(isLoading),
+      const DeepCollectionEquality().hash(type),
+      const DeepCollectionEquality().hash(currency),
+      const DeepCollectionEquality().hash(errorName),
+      const DeepCollectionEquality().hash(errorCity),
+      const DeepCollectionEquality().hash(errorGroupSize),
+      const DeepCollectionEquality().hash(errorDuration),
+      const DeepCollectionEquality().hash(errorDescription),
+      const DeepCollectionEquality().hash(errorMeetPoint),
+      const DeepCollectionEquality().hash(errorStandardPrice),
+      const DeepCollectionEquality().hash(errorTypesMove));
 
   @JsonKey(ignore: true)
   @override
@@ -930,35 +662,24 @@ class _$_InsertExcursionState implements _InsertExcursionState {
 
 abstract class _InsertExcursionState implements InsertExcursionState {
   const factory _InsertExcursionState(
-      {bool isError,
+      {bool isLoading,
+      TypeEntity? type,
+      CurrencyEntity? currency,
       List<dynamic> errorName,
       List<dynamic> errorCity,
       List<dynamic> errorGroupSize,
       List<dynamic> errorDuration,
+      List<dynamic> errorDescription,
       List<dynamic> errorMeetPoint,
       List<dynamic> errorStandardPrice,
-      List<dynamic> errorTypesMove,
-      bool isLoading,
-      CityEntity? city,
-      TypeEntity? type,
-      String name,
-      String description,
-      String photo,
-      int groupSize,
-      String guide,
-      bool moment,
-      String duration,
-      double rating,
-      String meetPoint,
-      int standardPrice,
-      String addServices,
-      String included,
-      String organizationalDetails,
-      List<TagEntity> tags,
-      List<TypeMoveEntity> typesMove}) = _$_InsertExcursionState;
+      List<dynamic> errorTypesMove}) = _$_InsertExcursionState;
 
   @override
-  bool get isError;
+  bool get isLoading;
+  @override
+  TypeEntity? get type;
+  @override
+  CurrencyEntity? get currency;
   @override
   List<dynamic> get errorName;
   @override
@@ -968,47 +689,13 @@ abstract class _InsertExcursionState implements InsertExcursionState {
   @override
   List<dynamic> get errorDuration;
   @override
+  List<dynamic> get errorDescription;
+  @override
   List<dynamic> get errorMeetPoint;
   @override
   List<dynamic> get errorStandardPrice;
   @override
   List<dynamic> get errorTypesMove;
-  @override
-  bool get isLoading;
-  @override
-  CityEntity? get city;
-  @override
-  TypeEntity? get type;
-  @override
-  String get name;
-  @override
-  String get description;
-  @override
-  String get photo;
-  @override
-  int get groupSize;
-  @override
-  String get guide;
-  @override
-  bool get moment;
-  @override
-  String get duration;
-  @override
-  double get rating;
-  @override
-  String get meetPoint;
-  @override
-  int get standardPrice;
-  @override
-  String get addServices;
-  @override
-  String get included;
-  @override
-  String get organizationalDetails;
-  @override
-  List<TagEntity> get tags;
-  @override
-  List<TypeMoveEntity> get typesMove;
   @override
   @JsonKey(ignore: true)
   _$InsertExcursionStateCopyWith<_InsertExcursionState> get copyWith =>

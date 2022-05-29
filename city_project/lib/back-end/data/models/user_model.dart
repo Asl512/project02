@@ -8,14 +8,30 @@ class UserModel extends UserEntity {
     required guidePermit,
     required photo,
     required verified,
-  }) : super(id: id, name: name, guidePermit: guidePermit, photo: photo, verified: verified);
+    required countTravel,
+    required countCompleted,
+    required idDocument,
+  }) : super(
+          id: id,
+          countCompleted: countCompleted,
+          countTravel: countTravel,
+          name: name,
+          guidePermit: guidePermit,
+          photo: photo,
+          verified: verified,
+          idDocument: idDocument,
+        );
 
   factory UserModel.fromDocument(DocumentSnapshot snapshot) {
     return UserModel(
-        id: snapshot["id"],
-        name: snapshot["name"],
-        guidePermit: snapshot["guidePermit"],
-        photo: snapshot["photo"],
-        verified: snapshot["verified"]);
+      id: snapshot["id"],
+      countTravel: snapshot["countTravel"],
+      countCompleted: snapshot["countCompleted"],
+      name: snapshot["name"],
+      guidePermit: snapshot["guidePermit"],
+      photo: snapshot["photo"],
+      verified: snapshot["verified"],
+      idDocument: snapshot.id,
+    );
   }
 }
