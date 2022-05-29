@@ -53,13 +53,13 @@ class _BookingPageState extends State<BookingPage> {
               body: StoreConnector<AppState, BookingInfoState>(
                 converter: (store) => store.state.bookingInfoState,
                 builder: (context, store) {
-                  if(!store.isAuth){
+                  if (!store.isAuth) {
                     return PageReloadWidget(
                       errorText: 'Авторизуйтесь',
                       func: () => _store.dispatch(
                           BookingInfoThunkAction(_store.state.excursionInfoState.excursion)),
                     );
-                  }else if (store.isLoading) {
+                  } else if (store.isLoading) {
                     return const LoadingWidget();
                   } else if (store.isError) {
                     return PageReloadWidget(
@@ -161,46 +161,47 @@ class _BodyState extends State<_Body> {
             //вывод оставшихся мест
             ///DATES
             Container(
-                margin: const EdgeInsets.only(top: 30),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const TitleTextFormField(text: "Даты", required: true),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(Radius.circular(10)),
-                          color: White,
-                          boxShadow: [ShadowForContainer()],
-                          border: false ? Border.all(color: Red) : Border.all(color: White)),
-                      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
-                      child: SfDateRangePicker(
-                        view: DateRangePickerView.month,
-                        monthViewSettings: const DateRangePickerMonthViewSettings(
-                            firstDayOfWeek: 1, dayFormat: 'EEE'),
-                        selectableDayPredicate: (DateTime dateTime) {
-                          DateTime start = DateTime(2022, 03, 03);
-                          DateTime end = DateTime(2022, 03, 25);
-                          if (dateTime.isAfter(start) && dateTime.isBefore(end)) return true;
-                          return false;
-                        },
-                        enablePastDates: false,
-                        selectionMode: DateRangePickerSelectionMode.single,
-                        onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {},
-                        selectionColor: Blue,
-                        todayHighlightColor: Blue,
-                      ),
+              margin: const EdgeInsets.only(top: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const TitleTextFormField(text: "Даты", required: true),
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                        color: White,
+                        boxShadow: [ShadowForContainer()],
+                        border: false ? Border.all(color: Red) : Border.all(color: White)),
+                    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+                    child: SfDateRangePicker(
+                      view: DateRangePickerView.month,
+                      monthViewSettings: const DateRangePickerMonthViewSettings(
+                          firstDayOfWeek: 1, dayFormat: 'EEE'),
+                      selectableDayPredicate: (DateTime dateTime) {
+                        DateTime start = DateTime(2022, 03, 03);
+                        DateTime end = DateTime(2022, 03, 25);
+                        if (dateTime.isAfter(start) && dateTime.isBefore(end)) return true;
+                        return false;
+                      },
+                      enablePastDates: false,
+                      selectionMode: DateRangePickerSelectionMode.single,
+                      onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {},
+                      selectionColor: Blue,
+                      todayHighlightColor: Blue,
                     ),
-                    false
-                        ? Container(
-                            margin: const EdgeInsets.only(top: 10, left: 15),
-                            child: RichText(
-                              text: TextSpan(
-                                  text: "Ошибка даты".toString(),
-                                  style: Montserrat(size: 13, color: Red)),
-                            ))
-                        : Container()
-                  ],
-                )),
+                  ),
+                  false
+                      ? Container(
+                          margin: const EdgeInsets.only(top: 10, left: 15),
+                          child: RichText(
+                            text: TextSpan(
+                                text: "Ошибка даты".toString(),
+                                style: Montserrat(size: 13, color: Red)),
+                          ))
+                      : Container()
+                ],
+              ),
+            ),
 
             -1 > 0
                 ? Column(

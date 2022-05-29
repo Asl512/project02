@@ -158,32 +158,9 @@ class _BodyState extends State<_Body> {
                 const TitleChapter(title: "Расписание"),
 
                 TypeExcursionSelect(controller: controller),
-                BookingConfirmationWidget(controller: controller),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  margin: const EdgeInsets.only(top: 30),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const TitleTextFormField(text: 'Дата и время', required: true),
-                      StoreConnector<AppState, InsertExcursionState>(
-                        converter: (store) => store.state.insertExcursionState,
-                        builder: (context, storeInsert) {
-                          if (storeInsert.type!.id == '1') {
-                            return const DateOnWeek();
-                          } else if (storeInsert.type!.id == '2') {
-                            return const DateFixed();
-                          }else if (storeInsert.type!.id == '3') {
-                            return const DateIndividual();
-                          } else {
-                            return const ErrorDate();
-                          }
-                        },
-                      )
-                    ],
-                  ),
-                ),
-                const PublishWidget(),
+                //BookingConfirmationWidget(controller: controller),
+                const DateWidget(),
+                //const PublishWidget(),
                 Container(
                   margin: const EdgeInsets.only(top: 30),
                   child: Column(

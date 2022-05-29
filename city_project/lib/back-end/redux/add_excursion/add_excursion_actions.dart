@@ -21,7 +21,6 @@ import 'package:lan_code/back-end/domain/useCases/tag_useCase.dart';
 import 'package:lan_code/back-end/domain/useCases/type_move_useCase.dart';
 import 'package:lan_code/back-end/domain/useCases/type_useCase.dart';
 import 'package:lan_code/back-end/domain/useCases/user_useCase.dart';
-import 'package:lan_code/back-end/redux/app/app_state.dart';
 import 'package:lan_code/ui/common/colors.dart';
 import 'package:lan_code/ui/common/textStyle.dart';
 import 'package:lan_code/ui/pages/guide/add_excursion_page/add_excursion_page.dart';
@@ -302,7 +301,7 @@ ThunkAction InsertThunkAction({
               "description": controller.description.text.trim(),
               "idGuide": store.state.authState.token,
               "type": controller.type.id,
-              "moment": controller.moment,
+              "moment": true,
               "moveType": controller.typesMove.map((e) => e.id).toList(),
               "isCheck": false,
               "specialPrice": controller.categoriesPeoplePrice

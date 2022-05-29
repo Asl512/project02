@@ -47,7 +47,10 @@ main() async {
       child: StreamProvider<UserMeth?>.value(
         value: AuthService().currentUser,
         initialData: null,
-        child: const MaterialApp(home: Navigation()),
+        child: const MaterialApp(
+          home: Navigation(),
+          debugShowCheckedModeBanner: false,
+        ),
       ),
     ),
   );
