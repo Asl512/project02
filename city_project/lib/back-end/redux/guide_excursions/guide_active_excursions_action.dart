@@ -10,15 +10,15 @@ import '../../domain/entities/excursion_entity.dart';
 import '../../domain/useCases/currency_useCase.dart';
 import '../../domain/useCases/type_useCase.dart';
 
-abstract class LoadActivityExcursionsByGuideAction {}
+abstract class ActivityExcursionsByGuideAction {}
 
-class LoadActivityExcursionsAction extends LoadActivityExcursionsByGuideAction {
+class LoadActivityExcursionsAction extends ActivityExcursionsByGuideAction {
 }
 
 class ErrorActivityExcursionsAction
-    extends LoadActivityExcursionsByGuideAction {}
+    extends ActivityExcursionsByGuideAction {}
 
-class ShowActivityExcursionsAction extends LoadActivityExcursionsByGuideAction {
+class ShowActivityExcursionsAction extends ActivityExcursionsByGuideAction {
   final List<ExcursionEntity> excursions;
   final List<TypeEntity> types;
   final List<CurrencyEntity> currency;
@@ -90,15 +90,15 @@ Future<Map<String, List>> getDataExcursion(
   };
 }
 
-abstract class LoadModerateExcursionsByGuideAction {}
+abstract class ModerateExcursionsByGuideAction {}
 
-class LoadModerateExcursionsAction extends LoadModerateExcursionsByGuideAction {
+class LoadModerateExcursionsAction extends ModerateExcursionsByGuideAction {
 }
 
 class ErrorModerateExcursionsAction
-    extends LoadModerateExcursionsByGuideAction {}
+    extends ModerateExcursionsByGuideAction {}
 
-class ShowModerateExcursionsAction extends LoadModerateExcursionsByGuideAction {
+class ShowModerateExcursionsAction extends ModerateExcursionsByGuideAction {
   final List<ExcursionEntity> excursions;
   final List<TypeEntity> types;
   final List<CurrencyEntity> currency;

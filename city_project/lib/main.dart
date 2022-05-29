@@ -36,6 +36,8 @@ main() async {
       addExcursionState: AddExcursionState(),
       insertExcursionState: InsertExcursionState(),
       bookingState: BookingState(),
+      guidActiveExcursions: ListExcursionsState(),
+      guidModerateExcursions: ListExcursionsState(),
     ),
   );
 

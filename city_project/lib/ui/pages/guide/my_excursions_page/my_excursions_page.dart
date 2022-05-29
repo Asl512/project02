@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:lan_code/back-end/redux/app/app_state.dart';
 import 'package:lan_code/ui/common/colors.dart';
 import 'package:lan_code/ui/common/textStyle.dart';
-import 'package:lan_code/ui/pages/excursion_navigation/widgets/excursion_card_widget.dart';
-import 'package:lan_code/ui/pages/excursion_navigation/widgets/photo_user_widget.dart';
-import 'package:lan_code/ui/pages/excursion_navigation/widgets/verified_user_widget.dart';
-import 'package:lan_code/ui/widgets/style.dart';
-import 'package:redux/redux.dart';
+
 
 class MyExcursionsPage extends StatefulWidget {
   const MyExcursionsPage({Key? key}) : super(key: key);
@@ -50,7 +44,6 @@ class _MyTicketsPageState extends State<MyExcursionsPage> with TickerProviderSta
                   tabs: [
                     Tab(child: Text("Активные", style: Montserrat())),
                     Tab(child: Text("Модерация", style: Montserrat())),
-                    Tab(child: Text("История", style: Montserrat())), // ждет 3 табсов
                   ],
                 ),
               ),
