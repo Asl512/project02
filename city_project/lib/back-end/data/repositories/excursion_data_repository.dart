@@ -17,6 +17,20 @@ class ExcursionDataRepository extends ExcursionRepository {
     });
   }
 
+  @override
+  Future<List<ExcursionEntity>?> getActiveExcursionByGuide(String id) async {
+    return await _getExcursion(() {
+      return ExcursionRemoteDataSourceImpl().getExcursionByGuide(id, true);
+    });
+  }
+
+  @override
+  Future<List<ExcursionEntity>?> getModerateExcursionByGuide(String id) async {
+    return await _getExcursion(() {
+      return ExcursionRemoteDataSourceImpl().getExcursionByGuide(id, false);
+    });
+  }
+
   Future<List<ExcursionEntity>?> _getExcursion(
       Future<List<ExcursionEntity>?> Function() getAllExcursion) async {
     final remoteExcursion = await getAllExcursion();

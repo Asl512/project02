@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class ExcursionRemoteDataSource {
   Future<List<ExcursionModel>?> getAllExcursion();
-
+  Future<List<ExcursionModel>?> getExcursionByGuide(String id, bool status);
   Future<List<ExcursionModel>?> getExcursionByType(String type);
 }
 
@@ -38,6 +38,25 @@ class ExcursionRemoteDataSourceImpl implements ExcursionRemoteDataSource {
         .collection('excursion')
         .where("idCity", isEqualTo: idCity)
         .where("type", whereIn: types)
+        .get()
+        .then((snapshot) => {response = snapshot.docs});
+    try {
+      return response.map((excursion) {
+        return ExcursionModel.fromDocument(excursion);
+      }).toList();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Future<List<ExcursionModel>?> getExcursionByGuide(String id, bool status) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List response = [];
+    await FirebaseFirestore.instance
+        .collection('excursion')
+        .where("idGuide", isEqualTo: id)
+        .where("isChecked", isEqualTo: status)
         .get()
         .then((snapshot) => {response = snapshot.docs});
     try {

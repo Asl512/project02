@@ -11,6 +11,9 @@ import 'package:lan_code/back-end/redux/excursion/excursion_reducer.dart';
 import 'package:lan_code/back-end/redux/user/user_actions.dart';
 import 'package:lan_code/back-end/redux/user/user_reducer.dart';
 
+import '../guide_excursions/guide_active_excursions_action.dart';
+import '../guide_excursions/guide_active_excursions_reducer.dart';
+
 AppState appReducer(AppState state, dynamic action) {
   if (action is ListCitiesAction) {
     final nextState = listCitiesReducer(state.listCitiesState, action);
@@ -39,7 +42,8 @@ AppState appReducer(AppState state, dynamic action) {
   } else if (action is BookingAction) {
     final nextState = bookingReducer(state.bookingState, action);
     return state.copyWith(bookingState: nextState);
-  }
+  } 
+  
 
   return state;
 }

@@ -18,5 +18,7 @@ class AppState with _$AppState {
     required AddExcursionState addExcursionState,
     required InsertExcursionState insertExcursionState,
     required BookingState bookingState,
+    required ListExcursionsState guidActiveExcursions,
+    required ListExcursionsState guidModerateExcursions,
   }) = _AppState;
 }
