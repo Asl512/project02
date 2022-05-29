@@ -42,19 +42,19 @@ AppState appReducer(AppState state, dynamic action) {
     final nextState = addExcursionReducer(state.addExcursionState, action);
     return state.copyWith(addExcursionState: nextState);
   } else if (action is InsertExcursionAction) {
-    final nextState =
-        insertExcursionReducer(state.insertExcursionState, action);
+    final nextState = insertExcursionReducer(state.insertExcursionState, action);
     return state.copyWith(insertExcursionState: nextState);
   } else if (action is BookingAction) {
     final nextState = bookingReducer(state.bookingState, action);
     return state.copyWith(bookingState: nextState);
+  } else if (action is BookingInfoAction) {
+    final nextState = bookingInfoReducer(state.bookingInfoState, action);
+    return state.copyWith(bookingInfoState: nextState);
   } else if (action is ActivityExcursionsByGuideAction) {
-    final nextState =
-        listActiveGuideExcursionsReducer(state.guidActiveExcursions, action);
+    final nextState = listActiveGuideExcursionsReducer(state.guidActiveExcursions, action);
     return state.copyWith(guidActiveExcursions: nextState);
   } else if (action is ModerateExcursionsByGuideAction) {
-    final nextState = listModerateGuideExcursionsReducer(
-        state.guidModerateExcursions, action);
+    final nextState = listModerateGuideExcursionsReducer(state.guidModerateExcursions, action);
     return state.copyWith(guidModerateExcursions: nextState);
   }
 
