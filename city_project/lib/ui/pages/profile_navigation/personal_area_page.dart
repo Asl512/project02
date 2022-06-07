@@ -29,7 +29,9 @@ class PersonalAreaPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Grey,
         elevation: 0.0,
-        actions: [IconButton(icon: iconSetting, onPressed: null)],
+        actions: [
+          IconButton(icon: iconSetting, onPressed: null),
+        ],
       ),
       body: ListView(
         shrinkWrap: true,

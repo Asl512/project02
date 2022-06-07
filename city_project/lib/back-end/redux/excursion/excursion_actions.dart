@@ -1,6 +1,5 @@
 import 'package:lan_code/back-end/data/repositories/currency_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/excursion_data_repository.dart';
-import 'package:lan_code/back-end/data/repositories/photos_excursion_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/review_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/tag_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/type_data_repository.dart';
@@ -8,7 +7,6 @@ import 'package:lan_code/back-end/data/repositories/type_move_data_repository.da
 import 'package:lan_code/back-end/data/repositories/user_data_repository.dart';
 import 'package:lan_code/back-end/domain/entities/currency_entity.dart';
 import 'package:lan_code/back-end/domain/entities/excursion_entity.dart';
-import 'package:lan_code/back-end/domain/entities/photos_excursion_entity.dart';
 import 'package:lan_code/back-end/domain/entities/review_entity.dart';
 import 'package:lan_code/back-end/domain/entities/tag_entity.dart';
 import 'package:lan_code/back-end/domain/entities/type_entity.dart';
@@ -16,7 +14,6 @@ import 'package:lan_code/back-end/domain/entities/type_move_entity.dart';
 import 'package:lan_code/back-end/domain/entities/user_entity.dart';
 import 'package:lan_code/back-end/domain/useCases/currency_useCase.dart';
 import 'package:lan_code/back-end/domain/useCases/excursion_useCase.dart';
-import 'package:lan_code/back-end/domain/useCases/photos_excursion_useCase.dart';
 import 'package:lan_code/back-end/domain/useCases/review_useCase.dart';
 import 'package:lan_code/back-end/domain/useCases/tag_useCase.dart';
 import 'package:lan_code/back-end/domain/useCases/type_move_useCase.dart';
@@ -249,7 +246,6 @@ class GetExcursionInfoAction extends ExcursionInfoAction {
   final UserEntity user;
   final TypeEntity type;
   final CurrencyEntity currency;
-  final PhotosExcursionEntity? photos;
   final List<ReviewsEntity>? reviews;
   final List<UserEntity>? usersReview;
   final List<TagEntity> tags;
@@ -259,7 +255,6 @@ class GetExcursionInfoAction extends ExcursionInfoAction {
     required this.excursion,
     required this.user,
     required this.type,
-    required this.photos,
     required this.typesMove,
     required this.usersReview,
     required this.reviews,
@@ -281,9 +276,6 @@ ThunkAction GetExcursionInfoThunkAction({
         user: user,
         type: type,
       ));
-
-      PhotosExcursionEntity? responsePhotoExcursion =
-          await GetPhotosExcursion(PhotosExcursionDataRepository()).call(idExcursion: excursion.id);
 
       List<ReviewsEntity>? responseReviews =
           await GetReviews(ReviewDataRepository()).call(idExcursion: excursion.id);
@@ -319,7 +311,6 @@ ThunkAction GetExcursionInfoThunkAction({
         user: user,
         type: type,
         currency: currency,
-        photos: responsePhotoExcursion,
         usersReview: sortUsers,
         reviews: responseReviews ?? [],
         tags: responseTags ?? [],

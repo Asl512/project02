@@ -16,15 +16,19 @@ class ExcursionModel extends ExcursionEntity {
     required currency,
     required standardPrice,
     required organizationalDetails,
+    required dates,
     required addServices,
     required included,
     required tags,
     required duration,
     required rating,
     required type,
+    required photos,
   }) : super(
           id: id,
           duration: duration,
+          photos: photos,
+          dates: dates,
           specialPrice: specialPrice,
           organizationalDetails: organizationalDetails,
           addServices: addServices,
@@ -45,10 +49,24 @@ class ExcursionModel extends ExcursionEntity {
         );
 
   factory ExcursionModel.fromDocument(DocumentSnapshot snapshot) {
+    List<DateExcursion> dates = [];
+    try {
+      for (int i = 0; i < snapshot["dates"].length; i++) {
+        dates.add(DateExcursion(
+          date: DateTime.fromMillisecondsSinceEpoch(snapshot["dates"][i]["date"].seconds * 1000),
+          places: snapshot["dates"][i]['places'],
+        ));
+      }
+    } catch (e) {
+      print(e);
+    }
+
     return ExcursionModel(
       id: snapshot.id,
+      dates: dates,
       name: snapshot["name"],
       photo: snapshot["photo"],
+      photos: snapshot["photos"],
       specialPrice: snapshot["specialPrice"],
       organizationalDetails: snapshot["organizationalDetails"],
       addServices: snapshot["addServices"],

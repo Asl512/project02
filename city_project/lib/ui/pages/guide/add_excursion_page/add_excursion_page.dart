@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lan_code/back-end/domain/entities/city_entity.dart';
 import 'package:lan_code/back-end/domain/entities/currency_entity.dart';
 import 'package:lan_code/back-end/domain/entities/tag_entity.dart';
@@ -46,7 +47,8 @@ class ControllerNewExcursion {
   late TextEditingController description = TextEditingController();
   late TextEditingController organizationalDetails = TextEditingController();
   late TextEditingController addServices = TextEditingController();
-  late List imageList = [];
+  late List<XFile> imageList = [];
+  List<String> dates = [];
   late int indexBackImage = 0;
 
   ControllerNewExcursion(context) {
@@ -159,7 +161,7 @@ class _BodyState extends State<_Body> {
 
                 TypeExcursionSelect(controller: controller),
                 //BookingConfirmationWidget(controller: controller),
-                const DateWidget(),
+                DateWidget(controller: controller),
                 //const PublishWidget(),
                 Container(
                   margin: const EdgeInsets.only(top: 30),

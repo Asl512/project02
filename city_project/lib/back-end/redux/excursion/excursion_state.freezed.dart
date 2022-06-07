@@ -282,7 +282,6 @@ class _$ExcursionInfoStateTearOff {
       UserEntity? user,
       TypeEntity? type,
       CurrencyEntity? currency,
-      PhotosExcursionEntity? photos,
       List<ReviewsEntity>? reviews,
       List<UserEntity>? userReview,
       List<TagEntity> tags = const [],
@@ -294,7 +293,6 @@ class _$ExcursionInfoStateTearOff {
       user: user,
       type: type,
       currency: currency,
-      photos: photos,
       reviews: reviews,
       userReview: userReview,
       tags: tags,
@@ -314,7 +312,6 @@ mixin _$ExcursionInfoState {
   UserEntity? get user => throw _privateConstructorUsedError;
   TypeEntity? get type => throw _privateConstructorUsedError;
   CurrencyEntity? get currency => throw _privateConstructorUsedError;
-  PhotosExcursionEntity? get photos => throw _privateConstructorUsedError;
   List<ReviewsEntity>? get reviews => throw _privateConstructorUsedError;
   List<UserEntity>? get userReview => throw _privateConstructorUsedError;
   List<TagEntity> get tags => throw _privateConstructorUsedError;
@@ -337,7 +334,6 @@ abstract class $ExcursionInfoStateCopyWith<$Res> {
       UserEntity? user,
       TypeEntity? type,
       CurrencyEntity? currency,
-      PhotosExcursionEntity? photos,
       List<ReviewsEntity>? reviews,
       List<UserEntity>? userReview,
       List<TagEntity> tags,
@@ -361,7 +357,6 @@ class _$ExcursionInfoStateCopyWithImpl<$Res>
     Object? user = freezed,
     Object? type = freezed,
     Object? currency = freezed,
-    Object? photos = freezed,
     Object? reviews = freezed,
     Object? userReview = freezed,
     Object? tags = freezed,
@@ -386,10 +381,6 @@ class _$ExcursionInfoStateCopyWithImpl<$Res>
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
               as CurrencyEntity?,
-      photos: photos == freezed
-          ? _value.photos
-          : photos // ignore: cast_nullable_to_non_nullable
-              as PhotosExcursionEntity?,
       reviews: reviews == freezed
           ? _value.reviews
           : reviews // ignore: cast_nullable_to_non_nullable
@@ -430,7 +421,6 @@ abstract class _$ExcursionInfoStateCopyWith<$Res>
       UserEntity? user,
       TypeEntity? type,
       CurrencyEntity? currency,
-      PhotosExcursionEntity? photos,
       List<ReviewsEntity>? reviews,
       List<UserEntity>? userReview,
       List<TagEntity> tags,
@@ -456,7 +446,6 @@ class __$ExcursionInfoStateCopyWithImpl<$Res>
     Object? user = freezed,
     Object? type = freezed,
     Object? currency = freezed,
-    Object? photos = freezed,
     Object? reviews = freezed,
     Object? userReview = freezed,
     Object? tags = freezed,
@@ -481,10 +470,6 @@ class __$ExcursionInfoStateCopyWithImpl<$Res>
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
               as CurrencyEntity?,
-      photos: photos == freezed
-          ? _value.photos
-          : photos // ignore: cast_nullable_to_non_nullable
-              as PhotosExcursionEntity?,
       reviews: reviews == freezed
           ? _value.reviews
           : reviews // ignore: cast_nullable_to_non_nullable
@@ -521,7 +506,6 @@ class _$_ExcursionInfoState implements _ExcursionInfoState {
       this.user,
       this.type,
       this.currency,
-      this.photos,
       this.reviews,
       this.userReview,
       this.tags = const [],
@@ -537,8 +521,6 @@ class _$_ExcursionInfoState implements _ExcursionInfoState {
   final TypeEntity? type;
   @override
   final CurrencyEntity? currency;
-  @override
-  final PhotosExcursionEntity? photos;
   @override
   final List<ReviewsEntity>? reviews;
   @override
@@ -558,7 +540,7 @@ class _$_ExcursionInfoState implements _ExcursionInfoState {
 
   @override
   String toString() {
-    return 'ExcursionInfoState(excursion: $excursion, user: $user, type: $type, currency: $currency, photos: $photos, reviews: $reviews, userReview: $userReview, tags: $tags, typesMove: $typesMove, isError: $isError, isLoading: $isLoading)';
+    return 'ExcursionInfoState(excursion: $excursion, user: $user, type: $type, currency: $currency, reviews: $reviews, userReview: $userReview, tags: $tags, typesMove: $typesMove, isError: $isError, isLoading: $isLoading)';
   }
 
   @override
@@ -570,7 +552,6 @@ class _$_ExcursionInfoState implements _ExcursionInfoState {
             const DeepCollectionEquality().equals(other.user, user) &&
             const DeepCollectionEquality().equals(other.type, type) &&
             const DeepCollectionEquality().equals(other.currency, currency) &&
-            const DeepCollectionEquality().equals(other.photos, photos) &&
             const DeepCollectionEquality().equals(other.reviews, reviews) &&
             const DeepCollectionEquality()
                 .equals(other.userReview, userReview) &&
@@ -587,7 +568,6 @@ class _$_ExcursionInfoState implements _ExcursionInfoState {
       const DeepCollectionEquality().hash(user),
       const DeepCollectionEquality().hash(type),
       const DeepCollectionEquality().hash(currency),
-      const DeepCollectionEquality().hash(photos),
       const DeepCollectionEquality().hash(reviews),
       const DeepCollectionEquality().hash(userReview),
       const DeepCollectionEquality().hash(tags),
@@ -607,7 +587,6 @@ abstract class _ExcursionInfoState implements ExcursionInfoState {
       UserEntity? user,
       TypeEntity? type,
       CurrencyEntity? currency,
-      PhotosExcursionEntity? photos,
       List<ReviewsEntity>? reviews,
       List<UserEntity>? userReview,
       List<TagEntity> tags,
@@ -623,8 +602,6 @@ abstract class _ExcursionInfoState implements ExcursionInfoState {
   TypeEntity? get type;
   @override
   CurrencyEntity? get currency;
-  @override
-  PhotosExcursionEntity? get photos;
   @override
   List<ReviewsEntity>? get reviews;
   @override
