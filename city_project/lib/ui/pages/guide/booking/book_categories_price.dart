@@ -2,6 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:lan_code/back-end/domain/entities/categorie_people_entity.dart';
+import 'package:lan_code/back-end/domain/entities/excursion_entity.dart';
 import 'package:lan_code/back-end/redux/add_excursion/add_excursion_state.dart';
 import 'package:lan_code/back-end/redux/app/app_state.dart';
 import 'package:lan_code/ui/common/colors.dart';
@@ -246,11 +247,19 @@ class _BookingCategoryPriceState extends State<BookingCategoryPrice> {
     listCategory = _store.state.bookingInfoState.categoriesPeople;
     List<DropdownMenuItem<CategoryPeopleEntity>> list = [];
     for (int i = 0; i < listCategory.length; i++) {
+      late String price;
+      if (_store.state.excursionInfoState.excursion!.specialPrice[i]['price'] == 0) {
+        price = 'бесплатно';
+      } else {
+        price = _store.state.excursionInfoState.excursion!.specialPrice[i]['price'].toString() +
+            ' ' +
+            _store.state.excursionInfoState.excursion!.currency;
+      }
       list.add(
         DropdownMenuItem<CategoryPeopleEntity>(
           value: listCategory[i],
           child: Text(
-            listCategory[i].name,
+            listCategory[i].name + ' - ' + price,
             style: Montserrat(color: Blue, size: 15, style: SemiBold),
           ),
         ),

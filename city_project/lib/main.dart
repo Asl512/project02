@@ -10,10 +10,10 @@ import 'package:lan_code/back-end/redux/city/city_state.dart';
 import 'package:lan_code/back-end/redux/excursion/excursion_state.dart';
 import 'package:lan_code/back-end/redux/user/user_state.dart';
 import 'package:lan_code/service.dart';
+import 'package:lan_code/ui/pages/splash/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
-import 'ui/pages/navigation.dart';
 
 main() async {
   SystemChrome.setSystemUIOverlayStyle(
@@ -50,7 +50,7 @@ main() async {
         value: AuthService().currentUser,
         initialData: null,
         child: const MaterialApp(
-          home: Navigation(),
+          home: SplashScreen(),
           debugShowCheckedModeBanner: false,
         ),
       ),

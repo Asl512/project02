@@ -11,14 +11,15 @@ import 'package:lan_code/ui/widgets/page_reload_widget.dart';
 import 'package:redux/redux.dart';
 
 class MyExcursionsPage extends StatefulWidget {
-  const MyExcursionsPage({Key? key}) : super(key: key);
+  final int indexTab;
+
+  const MyExcursionsPage({this.indexTab = 0, Key? key}) : super(key: key);
 
   @override
   State<MyExcursionsPage> createState() => _MyTicketsPageState();
 }
 
-class _MyTicketsPageState extends State<MyExcursionsPage>
-    with TickerProviderStateMixin {
+class _MyTicketsPageState extends State<MyExcursionsPage> with TickerProviderStateMixin {
   late TabController _tabController;
   late Store<AppState> _store;
 
@@ -27,8 +28,15 @@ class _MyTicketsPageState extends State<MyExcursionsPage>
     super.didChangeDependencies();
     _store = StoreProvider.of<AppState>(context);
     _tabController = TabController(length: 2, vsync: this);
-    if (_store.state.guidActiveExcursions.excursions.isEmpty) {
-      _store.dispatch(getActiveExcursionsByGuideThunkAction());
+    _tabController.index = widget.indexTab;
+    if (_tabController.index == 0) {
+      if (_store.state.guidActiveExcursions.excursions.isEmpty) {
+        _store.dispatch(getActiveExcursionsByGuideThunkAction());
+      }
+    } else {
+      if (_store.state.guidModerateExcursions.excursions.isEmpty) {
+        _store.dispatch(getModerateExcursionsByGuideThunkAction());
+      }
     }
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
@@ -83,8 +91,8 @@ class _MyTicketsPageState extends State<MyExcursionsPage>
           body: TabBarView(
             controller: _tabController,
             children: [
-            ActiveTab(storeApp: _store),
-            ModerateTab(storeApp: _store),
+              ActiveTab(storeApp: _store),
+              ModerateTab(storeApp: _store),
             ],
           ),
         ),
@@ -95,7 +103,9 @@ class _MyTicketsPageState extends State<MyExcursionsPage>
 
 class ActiveTab extends StatelessWidget {
   final Store storeApp;
+
   const ActiveTab({Key? key, required this.storeApp}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
@@ -116,15 +126,15 @@ class ActiveTab extends StatelessWidget {
           }
           if (store.excursions.isEmpty) {
             return Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: Text(
-                    'У вас нет активных экскурсий.',
-                    style: Montserrat(size: 15),
-                    textAlign: TextAlign.center,
-                  ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Text(
+                  'У вас нет активных экскурсий.',
+                  style: Montserrat(size: 15),
+                  textAlign: TextAlign.center,
                 ),
-              );
+              ),
+            );
           }
           List<Widget> _excursionsCard = [];
           for (int i = 0; i < store.excursions.length; i++) {
@@ -144,7 +154,9 @@ class ActiveTab extends StatelessWidget {
 
 class ModerateTab extends StatelessWidget {
   final Store storeApp;
+
   const ModerateTab({Key? key, required this.storeApp}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
@@ -165,15 +177,15 @@ class ModerateTab extends StatelessWidget {
           }
           if (store.excursions.isEmpty) {
             return Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: Text(
-                    'Нет экскурсий, которые проходят модерацию.',
-                    style: Montserrat(size: 15),
-                    textAlign: TextAlign.center,
-                  ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Text(
+                  'Нет экскурсий, которые проходят модерацию.',
+                  style: Montserrat(size: 15),
+                  textAlign: TextAlign.center,
                 ),
-              );
+              ),
+            );
           }
           List<Widget> _excursionsCard = [];
           for (int i = 0; i < store.excursions.length; i++) {
@@ -193,6 +205,7 @@ class ModerateTab extends StatelessWidget {
 
 class _Header extends StatelessWidget {
   const _Header({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(

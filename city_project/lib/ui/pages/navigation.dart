@@ -22,15 +22,16 @@ import 'my_tickets_navigation/my_tickets_card_widget.dart';
 class Navigation extends StatelessWidget {
   final int index;
 
-  const Navigation({this.index = 0, Key? key}) : super(key: key);
+  const Navigation({
+    this.index = 0,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Grey,
-      body: BodyNavigation(
-        index: index,
-      ),
+      body: BodyNavigation(index: index),
     );
   }
 }
@@ -38,7 +39,10 @@ class Navigation extends StatelessWidget {
 class BodyNavigation extends StatefulWidget {
   final int index;
 
-  const BodyNavigation({required this.index, Key? key}) : super(key: key);
+  const BodyNavigation({
+    required this.index,
+    Key? key,
+  }) : super(key: key);
 
   @override
   _BodyNavigationState createState() => _BodyNavigationState();
@@ -56,7 +60,6 @@ class _BodyNavigationState extends State<BodyNavigation> {
     floatingActionButton = _FloatingActionButton();
     _store = StoreProvider.of<AppState>(context);
     _store.dispatch(AuthThunkAction(context));
-    _store.dispatch(GetCityThunkAction());
     page ??= widget.index;
   }
 

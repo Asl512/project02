@@ -7,13 +7,19 @@ import 'package:lan_code/back-end/redux/booking/booking_state.dart';
 import 'package:lan_code/ui/common/colors.dart';
 import 'package:lan_code/ui/common/textStyle.dart';
 import 'package:lan_code/ui/pages/guide/booking/book_categories_price.dart';
+import 'package:lan_code/ui/pages/profile_navigation/authorization/authorization_page.dart';
+import 'package:lan_code/ui/pages/profile_navigation/authorization/registration.dart';
 import 'package:lan_code/ui/widgets/button_widget.dart';
 import 'package:lan_code/ui/widgets/loading_widget.dart';
 import 'package:lan_code/ui/widgets/page_reload_widget.dart';
-import 'package:lan_code/ui/widgets/style.dart';
 import 'package:lan_code/ui/widgets/text_field_style.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:redux/redux.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+
+class BookingController {
+  TextEditingController standardTicket = TextEditingController();
+  TextEditingController phone = TextEditingController();
+}
 
 class BookingPage extends StatefulWidget {
   const BookingPage({Key? key}) : super(key: key);
@@ -54,11 +60,7 @@ class _BookingPageState extends State<BookingPage> {
                 converter: (store) => store.state.bookingInfoState,
                 builder: (context, store) {
                   if (!store.isAuth) {
-                    return PageReloadWidget(
-                      errorText: 'Авторизуйтесь',
-                      func: () => _store.dispatch(
-                          BookingInfoThunkAction(_store.state.excursionInfoState.excursion)),
-                    );
+                    return const _Authorization();
                   } else if (store.isLoading) {
                     return const LoadingWidget();
                   } else if (store.isError) {
@@ -82,6 +84,49 @@ class _BookingPageState extends State<BookingPage> {
           ],
         );
       },
+    );
+  }
+}
+
+class _Authorization extends StatelessWidget {
+  const _Authorization({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: Text(
+            'Что бы забронировать экскурсию, вы должны быть авторизованы',
+            style: Montserrat(size: 15),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ButtonWidget(
+              text: "Войти",
+              padding: 0,
+              func: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AuthorizationPage()),
+              ),
+            ),
+            ButtonWidget(
+              text: "Регистрация",
+              padding: 0,
+              func: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const Registration()),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -154,54 +199,10 @@ class _BodyState extends State<_Body> {
 
             if (_store.state.excursionInfoState.excursion!.type == '3') const Text('YEEEEEEEEEEEP'),
 
-            ///ВРЕМЯ
-
-            ///ТЕЛЕФОН
+            _Phone(controller: controller),
 
             //вывод оставшихся мест
             ///DATES
-            Container(
-              margin: const EdgeInsets.only(top: 30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const TitleTextFormField(text: "Даты", required: true),
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(10)),
-                        color: White,
-                        boxShadow: [ShadowForContainer()],
-                        border: false ? Border.all(color: Red) : Border.all(color: White)),
-                    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
-                    child: SfDateRangePicker(
-                      view: DateRangePickerView.month,
-                      monthViewSettings: const DateRangePickerMonthViewSettings(
-                          firstDayOfWeek: 1, dayFormat: 'EEE'),
-                      selectableDayPredicate: (DateTime dateTime) {
-                        DateTime start = DateTime(2022, 03, 03);
-                        DateTime end = DateTime(2022, 03, 25);
-                        if (dateTime.isAfter(start) && dateTime.isBefore(end)) return true;
-                        return false;
-                      },
-                      enablePastDates: false,
-                      selectionMode: DateRangePickerSelectionMode.single,
-                      onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {},
-                      selectionColor: Blue,
-                      todayHighlightColor: Blue,
-                    ),
-                  ),
-                  false
-                      ? Container(
-                          margin: const EdgeInsets.only(top: 10, left: 15),
-                          child: RichText(
-                            text: TextSpan(
-                                text: "Ошибка даты".toString(),
-                                style: Montserrat(size: 13, color: Red)),
-                          ))
-                      : Container()
-                ],
-              ),
-            ),
 
             -1 > 0
                 ? Column(
@@ -212,19 +213,20 @@ class _BodyState extends State<_Body> {
                           width: double.infinity,
                           color: Blue),
                       Container(
-                          margin: const EdgeInsets.only(top: 20),
-                          child: Column(
-                            children: [
-                              ///бронь, сколько должен гиду, итого
-                              //ReturnInfoPrice(title: 'Итого:',ticket: tikets,factor: widget.data!["price"]),
-                              //ReturnInfoPrice(title: 'Бронь:',ticket: tikets,factor: (widget.data!["price"]/100*20).round(),),
-                            ],
-                          ))
+                        margin: const EdgeInsets.only(top: 20),
+                        child: Column(
+                          children: [
+                            ///бронь, сколько должен гиду, итого
+                            //ReturnInfoPrice(title: 'Итого:',ticket: tikets,factor: widget.data!["price"]),
+                            //ReturnInfoPrice(title: 'Бронь:',ticket: tikets,factor: (widget.data!["price"]/100*20).round(),),
+                          ],
+                        ),
+                      ),
                     ],
                   )
                 : Container(),
 
-            ///КНОПКА КУПИТЬ
+            ///КНОПКА ЗАБРОНИРОВАТЬ
             Container(
               margin: const EdgeInsets.only(top: 50),
               height: MediaQuery.of(context).size.height / 4.2,
@@ -355,6 +357,75 @@ class _StandardTickets extends StatelessWidget {
   }
 }
 
-class BookingController {
-  TextEditingController standardTicket = TextEditingController();
+class _Phone extends StatefulWidget {
+  final BookingController controller;
+
+  const _Phone({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+
+  @override
+  State<_Phone> createState() => _PhoneState();
+}
+
+class _PhoneState extends State<_Phone> {
+  late MaskTextInputFormatter maskPhoneNumber;
+  late Store<AppState> _store;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _store = StoreProvider.of<AppState>(context);
+    maskPhoneNumber = MaskTextInputFormatter(
+      mask: '+7 (###) ###-##-##',
+      filter: {"#": RegExp(r'[0-9]')},
+      type: MaskAutoCompletionType.lazy,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const TitleTextFormField(text: 'Номер телефона', required: true),
+          StoreConnector<AppState, BookingState>(
+            converter: (store) => store.state.bookingState,
+            builder: (context, store) {
+              return TextFieldWithShadow(
+                TextFormField(
+                  initialValue: _store.state.authState.user!.phone == 'null'
+                      ? ''
+                      : _store.state.authState.user!.phone,
+                  maxLength: 2,
+                  keyboardType: TextInputType.number,
+                  style: Montserrat(color: Blue, size: 15),
+                  onChanged: (String value) {
+                    widget.controller.phone.text = value;
+                  },
+                  inputFormatters: [maskPhoneNumber],
+                  decoration: TextFieldDecoration(
+                    hintText: '+7 (___) ___-__-__',
+                    prefixIcon: PrefixIconTextField(
+                      color: const Color(0xff4ee08e),
+                      icon: const Icon(
+                        Icons.phone,
+                        color: White,
+                        size: 25,
+                      ),
+                    ),
+                  ).inputDecoration,
+                ),
+                error: store.errorCountTickets,
+                errorText: true,
+              );
+            },
+          )
+        ],
+      ),
+    );
+  }
 }

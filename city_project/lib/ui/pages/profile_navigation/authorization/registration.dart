@@ -219,6 +219,7 @@ class _RegistrationState extends State<Registration> {
           "guidePermit": false,
           "countTravel": 0,
           "countCompleted": 0,
+          'phone': 'null',
         });
         Navigator.pushAndRemoveUntil(
           context,

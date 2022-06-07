@@ -40,14 +40,18 @@ ThunkAction BookingInfoThunkAction(ExcursionEntity? exception) => (Store store) 
           List<String> indexes =
               exception.specialPrice.map((e) => e["idCategory"] as String).toList();
 
-          List<CategoryPeopleEntity>? responseCategoriesPeople =
-              await GetListCategoryPeople(CategoryPeopleDataRepository()).call(indexes: indexes);
-
-          if (responseCategoriesPeople != null) {
-            store.dispatch(ShowBookingInfoAction(categoriesPeople: responseCategoriesPeople));
-          } else {
-            store.dispatch(ErrorBookingInfoAction());
+          List<CategoryPeopleEntity> responseCategoriesPeople = [];
+          if (indexes.isNotEmpty) {
+            List<CategoryPeopleEntity>? response =
+                await GetListCategoryPeople(CategoryPeopleDataRepository()).call(indexes: indexes);
+            if (response != null) {
+              responseCategoriesPeople = response;
+            } else {
+              store.dispatch(ErrorBookingInfoAction());
+            }
           }
+
+          store.dispatch(ShowBookingInfoAction(categoriesPeople: responseCategoriesPeople));
         } else {
           store.dispatch(ErrorBookingInfoAction());
         }

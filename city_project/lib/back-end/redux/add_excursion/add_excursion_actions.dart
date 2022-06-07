@@ -25,6 +25,7 @@ import 'package:lan_code/back-end/domain/useCases/user_useCase.dart';
 import 'package:lan_code/ui/common/colors.dart';
 import 'package:lan_code/ui/common/textStyle.dart';
 import 'package:lan_code/ui/pages/guide/add_excursion_page/add_excursion_page.dart';
+import 'package:lan_code/ui/pages/guide/my_excursions_page/my_excursions_page.dart';
 import 'package:lan_code/ui/pages/navigation.dart';
 import 'package:lan_code/ui/widgets/libary/customSnackBar.dart';
 import 'package:lan_code/ui/widgets/libary/topSnackBart.dart';
@@ -255,7 +256,7 @@ ThunkAction InsertThunkAction({
               return Timestamp.fromMillisecondsSinceEpoch(date.millisecondsSinceEpoch);
             }).toList();
           }
-        }else{
+        } else {
           controller.meetPoint.text = '';
           timestamp = [];
         }
@@ -363,11 +364,16 @@ ThunkAction InsertThunkAction({
               ),
             );
 
-            /*Navigator.pushAndRemoveUntil(
+            Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (_) => const Navigation(index: 0)),
+              MaterialPageRoute(builder: (_) => const Navigation()),
               (route) => false,
-            );*/
+            );
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const MyExcursionsPage(indexTab: 1)),
+            );
           } catch (e) {
             store.dispatch(ErrorInsetExcursionAction());
             showTopSnackBar(

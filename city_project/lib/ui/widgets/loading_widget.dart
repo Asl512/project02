@@ -9,7 +9,7 @@ class LoadingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     //https://pub.dev/packages/loading_animation_widget
     return Center(
-      child: LoadingAnimationWidget.inkDrop(
+      child: LoadingAnimationWidget.fourRotatingDots(
         color: Blue,
         size: 50,
       ),

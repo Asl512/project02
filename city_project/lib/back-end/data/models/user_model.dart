@@ -8,6 +8,7 @@ class UserModel extends UserEntity {
     required guidePermit,
     required photo,
     required verified,
+    required phone,
     required countTravel,
     required countCompleted,
     required idDocument,
@@ -19,12 +20,14 @@ class UserModel extends UserEntity {
           guidePermit: guidePermit,
           photo: photo,
           verified: verified,
+          phone: phone,
           idDocument: idDocument,
         );
 
   factory UserModel.fromDocument(DocumentSnapshot snapshot) {
     return UserModel(
       id: snapshot["id"],
+      phone: snapshot["phone"],
       countTravel: snapshot["countTravel"],
       countCompleted: snapshot["countCompleted"],
       name: snapshot["name"],

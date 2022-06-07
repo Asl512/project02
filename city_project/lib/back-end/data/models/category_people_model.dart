@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lan_code/back-end/domain/entities/categorie_people_entity.dart';
-import 'package:lan_code/back-end/domain/entities/tag_entity.dart';
 
 class CategoryPeopleModel extends CategoryPeopleEntity {
   const CategoryPeopleModel({

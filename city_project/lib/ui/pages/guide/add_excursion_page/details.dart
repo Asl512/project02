@@ -161,7 +161,10 @@ class _TypesMoveWidgetState extends State<TypesMoveWidget> {
                 MyDropdownFormField<TypeMoveEntity>(
                   emptyText: 'Данного типа передвижения нет',
                   decoration: TextFieldDecoration(
-                    prefixIcon: PrefixIconTextField(color: const Color(0xFF45b678), icon: iconMove),
+                    prefixIcon: PrefixIconTextField(
+                      color: const Color(0xFF45b678),
+                      icon: iconMove,
+                    ),
                     suffixIcon: Transform.rotate(
                       angle: -90 * math.pi / 180,
                       child: const Icon(Icons.arrow_back_ios, color: Blue),
