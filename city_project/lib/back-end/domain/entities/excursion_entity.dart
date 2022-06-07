@@ -1,5 +1,15 @@
 import 'package:equatable/equatable.dart';
 
+class DateExcursion {
+  final DateTime date;
+  final int places;
+
+  DateExcursion({
+    required this.date,
+    required this.places,
+  });
+}
+
 class ExcursionEntity extends Equatable {
   final String id;
   final String name;
@@ -10,10 +20,12 @@ class ExcursionEntity extends Equatable {
   final String type;
   final bool moment;
   final String duration;
+  final List<dynamic> photos;
   final List<dynamic> moveType;
   final List<dynamic> rating;
   final List<dynamic> tags;
   final List<dynamic> specialPrice;
+  final List<DateExcursion> dates;
   final String meetPoint;
   final int standardPrice;
   final String addServices;
@@ -26,7 +38,9 @@ class ExcursionEntity extends Equatable {
     required this.id,
     required this.organizationalDetails,
     required this.addServices,
+    required this.dates,
     required this.tags,
+    required this.photos,
     required this.included,
     required this.currency,
     required this.name,
@@ -50,6 +64,8 @@ class ExcursionEntity extends Equatable {
         addServices,
         tags,
         included,
+        photos,
+        dates,
         specialPrice,
         organizationalDetails,
         duration,

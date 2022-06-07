@@ -10,7 +10,6 @@ import 'package:lan_code/back-end/redux/city/city_state.dart';
 import 'package:lan_code/back-end/redux/excursion/excursion_state.dart';
 import 'package:lan_code/back-end/redux/user/user_state.dart';
 import 'package:lan_code/service.dart';
-import 'package:lan_code/test.dart';
 import 'package:provider/provider.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';

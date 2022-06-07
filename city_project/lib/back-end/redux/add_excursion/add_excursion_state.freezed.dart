@@ -336,7 +336,8 @@ class _$InsertExcursionStateTearOff {
       List<dynamic> errorDescription = const [false, 'errorDescription'],
       List<dynamic> errorMeetPoint = const [false, 'errorMeetPoint'],
       List<dynamic> errorStandardPrice = const [false, 'errorStandardPrice'],
-      List<dynamic> errorTypesMove = const [false, 'errorTypesMove']}) {
+      List<dynamic> errorTypesMove = const [false, 'errorTypesMove'],
+      List<dynamic> errorDate = const [false, 'errorDate']}) {
     return _InsertExcursionState(
       isLoading: isLoading,
       type: type,
@@ -349,6 +350,7 @@ class _$InsertExcursionStateTearOff {
       errorMeetPoint: errorMeetPoint,
       errorStandardPrice: errorStandardPrice,
       errorTypesMove: errorTypesMove,
+      errorDate: errorDate,
     );
   }
 }
@@ -369,6 +371,7 @@ mixin _$InsertExcursionState {
   List<dynamic> get errorMeetPoint => throw _privateConstructorUsedError;
   List<dynamic> get errorStandardPrice => throw _privateConstructorUsedError;
   List<dynamic> get errorTypesMove => throw _privateConstructorUsedError;
+  List<dynamic> get errorDate => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $InsertExcursionStateCopyWith<InsertExcursionState> get copyWith =>
@@ -391,7 +394,8 @@ abstract class $InsertExcursionStateCopyWith<$Res> {
       List<dynamic> errorDescription,
       List<dynamic> errorMeetPoint,
       List<dynamic> errorStandardPrice,
-      List<dynamic> errorTypesMove});
+      List<dynamic> errorTypesMove,
+      List<dynamic> errorDate});
 }
 
 /// @nodoc
@@ -416,6 +420,7 @@ class _$InsertExcursionStateCopyWithImpl<$Res>
     Object? errorMeetPoint = freezed,
     Object? errorStandardPrice = freezed,
     Object? errorTypesMove = freezed,
+    Object? errorDate = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: isLoading == freezed
@@ -462,6 +467,10 @@ class _$InsertExcursionStateCopyWithImpl<$Res>
           ? _value.errorTypesMove
           : errorTypesMove // ignore: cast_nullable_to_non_nullable
               as List<dynamic>,
+      errorDate: errorDate == freezed
+          ? _value.errorDate
+          : errorDate // ignore: cast_nullable_to_non_nullable
+              as List<dynamic>,
     ));
   }
 }
@@ -484,7 +493,8 @@ abstract class _$InsertExcursionStateCopyWith<$Res>
       List<dynamic> errorDescription,
       List<dynamic> errorMeetPoint,
       List<dynamic> errorStandardPrice,
-      List<dynamic> errorTypesMove});
+      List<dynamic> errorTypesMove,
+      List<dynamic> errorDate});
 }
 
 /// @nodoc
@@ -511,6 +521,7 @@ class __$InsertExcursionStateCopyWithImpl<$Res>
     Object? errorMeetPoint = freezed,
     Object? errorStandardPrice = freezed,
     Object? errorTypesMove = freezed,
+    Object? errorDate = freezed,
   }) {
     return _then(_InsertExcursionState(
       isLoading: isLoading == freezed
@@ -557,6 +568,10 @@ class __$InsertExcursionStateCopyWithImpl<$Res>
           ? _value.errorTypesMove
           : errorTypesMove // ignore: cast_nullable_to_non_nullable
               as List<dynamic>,
+      errorDate: errorDate == freezed
+          ? _value.errorDate
+          : errorDate // ignore: cast_nullable_to_non_nullable
+              as List<dynamic>,
     ));
   }
 }
@@ -575,7 +590,8 @@ class _$_InsertExcursionState implements _InsertExcursionState {
       this.errorDescription = const [false, 'errorDescription'],
       this.errorMeetPoint = const [false, 'errorMeetPoint'],
       this.errorStandardPrice = const [false, 'errorStandardPrice'],
-      this.errorTypesMove = const [false, 'errorTypesMove']});
+      this.errorTypesMove = const [false, 'errorTypesMove'],
+      this.errorDate = const [false, 'errorDate']});
 
   @JsonKey()
   @override
@@ -608,10 +624,13 @@ class _$_InsertExcursionState implements _InsertExcursionState {
   @JsonKey()
   @override
   final List<dynamic> errorTypesMove;
+  @JsonKey()
+  @override
+  final List<dynamic> errorDate;
 
   @override
   String toString() {
-    return 'InsertExcursionState(isLoading: $isLoading, type: $type, currency: $currency, errorName: $errorName, errorCity: $errorCity, errorGroupSize: $errorGroupSize, errorDuration: $errorDuration, errorDescription: $errorDescription, errorMeetPoint: $errorMeetPoint, errorStandardPrice: $errorStandardPrice, errorTypesMove: $errorTypesMove)';
+    return 'InsertExcursionState(isLoading: $isLoading, type: $type, currency: $currency, errorName: $errorName, errorCity: $errorCity, errorGroupSize: $errorGroupSize, errorDuration: $errorDuration, errorDescription: $errorDescription, errorMeetPoint: $errorMeetPoint, errorStandardPrice: $errorStandardPrice, errorTypesMove: $errorTypesMove, errorDate: $errorDate)';
   }
 
   @override
@@ -635,7 +654,8 @@ class _$_InsertExcursionState implements _InsertExcursionState {
             const DeepCollectionEquality()
                 .equals(other.errorStandardPrice, errorStandardPrice) &&
             const DeepCollectionEquality()
-                .equals(other.errorTypesMove, errorTypesMove));
+                .equals(other.errorTypesMove, errorTypesMove) &&
+            const DeepCollectionEquality().equals(other.errorDate, errorDate));
   }
 
   @override
@@ -651,7 +671,8 @@ class _$_InsertExcursionState implements _InsertExcursionState {
       const DeepCollectionEquality().hash(errorDescription),
       const DeepCollectionEquality().hash(errorMeetPoint),
       const DeepCollectionEquality().hash(errorStandardPrice),
-      const DeepCollectionEquality().hash(errorTypesMove));
+      const DeepCollectionEquality().hash(errorTypesMove),
+      const DeepCollectionEquality().hash(errorDate));
 
   @JsonKey(ignore: true)
   @override
@@ -672,7 +693,8 @@ abstract class _InsertExcursionState implements InsertExcursionState {
       List<dynamic> errorDescription,
       List<dynamic> errorMeetPoint,
       List<dynamic> errorStandardPrice,
-      List<dynamic> errorTypesMove}) = _$_InsertExcursionState;
+      List<dynamic> errorTypesMove,
+      List<dynamic> errorDate}) = _$_InsertExcursionState;
 
   @override
   bool get isLoading;
@@ -696,6 +718,8 @@ abstract class _InsertExcursionState implements InsertExcursionState {
   List<dynamic> get errorStandardPrice;
   @override
   List<dynamic> get errorTypesMove;
+  @override
+  List<dynamic> get errorDate;
   @override
   @JsonKey(ignore: true)
   _$InsertExcursionStateCopyWith<_InsertExcursionState> get copyWith =>

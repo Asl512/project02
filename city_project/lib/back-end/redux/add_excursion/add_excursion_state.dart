@@ -36,5 +36,6 @@ class InsertExcursionState with _$InsertExcursionState {
     @Default([false, 'errorMeetPoint']) List errorMeetPoint,
     @Default([false, 'errorStandardPrice']) List errorStandardPrice,
     @Default([false, 'errorTypesMove']) List errorTypesMove,
+    @Default([false, 'errorDate']) List errorDate,
   }) = _InsertExcursionState;
 }

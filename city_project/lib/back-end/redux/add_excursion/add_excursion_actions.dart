@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lan_code/back-end/data/repositories/category_people_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/city_data_repository.dart';
 import 'package:lan_code/back-end/data/repositories/currency_data_repository.dart';
@@ -124,6 +125,7 @@ class ErrorInsetExcursionAction extends InsertExcursionAction {
   final List? errorStandardPrice;
   final List? errorTypesMove;
   final List? errorDescription;
+  final List? errorDate;
 
   ErrorInsetExcursionAction({
     this.errorName,
@@ -134,6 +136,7 @@ class ErrorInsetExcursionAction extends InsertExcursionAction {
     this.errorGroupSize,
     this.errorTypesMove,
     this.errorDescription,
+    this.errorDate,
   });
 }
 
@@ -194,6 +197,9 @@ ThunkAction InsertThunkAction({
       List? errorStandardPrice;
       List? errorTypesMove;
       List? errorDescription;
+      List? errorDate;
+      List<Timestamp> timestamp = [];
+      List<String> photos = [];
 
       if (await checkAuth(context: context, token: store.state.authState.token)) {
         if (controller.typesMove.isEmpty) {
@@ -230,6 +236,28 @@ ThunkAction InsertThunkAction({
             error = true;
             errorMeetPoint = [true, 'Слишком короткое название места сбора'];
           }
+
+          if (controller.dates.isEmpty) {
+            error = true;
+            errorDate = [true, 'Добавте дату'];
+          } else {
+            timestamp = controller.dates.map((dateStr) {
+              List data = dateStr.split(' - ');
+              List dataDate = data.first.split('.');
+              List dataTime = data.last.split(':');
+              DateTime date = DateTime(
+                int.parse(dataDate.last),
+                int.parse(dataDate[1]),
+                int.parse(dataDate.first),
+                int.parse(dataTime.first),
+                int.parse(dataTime.last),
+              );
+              return Timestamp.fromMillisecondsSinceEpoch(date.millisecondsSinceEpoch);
+            }).toList();
+          }
+        }else{
+          controller.meetPoint.text = '';
+          timestamp = [];
         }
 
         if (controller.sizeGroup.text.trim() == '') {
@@ -264,30 +292,31 @@ ThunkAction InsertThunkAction({
           }
         }
 
+        Future<String?> uploadImg(XFile photo) async {
+          String fileName = photo.name;
+          var bytes = await photo.readAsBytes();
+          try {
+            firebase_storage.Reference _storage =
+                firebase_storage.FirebaseStorage.instance.ref('photoExcursion/$fileName');
+            await _storage.putData(bytes);
+            return await _storage.getDownloadURL();
+          } catch (e) {
+            print(e);
+            return null;
+          }
+        }
+
         if (!error) {
           try {
-            /*void uploadImg() async {
-            String fileName = controller.imageList[0].name;
-            var bytes = await controller.imageList[0].readAsBytes();
-            try {
-              print("start, $fileName");
-              firebase_storage.Reference _storage =
-              firebase_storage.FirebaseStorage.instance.ref('photoExcursion/$fileName');
-              await _storage.putData(bytes);
-              print("++++");
-              print("start URL");
-              String url = await firebase_storage.FirebaseStorage.instance
-                  .ref('photoExcursion/$fileName')
-                  .getDownloadURL();
-              print(url);
-            } catch (e) {
-              print(e);
+            for (int i = 0; i < controller.imageList.length; i++) {
+              String? url = await uploadImg(controller.imageList[i]);
+              if (url != null) photos.add(url);
             }
-          }*/
 
             await FirebaseFirestore.instance.collection('excursion').add({
               "name": controller.name.text.trim(),
-              "photo": "null",
+              "photo": photos.isNotEmpty ? photos[controller.indexBackImage] : 'null',
+              "photos": photos,
               "organizationalDetails": controller.organizationalDetails.text.trim() == ''
                   ? 'null'
                   : controller.organizationalDetails.text.trim(),
@@ -318,6 +347,12 @@ ThunkAction InsertThunkAction({
               "groupSize": int.parse(controller.sizeGroup.text.trim()),
               "standartPrice": int.parse(controller.standardPrice.text.trim()),
               "idCity": controller.city!.id,
+              "dates": timestamp.map((date) {
+                return {
+                  "date": date,
+                  "places": int.parse(controller.sizeGroup.text.trim()),
+                };
+              }).toList(),
             });
 
             showTopSnackBar(
@@ -328,11 +363,11 @@ ThunkAction InsertThunkAction({
               ),
             );
 
-            Navigator.pushAndRemoveUntil(
+            /*Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (_) => const Navigation(index: 0)),
               (route) => false,
-            );
+            );*/
           } catch (e) {
             store.dispatch(ErrorInsetExcursionAction());
             showTopSnackBar(
@@ -353,6 +388,7 @@ ThunkAction InsertThunkAction({
             errorStandardPrice: errorStandardPrice,
             errorTypesMove: errorTypesMove,
             errorDescription: errorDescription,
+            errorDate: errorDate,
           ));
           showTopSnackBar(
             context,

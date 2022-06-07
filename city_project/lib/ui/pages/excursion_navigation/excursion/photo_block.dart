@@ -16,7 +16,7 @@ class PhotoBlock extends StatelessWidget {
     return StoreConnector<AppState, ExcursionInfoState>(
       converter: (store) => store.state.excursionInfoState,
       builder: (context, store) {
-        if (store.photos != null) {
+        if (store.excursion!.photos.isNotEmpty) {
           return const _Photos();
         }
         return Container();
@@ -40,14 +40,14 @@ class _Photos extends StatelessWidget {
         color: White,
         borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
-      child: _store.state.excursionInfoState.photos!.photos.length > 1
+      child: _store.state.excursionInfoState.excursion!.photos.length > 1
           ? Row(
               children: [
                 PhotoHalfBlock(
-                  image: _store.state.excursionInfoState.photos!.photos.first,
+                  image: _store.state.excursionInfoState.excursion!.photos.first,
                   func: () => showPhotoDialog(context),
                 ),
-                _store.state.excursionInfoState.photos!.photos.length > 2
+                _store.state.excursionInfoState.excursion!.photos.length > 2
                     ? Column(
                         children: [
                           TextButton(
@@ -55,7 +55,7 @@ class _Photos extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(5),
                               child: Image.network(
-                                _store.state.excursionInfoState.photos!.photos[1],
+                                _store.state.excursionInfoState.excursion!.photos[1],
                                 fit: BoxFit.cover,
                                 height: MediaQuery.of(context).size.width / 3 * 1.5 / 2,
                                 width: MediaQuery.of(context).size.width / 2.5,
@@ -80,7 +80,7 @@ class _Photos extends StatelessWidget {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(5),
                                   child: Image.network(
-                                    _store.state.excursionInfoState.photos!.photos[2],
+                                    _store.state.excursionInfoState.excursion!.photos[2],
                                     fit: BoxFit.cover,
                                     height: MediaQuery.of(context).size.width / 3 * 1.5 / 2,
                                     width: MediaQuery.of(context).size.width / 2.5,
@@ -106,7 +106,8 @@ class _Photos extends StatelessWidget {
                                   width: MediaQuery.of(context).size.width / 2.5,
                                   child: Text(
                                     '+' +
-                                        (_store.state.excursionInfoState.photos!.photos.length - 2)
+                                        (_store.state.excursionInfoState.excursion!.photos.length -
+                                                2)
                                             .toString(),
                                     style: Montserrat(size: 40, color: White, style: SemiBold),
                                   ),
@@ -117,7 +118,7 @@ class _Photos extends StatelessWidget {
                         ],
                       )
                     : PhotoHalfBlock(
-                        image: _store.state.excursionInfoState.photos!.photos[1],
+                        image: _store.state.excursionInfoState.excursion!.photos[1],
                         func: () => showPhotoDialog(context),
                       ),
               ],
@@ -188,7 +189,7 @@ class PhotoBlockOne extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(5),
         child: Image.network(
-          _store.state.excursionInfoState.photos!.photos.first,
+          _store.state.excursionInfoState.excursion!.photos.first,
           fit: BoxFit.cover,
           height: MediaQuery.of(context).size.width / 3 * 1.5 + 15,
           loadingBuilder: (
@@ -232,7 +233,7 @@ class _PhotoCarouselState extends State<PhotoCarousel> {
               color: Colors.black,
               child: InteractiveViewer(
                 child: Image.network(
-                  _store.state.excursionInfoState.photos!.photos[index],
+                  _store.state.excursionInfoState.excursion!.photos[index],
                   loadingBuilder: (
                     BuildContext context,
                     Widget child,
@@ -247,7 +248,7 @@ class _PhotoCarouselState extends State<PhotoCarousel> {
           },
           curve: Curves.decelerate,
           indicatorLayout: PageIndicatorLayout.NONE,
-          itemCount: _store.state.excursionInfoState.photos!.photos.length,
+          itemCount: _store.state.excursionInfoState.excursion!.photos.length,
         ),
         SizedBox(
           height: MediaQuery.of(context).size.height / 13,
@@ -273,7 +274,7 @@ class _PhotoCarouselState extends State<PhotoCarousel> {
                     Text(
                       indexNow.toString() +
                           ' из ' +
-                          _store.state.excursionInfoState.photos!.photos.length.toString(),
+                          _store.state.excursionInfoState.excursion!.photos.length.toString(),
                       style: Montserrat(style: SemiBold, color: White, size: 15),
                     )
                   ],

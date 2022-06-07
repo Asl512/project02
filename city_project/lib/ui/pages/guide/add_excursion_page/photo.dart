@@ -85,7 +85,7 @@ class _AddPhotoState extends State<AddPhoto> {
                 'Добавить фотографию',
                 style: Montserrat(size: 12, color: White),
                 textAlign: TextAlign.center,
-              )
+              ),
             ],
           ),
         ),

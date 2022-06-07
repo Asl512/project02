@@ -94,4 +94,5 @@ InsertExcursionState _errorInsertExcursion(
       errorStandardPrice: action.errorStandardPrice ?? [false, 'errorStandardPrice'],
       errorTypesMove: action.errorTypesMove ?? [false, 'errorTypesMove'],
       errorDescription: action.errorDescription ?? [false, 'errorDescription'],
+      errorDate: action.errorDate ?? [false, 'errorDate'],
     );
