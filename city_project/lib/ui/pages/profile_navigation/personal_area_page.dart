@@ -6,6 +6,7 @@ import 'package:lan_code/ui/common/icons.dart';
 import 'package:lan_code/ui/common/textStyle.dart';
 import 'package:lan_code/ui/pages/excursion_navigation/widgets/photo_user_widget.dart';
 import 'package:lan_code/ui/pages/excursion_navigation/widgets/verified_user_widget.dart';
+import 'package:lan_code/ui/pages/guide/my_excursions_page/my_excursions_page.dart';
 import 'package:lan_code/ui/pages/profile_navigation/become_guide_page.dart';
 import 'package:lan_code/ui/pages/profile_navigation/widgets/button_social_network_widget.dart';
 import 'package:lan_code/ui/widgets/button_widget.dart';
@@ -82,11 +83,14 @@ class PersonalAreaPage extends StatelessWidget {
                     ),
                     Container(height: 1, width: MediaQuery.of(context).size.width, color: Blue),
                     ((user?.guidePermit) ?? false)
-                        ? const ButtonProfileStyleWidget(
+                        ?  ButtonProfileStyleWidget(
                             title: 'Мои экскурсии',
                             description: 'Экскурсии в которых вы являетесь гидом',
                             icon: Icon(Icons.person_outlined, color: Blue, size: 30),
-                            func: null,
+                            func: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => const MyExcursionsPage()),
+                            ),
                           )
                         : ButtonProfileStyleWidget(
                             title: 'Стать гидом',

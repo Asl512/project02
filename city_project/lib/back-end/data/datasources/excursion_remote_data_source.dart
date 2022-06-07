@@ -56,7 +56,7 @@ class ExcursionRemoteDataSourceImpl implements ExcursionRemoteDataSource {
     await FirebaseFirestore.instance
         .collection('excursion')
         .where("idGuide", isEqualTo: id)
-        .where("isChecked", isEqualTo: status)
+        .where("isCheck", isEqualTo: status)
         .get()
         .then((snapshot) => {response = snapshot.docs});
     try {

@@ -12,11 +12,9 @@ import '../../domain/useCases/type_useCase.dart';
 
 abstract class ActivityExcursionsByGuideAction {}
 
-class LoadActivityExcursionsAction extends ActivityExcursionsByGuideAction {
-}
+class LoadActivityExcursionsAction extends ActivityExcursionsByGuideAction {}
 
-class ErrorActivityExcursionsAction
-    extends ActivityExcursionsByGuideAction {}
+class ErrorActivityExcursionsAction extends ActivityExcursionsByGuideAction {}
 
 class ShowActivityExcursionsAction extends ActivityExcursionsByGuideAction {
   final List<ExcursionEntity> excursions;
@@ -92,11 +90,9 @@ Future<Map<String, List>> getDataExcursion(
 
 abstract class ModerateExcursionsByGuideAction {}
 
-class LoadModerateExcursionsAction extends ModerateExcursionsByGuideAction {
-}
+class LoadModerateExcursionsAction extends ModerateExcursionsByGuideAction {}
 
-class ErrorModerateExcursionsAction
-    extends ModerateExcursionsByGuideAction {}
+class ErrorModerateExcursionsAction extends ModerateExcursionsByGuideAction {}
 
 class ShowModerateExcursionsAction extends ModerateExcursionsByGuideAction {
   final List<ExcursionEntity> excursions;
