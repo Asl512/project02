@@ -8,6 +8,11 @@ class DateExcursion {
     required this.date,
     required this.places,
   });
+
+  String get getDate =>
+      [date.day.toString(), date.month.toString(), date.year.toString()].join('.');
+
+  String get getTime => [date.hour.toString(), date.minute.toString()].join(':');
 }
 
 class ExcursionEntity extends Equatable {

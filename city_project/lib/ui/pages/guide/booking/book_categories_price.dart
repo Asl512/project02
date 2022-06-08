@@ -1,8 +1,9 @@
+import 'dart:async';
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:lan_code/back-end/domain/entities/categorie_people_entity.dart';
-import 'package:lan_code/back-end/domain/entities/excursion_entity.dart';
 import 'package:lan_code/back-end/redux/add_excursion/add_excursion_state.dart';
 import 'package:lan_code/back-end/redux/app/app_state.dart';
 import 'package:lan_code/ui/common/colors.dart';
@@ -16,10 +17,12 @@ import 'dart:math' as math;
 
 class BookingCategoryPrice extends StatefulWidget {
   final BookingController controller;
+  final StreamController<bool> streamController;
 
   const BookingCategoryPrice({
     Key? key,
     required this.controller,
+    required this.streamController,
   }) : super(key: key);
 
   @override
@@ -45,7 +48,7 @@ class _BookingCategoryPriceState extends State<BookingCategoryPrice> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.symmetric(vertical: 20),
       child: Column(
         children: [
           Row(
@@ -59,7 +62,7 @@ class _BookingCategoryPriceState extends State<BookingCategoryPrice> {
                   TextFieldWithShadow(
                     DropdownButtonHideUnderline(
                       child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.65,
+                        width: MediaQuery.of(context).size.width * 0.6,
                         child: DropdownButton2(
                           style: Montserrat(color: Blue, size: 15),
                           dropdownWidth: MediaQuery.of(context).size.width * 0.65,
@@ -118,7 +121,7 @@ class _BookingCategoryPriceState extends State<BookingCategoryPrice> {
                   const TitleTextFormField(text: 'Кол-во'),
                   TextFieldWithShadow(
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.2,
+                      width: MediaQuery.of(context).size.width * 0.3,
                       child: TextFormField(
                         controller: tickets,
                         maxLength: 6,
@@ -183,6 +186,9 @@ class _BookingCategoryPriceState extends State<BookingCategoryPrice> {
                               activeCategory
                                   .removeWhere((element) => element.first.id == category.first.id);
                             });
+                            widget.streamController.sink.add(true);
+                            widget.controller.categoriesPeople = activeCategory;
+                            widget.streamController.sink.add(false);
                           },
                           icon: const Icon(Icons.clear, color: White),
                         )
@@ -224,6 +230,9 @@ class _BookingCategoryPriceState extends State<BookingCategoryPrice> {
         categoryPeople = null;
         tickets.text = '0';
       });
+      widget.streamController.sink.add(true);
+      widget.controller.categoriesPeople = activeCategory;
+      widget.streamController.sink.add(false);
     } else {
       showTopSnackBar(
         context,
@@ -248,12 +257,12 @@ class _BookingCategoryPriceState extends State<BookingCategoryPrice> {
     List<DropdownMenuItem<CategoryPeopleEntity>> list = [];
     for (int i = 0; i < listCategory.length; i++) {
       late String price;
-      if (_store.state.excursionInfoState.excursion!.specialPrice[i]['price'] == 0) {
+      if (listCategory[i].price == 0) {
         price = 'бесплатно';
       } else {
-        price = _store.state.excursionInfoState.excursion!.specialPrice[i]['price'].toString() +
+        price = listCategory[i].price.toString() +
             ' ' +
-            _store.state.excursionInfoState.excursion!.currency;
+            _store.state.excursionInfoState.currency!.abbreviated;
       }
       list.add(
         DropdownMenuItem<CategoryPeopleEntity>(

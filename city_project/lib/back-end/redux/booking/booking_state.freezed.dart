@@ -22,12 +22,14 @@ class _$BookingInfoStateTearOff {
       {bool isError = false,
       bool isLoading = false,
       bool isAuth = false,
-      List<CategoryPeopleEntity> categoriesPeople = const []}) {
+      List<CategoryPeopleEntity> categoriesPeople = const [],
+      ExcursionEntity? excursion}) {
     return _BookingInfoState(
       isError: isError,
       isLoading: isLoading,
       isAuth: isAuth,
       categoriesPeople: categoriesPeople,
+      excursion: excursion,
     );
   }
 }
@@ -42,6 +44,7 @@ mixin _$BookingInfoState {
   bool get isAuth => throw _privateConstructorUsedError;
   List<CategoryPeopleEntity> get categoriesPeople =>
       throw _privateConstructorUsedError;
+  ExcursionEntity? get excursion => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $BookingInfoStateCopyWith<BookingInfoState> get copyWith =>
@@ -57,7 +60,8 @@ abstract class $BookingInfoStateCopyWith<$Res> {
       {bool isError,
       bool isLoading,
       bool isAuth,
-      List<CategoryPeopleEntity> categoriesPeople});
+      List<CategoryPeopleEntity> categoriesPeople,
+      ExcursionEntity? excursion});
 }
 
 /// @nodoc
@@ -75,6 +79,7 @@ class _$BookingInfoStateCopyWithImpl<$Res>
     Object? isLoading = freezed,
     Object? isAuth = freezed,
     Object? categoriesPeople = freezed,
+    Object? excursion = freezed,
   }) {
     return _then(_value.copyWith(
       isError: isError == freezed
@@ -93,6 +98,10 @@ class _$BookingInfoStateCopyWithImpl<$Res>
           ? _value.categoriesPeople
           : categoriesPeople // ignore: cast_nullable_to_non_nullable
               as List<CategoryPeopleEntity>,
+      excursion: excursion == freezed
+          ? _value.excursion
+          : excursion // ignore: cast_nullable_to_non_nullable
+              as ExcursionEntity?,
     ));
   }
 }
@@ -108,7 +117,8 @@ abstract class _$BookingInfoStateCopyWith<$Res>
       {bool isError,
       bool isLoading,
       bool isAuth,
-      List<CategoryPeopleEntity> categoriesPeople});
+      List<CategoryPeopleEntity> categoriesPeople,
+      ExcursionEntity? excursion});
 }
 
 /// @nodoc
@@ -128,6 +138,7 @@ class __$BookingInfoStateCopyWithImpl<$Res>
     Object? isLoading = freezed,
     Object? isAuth = freezed,
     Object? categoriesPeople = freezed,
+    Object? excursion = freezed,
   }) {
     return _then(_BookingInfoState(
       isError: isError == freezed
@@ -146,6 +157,10 @@ class __$BookingInfoStateCopyWithImpl<$Res>
           ? _value.categoriesPeople
           : categoriesPeople // ignore: cast_nullable_to_non_nullable
               as List<CategoryPeopleEntity>,
+      excursion: excursion == freezed
+          ? _value.excursion
+          : excursion // ignore: cast_nullable_to_non_nullable
+              as ExcursionEntity?,
     ));
   }
 }
@@ -157,7 +172,8 @@ class _$_BookingInfoState implements _BookingInfoState {
       {this.isError = false,
       this.isLoading = false,
       this.isAuth = false,
-      this.categoriesPeople = const []});
+      this.categoriesPeople = const [],
+      this.excursion});
 
   @JsonKey()
   @override
@@ -171,10 +187,12 @@ class _$_BookingInfoState implements _BookingInfoState {
   @JsonKey()
   @override
   final List<CategoryPeopleEntity> categoriesPeople;
+  @override
+  final ExcursionEntity? excursion;
 
   @override
   String toString() {
-    return 'BookingInfoState(isError: $isError, isLoading: $isLoading, isAuth: $isAuth, categoriesPeople: $categoriesPeople)';
+    return 'BookingInfoState(isError: $isError, isLoading: $isLoading, isAuth: $isAuth, categoriesPeople: $categoriesPeople, excursion: $excursion)';
   }
 
   @override
@@ -186,7 +204,8 @@ class _$_BookingInfoState implements _BookingInfoState {
             const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
             const DeepCollectionEquality().equals(other.isAuth, isAuth) &&
             const DeepCollectionEquality()
-                .equals(other.categoriesPeople, categoriesPeople));
+                .equals(other.categoriesPeople, categoriesPeople) &&
+            const DeepCollectionEquality().equals(other.excursion, excursion));
   }
 
   @override
@@ -195,7 +214,8 @@ class _$_BookingInfoState implements _BookingInfoState {
       const DeepCollectionEquality().hash(isError),
       const DeepCollectionEquality().hash(isLoading),
       const DeepCollectionEquality().hash(isAuth),
-      const DeepCollectionEquality().hash(categoriesPeople));
+      const DeepCollectionEquality().hash(categoriesPeople),
+      const DeepCollectionEquality().hash(excursion));
 
   @JsonKey(ignore: true)
   @override
@@ -208,7 +228,8 @@ abstract class _BookingInfoState implements BookingInfoState {
       {bool isError,
       bool isLoading,
       bool isAuth,
-      List<CategoryPeopleEntity> categoriesPeople}) = _$_BookingInfoState;
+      List<CategoryPeopleEntity> categoriesPeople,
+      ExcursionEntity? excursion}) = _$_BookingInfoState;
 
   @override
   bool get isError;
@@ -218,6 +239,8 @@ abstract class _BookingInfoState implements BookingInfoState {
   bool get isAuth;
   @override
   List<CategoryPeopleEntity> get categoriesPeople;
+  @override
+  ExcursionEntity? get excursion;
   @override
   @JsonKey(ignore: true)
   _$BookingInfoStateCopyWith<_BookingInfoState> get copyWith =>
@@ -233,13 +256,23 @@ class _$BookingStateTearOff {
       List<dynamic> errorCountTickets = const [false, 'errorCountTickets'],
       List<dynamic> errorPhone = const [false, 'errorPhone'],
       List<dynamic> errorDate = const [false, 'errorDate'],
-      int price = 0}) {
+      List<dynamic> errorDateForIndividual = const [
+        false,
+        'errorDateForIndividual'
+      ],
+      List<dynamic> errorTimeForIndividual = const [
+        false,
+        'errorTimeForIndividual'
+      ],
+      List<dynamic> errorMeetPoint = const [false, 'errorMeetPoint']}) {
     return _BookingState(
       isLoading: isLoading,
       errorCountTickets: errorCountTickets,
       errorPhone: errorPhone,
       errorDate: errorDate,
-      price: price,
+      errorDateForIndividual: errorDateForIndividual,
+      errorTimeForIndividual: errorTimeForIndividual,
+      errorMeetPoint: errorMeetPoint,
     );
   }
 }
@@ -253,7 +286,11 @@ mixin _$BookingState {
   List<dynamic> get errorCountTickets => throw _privateConstructorUsedError;
   List<dynamic> get errorPhone => throw _privateConstructorUsedError;
   List<dynamic> get errorDate => throw _privateConstructorUsedError;
-  int get price => throw _privateConstructorUsedError;
+  List<dynamic> get errorDateForIndividual =>
+      throw _privateConstructorUsedError;
+  List<dynamic> get errorTimeForIndividual =>
+      throw _privateConstructorUsedError;
+  List<dynamic> get errorMeetPoint => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $BookingStateCopyWith<BookingState> get copyWith =>
@@ -270,7 +307,9 @@ abstract class $BookingStateCopyWith<$Res> {
       List<dynamic> errorCountTickets,
       List<dynamic> errorPhone,
       List<dynamic> errorDate,
-      int price});
+      List<dynamic> errorDateForIndividual,
+      List<dynamic> errorTimeForIndividual,
+      List<dynamic> errorMeetPoint});
 }
 
 /// @nodoc
@@ -287,7 +326,9 @@ class _$BookingStateCopyWithImpl<$Res> implements $BookingStateCopyWith<$Res> {
     Object? errorCountTickets = freezed,
     Object? errorPhone = freezed,
     Object? errorDate = freezed,
-    Object? price = freezed,
+    Object? errorDateForIndividual = freezed,
+    Object? errorTimeForIndividual = freezed,
+    Object? errorMeetPoint = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: isLoading == freezed
@@ -306,10 +347,18 @@ class _$BookingStateCopyWithImpl<$Res> implements $BookingStateCopyWith<$Res> {
           ? _value.errorDate
           : errorDate // ignore: cast_nullable_to_non_nullable
               as List<dynamic>,
-      price: price == freezed
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as int,
+      errorDateForIndividual: errorDateForIndividual == freezed
+          ? _value.errorDateForIndividual
+          : errorDateForIndividual // ignore: cast_nullable_to_non_nullable
+              as List<dynamic>,
+      errorTimeForIndividual: errorTimeForIndividual == freezed
+          ? _value.errorTimeForIndividual
+          : errorTimeForIndividual // ignore: cast_nullable_to_non_nullable
+              as List<dynamic>,
+      errorMeetPoint: errorMeetPoint == freezed
+          ? _value.errorMeetPoint
+          : errorMeetPoint // ignore: cast_nullable_to_non_nullable
+              as List<dynamic>,
     ));
   }
 }
@@ -326,7 +375,9 @@ abstract class _$BookingStateCopyWith<$Res>
       List<dynamic> errorCountTickets,
       List<dynamic> errorPhone,
       List<dynamic> errorDate,
-      int price});
+      List<dynamic> errorDateForIndividual,
+      List<dynamic> errorTimeForIndividual,
+      List<dynamic> errorMeetPoint});
 }
 
 /// @nodoc
@@ -345,7 +396,9 @@ class __$BookingStateCopyWithImpl<$Res> extends _$BookingStateCopyWithImpl<$Res>
     Object? errorCountTickets = freezed,
     Object? errorPhone = freezed,
     Object? errorDate = freezed,
-    Object? price = freezed,
+    Object? errorDateForIndividual = freezed,
+    Object? errorTimeForIndividual = freezed,
+    Object? errorMeetPoint = freezed,
   }) {
     return _then(_BookingState(
       isLoading: isLoading == freezed
@@ -364,10 +417,18 @@ class __$BookingStateCopyWithImpl<$Res> extends _$BookingStateCopyWithImpl<$Res>
           ? _value.errorDate
           : errorDate // ignore: cast_nullable_to_non_nullable
               as List<dynamic>,
-      price: price == freezed
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as int,
+      errorDateForIndividual: errorDateForIndividual == freezed
+          ? _value.errorDateForIndividual
+          : errorDateForIndividual // ignore: cast_nullable_to_non_nullable
+              as List<dynamic>,
+      errorTimeForIndividual: errorTimeForIndividual == freezed
+          ? _value.errorTimeForIndividual
+          : errorTimeForIndividual // ignore: cast_nullable_to_non_nullable
+              as List<dynamic>,
+      errorMeetPoint: errorMeetPoint == freezed
+          ? _value.errorMeetPoint
+          : errorMeetPoint // ignore: cast_nullable_to_non_nullable
+              as List<dynamic>,
     ));
   }
 }
@@ -380,7 +441,9 @@ class _$_BookingState implements _BookingState {
       this.errorCountTickets = const [false, 'errorCountTickets'],
       this.errorPhone = const [false, 'errorPhone'],
       this.errorDate = const [false, 'errorDate'],
-      this.price = 0});
+      this.errorDateForIndividual = const [false, 'errorDateForIndividual'],
+      this.errorTimeForIndividual = const [false, 'errorTimeForIndividual'],
+      this.errorMeetPoint = const [false, 'errorMeetPoint']});
 
   @JsonKey()
   @override
@@ -396,11 +459,17 @@ class _$_BookingState implements _BookingState {
   final List<dynamic> errorDate;
   @JsonKey()
   @override
-  final int price;
+  final List<dynamic> errorDateForIndividual;
+  @JsonKey()
+  @override
+  final List<dynamic> errorTimeForIndividual;
+  @JsonKey()
+  @override
+  final List<dynamic> errorMeetPoint;
 
   @override
   String toString() {
-    return 'BookingState(isLoading: $isLoading, errorCountTickets: $errorCountTickets, errorPhone: $errorPhone, errorDate: $errorDate, price: $price)';
+    return 'BookingState(isLoading: $isLoading, errorCountTickets: $errorCountTickets, errorPhone: $errorPhone, errorDate: $errorDate, errorDateForIndividual: $errorDateForIndividual, errorTimeForIndividual: $errorTimeForIndividual, errorMeetPoint: $errorMeetPoint)';
   }
 
   @override
@@ -414,7 +483,12 @@ class _$_BookingState implements _BookingState {
             const DeepCollectionEquality()
                 .equals(other.errorPhone, errorPhone) &&
             const DeepCollectionEquality().equals(other.errorDate, errorDate) &&
-            const DeepCollectionEquality().equals(other.price, price));
+            const DeepCollectionEquality()
+                .equals(other.errorDateForIndividual, errorDateForIndividual) &&
+            const DeepCollectionEquality()
+                .equals(other.errorTimeForIndividual, errorTimeForIndividual) &&
+            const DeepCollectionEquality()
+                .equals(other.errorMeetPoint, errorMeetPoint));
   }
 
   @override
@@ -424,7 +498,9 @@ class _$_BookingState implements _BookingState {
       const DeepCollectionEquality().hash(errorCountTickets),
       const DeepCollectionEquality().hash(errorPhone),
       const DeepCollectionEquality().hash(errorDate),
-      const DeepCollectionEquality().hash(price));
+      const DeepCollectionEquality().hash(errorDateForIndividual),
+      const DeepCollectionEquality().hash(errorTimeForIndividual),
+      const DeepCollectionEquality().hash(errorMeetPoint));
 
   @JsonKey(ignore: true)
   @override
@@ -438,7 +514,9 @@ abstract class _BookingState implements BookingState {
       List<dynamic> errorCountTickets,
       List<dynamic> errorPhone,
       List<dynamic> errorDate,
-      int price}) = _$_BookingState;
+      List<dynamic> errorDateForIndividual,
+      List<dynamic> errorTimeForIndividual,
+      List<dynamic> errorMeetPoint}) = _$_BookingState;
 
   @override
   bool get isLoading;
@@ -449,7 +527,11 @@ abstract class _BookingState implements BookingState {
   @override
   List<dynamic> get errorDate;
   @override
-  int get price;
+  List<dynamic> get errorDateForIndividual;
+  @override
+  List<dynamic> get errorTimeForIndividual;
+  @override
+  List<dynamic> get errorMeetPoint;
   @override
   @JsonKey(ignore: true)
   _$BookingStateCopyWith<_BookingState> get copyWith =>

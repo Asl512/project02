@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lan_code/back-end/domain/entities/categorie_people_entity.dart';
+import 'package:lan_code/back-end/domain/entities/excursion_entity.dart';
 
 part 'booking_state.freezed.dart';
 
@@ -10,6 +11,7 @@ class BookingInfoState with _$BookingInfoState {
     @Default(false) bool isLoading,
     @Default(false) bool isAuth,
     @Default([]) List<CategoryPeopleEntity> categoriesPeople,
+    ExcursionEntity? excursion,
   }) = _BookingInfoState;
 }
 
@@ -20,6 +22,8 @@ class BookingState with _$BookingState {
     @Default([false, 'errorCountTickets']) List errorCountTickets,
     @Default([false, 'errorPhone']) List errorPhone,
     @Default([false, 'errorDate']) List errorDate,
-    @Default(0) int price,
+    @Default([false, 'errorDateForIndividual']) List errorDateForIndividual,
+    @Default([false, 'errorTimeForIndividual']) List errorTimeForIndividual,
+    @Default([false, 'errorMeetPoint']) List errorMeetPoint,
   }) = _BookingState;
 }

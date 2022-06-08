@@ -29,9 +29,7 @@ class _CityPageState extends State<CityPage> with TickerProviderStateMixin {
     super.didChangeDependencies();
     _store = StoreProvider.of<AppState>(context);
     _tabController = TabController(length: 3, vsync: this);
-    if (_store.state.allExcursions.excursions.isEmpty) {
-      _store.dispatch(GetAllExcursionsThunkAction());
-    }
+    _store.dispatch(GetAllExcursionsThunkAction());
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
         switch (_tabController.index) {

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:lan_code/back-end/domain/entities/city_entity.dart';
+import 'package:lan_code/back-end/redux/app/app_state.dart';
+import 'package:lan_code/back-end/redux/city/city_actions.dart';
 import 'package:lan_code/ui/common/colors.dart';
 import 'package:lan_code/ui/common/images.dart';
 import 'package:lan_code/ui/common/textStyle.dart';
@@ -24,6 +27,7 @@ class CityCardWidget extends StatelessWidget {
         onPressed: () async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString('city', cityEntiti.id);
+          StoreProvider.of<AppState>(context).dispatch(GetCityThunkAction());
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (_) => const Navigation()),

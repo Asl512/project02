@@ -11,6 +11,11 @@ class ExcursionDataRepository extends ExcursionRepository {
   }
 
   @override
+  Future<ExcursionEntity?> getOneExcursion(String id) async {
+    return await ExcursionRemoteDataSourceImpl().getOneExcursion(id);
+  }
+
+  @override
   Future<List<ExcursionEntity>?> getExcursionByType(String type) async {
     return await _getExcursion(() {
       return ExcursionRemoteDataSourceImpl().getExcursionByType(type);

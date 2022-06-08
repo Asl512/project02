@@ -5,4 +5,5 @@ abstract class ExcursionRepository {
   Future<List<ExcursionEntity>?> getActiveExcursionByGuide(String id);
   Future<List<ExcursionEntity>?> getModerateExcursionByGuide(String id);
   Future<List<ExcursionEntity>?> getExcursionByType(String type);
+  Future<ExcursionEntity?> getOneExcursion(String id);
 }

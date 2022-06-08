@@ -35,9 +35,9 @@ BookingInfoState _errorBookingInfo(
     );
 
 BookingInfoState _notAuthBookingInfo(
-    BookingInfoState state,
-    NotAuthBookingInfoAction action,
-    ) =>
+  BookingInfoState state,
+  NotAuthBookingInfoAction action,
+) =>
     state.copyWith(
       isLoading: false,
       isError: false,
@@ -53,6 +53,7 @@ BookingInfoState _showBookingInfo(
       isError: false,
       isAuth: true,
       categoriesPeople: action.categoriesPeople,
+      excursion: action.excursion,
     );
 
 BookingState _loadBooking(
@@ -72,4 +73,7 @@ BookingState _errorBooking(
       errorPhone: action.errorPhone ?? [false, ''],
       errorCountTickets: action.errorCountTickets ?? [false, ''],
       errorDate: action.errorDate ?? [false, ''],
+      errorMeetPoint: action.erorMeetPoint ?? [false, ''],
+      errorDateForIndividual: action.errorDateForIndividual ?? [false, ''],
+      errorTimeForIndividual: action.errorTimeForIndividual ?? [false, ''],
     );

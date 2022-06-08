@@ -5,12 +5,18 @@ class CategoryPeopleModel extends CategoryPeopleEntity {
   const CategoryPeopleModel({
     required id,
     required name,
-  }) : super(id: id, name: name);
+    required price,
+  }) : super(
+          id: id,
+          name: name,
+          price: price,
+        );
 
-  factory CategoryPeopleModel.fromDocument(DocumentSnapshot snapshot) {
+  factory CategoryPeopleModel.fromDocument(DocumentSnapshot snapshot, int price) {
     return CategoryPeopleModel(
       id: snapshot["id"],
       name: snapshot["name"],
+      price: price,
     );
   }
 }

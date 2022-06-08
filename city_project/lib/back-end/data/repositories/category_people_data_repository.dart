@@ -11,9 +11,12 @@ class CategoryPeopleDataRepository extends CategoryPeopleRepository {
   }
 
   @override
-  Future<List<CategoryPeopleEntity>?> getListCategoryPeople({required List<String> indexes}) async {
+  Future<List<CategoryPeopleEntity>?> getListCategoryPeople({
+    required List<String> indexes,
+    required List<int> prices,
+  }) async {
     return await _getListCategoryPeople(() {
-      return CategoryPeopleRemoteDataSourceImpl().getListCategoryPeople(indexes);
+      return CategoryPeopleRemoteDataSourceImpl().getListCategoryPeople(indexes, prices);
     });
   }
 

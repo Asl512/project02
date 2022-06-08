@@ -3,7 +3,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:lan_code/back-end/redux/add_excursion/add_excursion_state.dart';
 import 'package:lan_code/back-end/redux/app/app_state.dart';
 import 'package:lan_code/ui/common/colors.dart';
-import 'package:lan_code/ui/common/icons.dart';
 import 'package:lan_code/ui/common/textStyle.dart';
 import 'package:lan_code/ui/pages/guide/add_excursion_page/add_excursion_page.dart';
 import 'package:lan_code/ui/widgets/libary/customSnackBar.dart';
@@ -103,8 +102,12 @@ class _DateAndTimeState extends State<_DateAndTime> {
                   decoration: TextFieldDecoration(
                     hintText: "19.05.2022",
                     prefixIcon: PrefixIconTextField(
-                      color: const Color(0xffff54c5),
-                      icon: iconLocation,
+                      color: const Color(0xFFc25cf2),
+                      icon: const Icon(
+                        Icons.calendar_today_rounded,
+                        color: White,
+                        size: 25,
+                      ),
                     ),
                   ).inputDecoration,
                 ),

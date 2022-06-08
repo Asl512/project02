@@ -16,7 +16,10 @@ class GetListCategoryPeople {
 
   GetListCategoryPeople(this._categoryPeopleRepository);
 
-  Future<List<CategoryPeopleEntity>?> call({required List<String> indexes}) async {
-    return await _categoryPeopleRepository.getListCategoryPeople(indexes: indexes);
+  Future<List<CategoryPeopleEntity>?> call({
+    required List<String> indexes,
+    required List<int> prices,
+  }) async {
+    return await _categoryPeopleRepository.getListCategoryPeople(indexes: indexes, prices: prices);
   }
 }

@@ -374,6 +374,7 @@ ThunkAction InsertThunkAction({
               context,
               MaterialPageRoute(builder: (_) => const MyExcursionsPage(indexTab: 1)),
             );
+            store.dispatch(ErrorInsetExcursionAction());
           } catch (e) {
             store.dispatch(ErrorInsetExcursionAction());
             showTopSnackBar(

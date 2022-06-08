@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lan_code/back-end/data/models/category_people_model.dart';
-import 'package:lan_code/back-end/data/models/tag_model.dart';
-import 'package:lan_code/back-end/domain/entities/categorie_people_entity.dart';
 
 abstract class CategoryPeopleRemoteDataSource {
   Future<List<CategoryPeopleModel>?> getAllCategoryPeople();
 
-  Future<List<CategoryPeopleModel>?> getListCategoryPeople(List<String> indexes);
+  Future<List<CategoryPeopleModel>?> getListCategoryPeople(
+    List<String> indexes,
+    List<int> prices,
+  );
 }
 
 class CategoryPeopleRemoteDataSourceImpl implements CategoryPeopleRemoteDataSource {
@@ -19,7 +20,7 @@ class CategoryPeopleRemoteDataSourceImpl implements CategoryPeopleRemoteDataSour
 
     try {
       return response
-          .map((categoryPeople) => CategoryPeopleModel.fromDocument(categoryPeople))
+          .map((categoryPeople) => CategoryPeopleModel.fromDocument(categoryPeople, 0))
           .toList();
     } catch (e) {
       return null;
@@ -27,7 +28,10 @@ class CategoryPeopleRemoteDataSourceImpl implements CategoryPeopleRemoteDataSour
   }
 
   @override
-  Future<List<CategoryPeopleModel>?> getListCategoryPeople(List<String> indexes) async {
+  Future<List<CategoryPeopleModel>?> getListCategoryPeople(
+    List<String> indexes,
+    List<int> prices,
+  ) async {
     List response = [];
     await FirebaseFirestore.instance
         .collection('categoriesPeople')
@@ -38,9 +42,11 @@ class CategoryPeopleRemoteDataSourceImpl implements CategoryPeopleRemoteDataSour
         );
 
     try {
-      return response
-          .map((categoryPeople) => CategoryPeopleModel.fromDocument(categoryPeople))
-          .toList();
+      List<CategoryPeopleModel> categories = [];
+      for (int i = 0; i < response.length; i++) {
+        categories.add(CategoryPeopleModel.fromDocument(response[i], prices[i]));
+      }
+      return categories;
     } catch (e) {
       return null;
     }
