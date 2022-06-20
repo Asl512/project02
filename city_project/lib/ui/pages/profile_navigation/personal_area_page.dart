@@ -29,9 +29,7 @@ class PersonalAreaPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Grey,
         elevation: 0.0,
-        actions: [
-          IconButton(icon: iconSetting, onPressed: null),
-        ],
+        //actions: [IconButton(icon: iconSetting, onPressed: null)],
       ),
       body: ListView(
         shrinkWrap: true,
@@ -77,15 +75,15 @@ class PersonalAreaPage extends StatelessWidget {
                         )
                       ],
                     ),
-                    const ButtonProfileStyleWidget(
+                    /*const ButtonProfileStyleWidget(
                       title: 'Управление профилем',
                       description: 'Доступные проверки и расширения',
                       icon: Icon(Icons.person_outlined, color: Blue, size: 30),
                       func: null,
-                    ),
-                    Container(height: 1, width: MediaQuery.of(context).size.width, color: Blue),
+                    ),*/
+                    //Container(height: 1, width: MediaQuery.of(context).size.width, color: Blue),
                     ((user?.guidePermit) ?? false)
-                        ?  ButtonProfileStyleWidget(
+                        ? ButtonProfileStyleWidget(
                             title: 'Мои экскурсии',
                             description: 'Экскурсии в которых вы являетесь гидом',
                             icon: Icon(Icons.person_outlined, color: Blue, size: 30),
@@ -107,13 +105,13 @@ class PersonalAreaPage extends StatelessWidget {
                               MaterialPageRoute(builder: (_) => const BecomeGuidePage()),
                             ),
                           ),
-                    Container(height: 1, width: MediaQuery.of(context).size.width, color: Blue),
+                    /*Container(height: 1, width: MediaQuery.of(context).size.width, color: Blue),
                     const ButtonProfileStyleWidget(
                       title: 'Статистика',
                       description: 'Описание статистики',
                       icon: Icon(Icons.person_outlined, color: Blue, size: 30),
                       func: null,
-                    )
+                    )*/
                   ],
                 ),
                 Column(

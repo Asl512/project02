@@ -31,7 +31,11 @@ class _$AppStateTearOff {
       required BookingState bookingState,
       required ListExcursionsState guidActiveExcursions,
       required ListExcursionsState guidModerateExcursions,
-      required BookingInfoState bookingInfoState}) {
+      required BookingInfoState bookingInfoState,
+      required TicketListState ticketListActivityState,
+      required TicketListState ticketListCancelState,
+      required TicketDetailState ticketDetailState,
+      required RecordListState recordListState}) {
     return _AppState(
       allExcursions: allExcursions,
       groupExcursions: groupExcursions,
@@ -46,6 +50,10 @@ class _$AppStateTearOff {
       guidActiveExcursions: guidActiveExcursions,
       guidModerateExcursions: guidModerateExcursions,
       bookingInfoState: bookingInfoState,
+      ticketListActivityState: ticketListActivityState,
+      ticketListCancelState: ticketListCancelState,
+      ticketDetailState: ticketDetailState,
+      recordListState: recordListState,
     );
   }
 }
@@ -73,7 +81,14 @@ mixin _$AppState {
       throw _privateConstructorUsedError;
   ListExcursionsState get guidModerateExcursions =>
       throw _privateConstructorUsedError;
-  BookingInfoState get bookingInfoState => throw _privateConstructorUsedError;
+  BookingInfoState get bookingInfoState =>
+      throw _privateConstructorUsedError; // Ticket
+  TicketListState get ticketListActivityState =>
+      throw _privateConstructorUsedError;
+  TicketListState get ticketListCancelState =>
+      throw _privateConstructorUsedError;
+  TicketDetailState get ticketDetailState => throw _privateConstructorUsedError;
+  RecordListState get recordListState => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AppStateCopyWith<AppState> get copyWith =>
@@ -97,7 +112,11 @@ abstract class $AppStateCopyWith<$Res> {
       BookingState bookingState,
       ListExcursionsState guidActiveExcursions,
       ListExcursionsState guidModerateExcursions,
-      BookingInfoState bookingInfoState});
+      BookingInfoState bookingInfoState,
+      TicketListState ticketListActivityState,
+      TicketListState ticketListCancelState,
+      TicketDetailState ticketDetailState,
+      RecordListState recordListState});
 
   $ListExcursionsStateCopyWith<$Res> get allExcursions;
   $ListExcursionsStateCopyWith<$Res> get groupExcursions;
@@ -112,6 +131,10 @@ abstract class $AppStateCopyWith<$Res> {
   $ListExcursionsStateCopyWith<$Res> get guidActiveExcursions;
   $ListExcursionsStateCopyWith<$Res> get guidModerateExcursions;
   $BookingInfoStateCopyWith<$Res> get bookingInfoState;
+  $TicketListStateCopyWith<$Res> get ticketListActivityState;
+  $TicketListStateCopyWith<$Res> get ticketListCancelState;
+  $TicketDetailStateCopyWith<$Res> get ticketDetailState;
+  $RecordListStateCopyWith<$Res> get recordListState;
 }
 
 /// @nodoc
@@ -137,6 +160,10 @@ class _$AppStateCopyWithImpl<$Res> implements $AppStateCopyWith<$Res> {
     Object? guidActiveExcursions = freezed,
     Object? guidModerateExcursions = freezed,
     Object? bookingInfoState = freezed,
+    Object? ticketListActivityState = freezed,
+    Object? ticketListCancelState = freezed,
+    Object? ticketDetailState = freezed,
+    Object? recordListState = freezed,
   }) {
     return _then(_value.copyWith(
       allExcursions: allExcursions == freezed
@@ -191,6 +218,22 @@ class _$AppStateCopyWithImpl<$Res> implements $AppStateCopyWith<$Res> {
           ? _value.bookingInfoState
           : bookingInfoState // ignore: cast_nullable_to_non_nullable
               as BookingInfoState,
+      ticketListActivityState: ticketListActivityState == freezed
+          ? _value.ticketListActivityState
+          : ticketListActivityState // ignore: cast_nullable_to_non_nullable
+              as TicketListState,
+      ticketListCancelState: ticketListCancelState == freezed
+          ? _value.ticketListCancelState
+          : ticketListCancelState // ignore: cast_nullable_to_non_nullable
+              as TicketListState,
+      ticketDetailState: ticketDetailState == freezed
+          ? _value.ticketDetailState
+          : ticketDetailState // ignore: cast_nullable_to_non_nullable
+              as TicketDetailState,
+      recordListState: recordListState == freezed
+          ? _value.recordListState
+          : recordListState // ignore: cast_nullable_to_non_nullable
+              as RecordListState,
     ));
   }
 
@@ -289,6 +332,36 @@ class _$AppStateCopyWithImpl<$Res> implements $AppStateCopyWith<$Res> {
       return _then(_value.copyWith(bookingInfoState: value));
     });
   }
+
+  @override
+  $TicketListStateCopyWith<$Res> get ticketListActivityState {
+    return $TicketListStateCopyWith<$Res>(_value.ticketListActivityState,
+        (value) {
+      return _then(_value.copyWith(ticketListActivityState: value));
+    });
+  }
+
+  @override
+  $TicketListStateCopyWith<$Res> get ticketListCancelState {
+    return $TicketListStateCopyWith<$Res>(_value.ticketListCancelState,
+        (value) {
+      return _then(_value.copyWith(ticketListCancelState: value));
+    });
+  }
+
+  @override
+  $TicketDetailStateCopyWith<$Res> get ticketDetailState {
+    return $TicketDetailStateCopyWith<$Res>(_value.ticketDetailState, (value) {
+      return _then(_value.copyWith(ticketDetailState: value));
+    });
+  }
+
+  @override
+  $RecordListStateCopyWith<$Res> get recordListState {
+    return $RecordListStateCopyWith<$Res>(_value.recordListState, (value) {
+      return _then(_value.copyWith(recordListState: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -309,7 +382,11 @@ abstract class _$AppStateCopyWith<$Res> implements $AppStateCopyWith<$Res> {
       BookingState bookingState,
       ListExcursionsState guidActiveExcursions,
       ListExcursionsState guidModerateExcursions,
-      BookingInfoState bookingInfoState});
+      BookingInfoState bookingInfoState,
+      TicketListState ticketListActivityState,
+      TicketListState ticketListCancelState,
+      TicketDetailState ticketDetailState,
+      RecordListState recordListState});
 
   @override
   $ListExcursionsStateCopyWith<$Res> get allExcursions;
@@ -337,6 +414,14 @@ abstract class _$AppStateCopyWith<$Res> implements $AppStateCopyWith<$Res> {
   $ListExcursionsStateCopyWith<$Res> get guidModerateExcursions;
   @override
   $BookingInfoStateCopyWith<$Res> get bookingInfoState;
+  @override
+  $TicketListStateCopyWith<$Res> get ticketListActivityState;
+  @override
+  $TicketListStateCopyWith<$Res> get ticketListCancelState;
+  @override
+  $TicketDetailStateCopyWith<$Res> get ticketDetailState;
+  @override
+  $RecordListStateCopyWith<$Res> get recordListState;
 }
 
 /// @nodoc
@@ -363,6 +448,10 @@ class __$AppStateCopyWithImpl<$Res> extends _$AppStateCopyWithImpl<$Res>
     Object? guidActiveExcursions = freezed,
     Object? guidModerateExcursions = freezed,
     Object? bookingInfoState = freezed,
+    Object? ticketListActivityState = freezed,
+    Object? ticketListCancelState = freezed,
+    Object? ticketDetailState = freezed,
+    Object? recordListState = freezed,
   }) {
     return _then(_AppState(
       allExcursions: allExcursions == freezed
@@ -417,6 +506,22 @@ class __$AppStateCopyWithImpl<$Res> extends _$AppStateCopyWithImpl<$Res>
           ? _value.bookingInfoState
           : bookingInfoState // ignore: cast_nullable_to_non_nullable
               as BookingInfoState,
+      ticketListActivityState: ticketListActivityState == freezed
+          ? _value.ticketListActivityState
+          : ticketListActivityState // ignore: cast_nullable_to_non_nullable
+              as TicketListState,
+      ticketListCancelState: ticketListCancelState == freezed
+          ? _value.ticketListCancelState
+          : ticketListCancelState // ignore: cast_nullable_to_non_nullable
+              as TicketListState,
+      ticketDetailState: ticketDetailState == freezed
+          ? _value.ticketDetailState
+          : ticketDetailState // ignore: cast_nullable_to_non_nullable
+              as TicketDetailState,
+      recordListState: recordListState == freezed
+          ? _value.recordListState
+          : recordListState // ignore: cast_nullable_to_non_nullable
+              as RecordListState,
     ));
   }
 }
@@ -437,7 +542,11 @@ class _$_AppState implements _AppState {
       required this.bookingState,
       required this.guidActiveExcursions,
       required this.guidModerateExcursions,
-      required this.bookingInfoState});
+      required this.bookingInfoState,
+      required this.ticketListActivityState,
+      required this.ticketListCancelState,
+      required this.ticketDetailState,
+      required this.recordListState});
 
   @override //Feed
   final ListExcursionsState allExcursions;
@@ -465,10 +574,18 @@ class _$_AppState implements _AppState {
   final ListExcursionsState guidModerateExcursions;
   @override
   final BookingInfoState bookingInfoState;
+  @override // Ticket
+  final TicketListState ticketListActivityState;
+  @override
+  final TicketListState ticketListCancelState;
+  @override
+  final TicketDetailState ticketDetailState;
+  @override
+  final RecordListState recordListState;
 
   @override
   String toString() {
-    return 'AppState(allExcursions: $allExcursions, groupExcursions: $groupExcursions, individualExcursions: $individualExcursions, listCitiesState: $listCitiesState, cityState: $cityState, excursionInfoState: $excursionInfoState, authState: $authState, addExcursionState: $addExcursionState, insertExcursionState: $insertExcursionState, bookingState: $bookingState, guidActiveExcursions: $guidActiveExcursions, guidModerateExcursions: $guidModerateExcursions, bookingInfoState: $bookingInfoState)';
+    return 'AppState(allExcursions: $allExcursions, groupExcursions: $groupExcursions, individualExcursions: $individualExcursions, listCitiesState: $listCitiesState, cityState: $cityState, excursionInfoState: $excursionInfoState, authState: $authState, addExcursionState: $addExcursionState, insertExcursionState: $insertExcursionState, bookingState: $bookingState, guidActiveExcursions: $guidActiveExcursions, guidModerateExcursions: $guidModerateExcursions, bookingInfoState: $bookingInfoState, ticketListActivityState: $ticketListActivityState, ticketListCancelState: $ticketListCancelState, ticketDetailState: $ticketDetailState, recordListState: $recordListState)';
   }
 
   @override
@@ -499,7 +616,15 @@ class _$_AppState implements _AppState {
             const DeepCollectionEquality()
                 .equals(other.guidModerateExcursions, guidModerateExcursions) &&
             const DeepCollectionEquality()
-                .equals(other.bookingInfoState, bookingInfoState));
+                .equals(other.bookingInfoState, bookingInfoState) &&
+            const DeepCollectionEquality().equals(
+                other.ticketListActivityState, ticketListActivityState) &&
+            const DeepCollectionEquality()
+                .equals(other.ticketListCancelState, ticketListCancelState) &&
+            const DeepCollectionEquality()
+                .equals(other.ticketDetailState, ticketDetailState) &&
+            const DeepCollectionEquality()
+                .equals(other.recordListState, recordListState));
   }
 
   @override
@@ -517,7 +642,11 @@ class _$_AppState implements _AppState {
       const DeepCollectionEquality().hash(bookingState),
       const DeepCollectionEquality().hash(guidActiveExcursions),
       const DeepCollectionEquality().hash(guidModerateExcursions),
-      const DeepCollectionEquality().hash(bookingInfoState));
+      const DeepCollectionEquality().hash(bookingInfoState),
+      const DeepCollectionEquality().hash(ticketListActivityState),
+      const DeepCollectionEquality().hash(ticketListCancelState),
+      const DeepCollectionEquality().hash(ticketDetailState),
+      const DeepCollectionEquality().hash(recordListState));
 
   @JsonKey(ignore: true)
   @override
@@ -539,7 +668,11 @@ abstract class _AppState implements AppState {
       required BookingState bookingState,
       required ListExcursionsState guidActiveExcursions,
       required ListExcursionsState guidModerateExcursions,
-      required BookingInfoState bookingInfoState}) = _$_AppState;
+      required BookingInfoState bookingInfoState,
+      required TicketListState ticketListActivityState,
+      required TicketListState ticketListCancelState,
+      required TicketDetailState ticketDetailState,
+      required RecordListState recordListState}) = _$_AppState;
 
   @override //Feed
   ListExcursionsState get allExcursions;
@@ -567,6 +700,14 @@ abstract class _AppState implements AppState {
   ListExcursionsState get guidModerateExcursions;
   @override
   BookingInfoState get bookingInfoState;
+  @override // Ticket
+  TicketListState get ticketListActivityState;
+  @override
+  TicketListState get ticketListCancelState;
+  @override
+  TicketDetailState get ticketDetailState;
+  @override
+  RecordListState get recordListState;
   @override
   @JsonKey(ignore: true)
   _$AppStateCopyWith<_AppState> get copyWith =>

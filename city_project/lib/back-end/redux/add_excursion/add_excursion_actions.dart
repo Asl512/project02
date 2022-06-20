@@ -372,7 +372,7 @@ ThunkAction InsertThunkAction({
 
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => const MyExcursionsPage(indexTab: 1)),
+              MaterialPageRoute(builder: (_) => const MyExcursionsPage()),
             );
             store.dispatch(ErrorInsetExcursionAction());
           } catch (e) {

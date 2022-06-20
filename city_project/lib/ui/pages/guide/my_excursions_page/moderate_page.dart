@@ -2,6 +2,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:lan_code/back-end/domain/entities/excursion_entity.dart';
 import 'package:lan_code/back-end/redux/app/app_state.dart';
 import 'package:lan_code/back-end/redux/excursion/excursion_state.dart';
 import 'package:lan_code/ui/common/colors.dart';
@@ -12,10 +13,14 @@ import 'package:lan_code/ui/widgets/image_box_widget.dart';
 import 'package:lan_code/ui/widgets/style.dart';
 import 'package:redux/redux.dart';
 import 'dart:math' as math;
-import 'package:lan_code/ui/pages/excursion_navigation/excursion/reviews_page.dart';
 
-class ExcursionClientsList extends StatelessWidget {
-  const ExcursionClientsList({Key? key}) : super(key: key);
+class ModeratePage extends StatelessWidget {
+  final ExcursionEntity excursion;
+
+  const ModeratePage({
+    Key? key,
+    required this.excursion,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -143,42 +148,10 @@ class _BodyState extends State<_Body> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                          Text(
-                            "Клиентов ",
-                            style: Montserrat(style: Bold, size: 16, color: Blue),
-                          ),
-                        Container(
-                          width: 30,
-                          height: 60,
-                          alignment: Alignment.center,
-                              child: Text(
-                                  "4",
-                                  style: TextStyle(fontSize: 18)
-                              ),
-                          decoration: ShapeDecoration(
-                              color: Colors.white,
-                              shape: CircleBorder (
-                                  side: BorderSide(
-                                      width: 3,
-                                      color: Blue
-                                  )
-                              )
-                          )
-                      )
-                        ],
-                        ),
-                        _Card(
-                          title: "Кто записался",
-                          description: "Василий Петрович\nИван Иванов\nСаня Шима\nДуня Кулакова",
-                        ),
-                        Container(width: double.infinity, height: 0.5, color: Blue.withOpacity(0.5)),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                     ///РЕЙТИНГ
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -200,9 +173,6 @@ class _BodyState extends State<_Body> {
                         )
                       ],
                     ),
-
-                    ///ОТЗЫВ
-                    const _ReviewButton(),
                   ],
                 ),
 
@@ -214,6 +184,9 @@ class _BodyState extends State<_Body> {
 
                 ///ТЭГИ
                 const _Tags(),
+
+                ///ОСНОВНАЯ ИНФОРМАЦИЯ
+                const GeneralInformationExcursion(),
 
                 Container(
                   margin: const EdgeInsets.only(bottom: 15),
@@ -278,46 +251,6 @@ class _Tags extends StatelessWidget {
                   ),
                 )
                 .toList(),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _ReviewButton extends StatelessWidget {
-  const _ReviewButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return StoreConnector<AppState, ExcursionInfoState>(
-      converter: (store) => store.state.excursionInfoState,
-      builder: (context, store) {
-        return TextButton(
-          onPressed: () {
-            if (store.reviews != null) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ReviewPage()),
-              );
-            }
-          },
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                (store.reviews?.length.toString() ?? '-') + " отзывов",
-                style: Montserrat(
-                  color: const Color(0xFFF48494a),
-                  size: 16,
-                  style: Bold,
-                ),
-              ),
-              const Icon(
-                Icons.arrow_forward_ios,
-                color: Color(0xFFF48494a),
-              ),
-            ],
           ),
         );
       },

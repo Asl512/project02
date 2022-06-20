@@ -25,7 +25,7 @@ class PageReloadWidget extends StatelessWidget {
             children: [
               Text(
                 errorText,
-                style: Montserrat(style: Bold, size: 30),
+                style: Montserrat(style: Bold, size: 15),
                 textAlign: TextAlign.center,
               ),
               IconButton(

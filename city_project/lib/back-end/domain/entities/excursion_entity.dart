@@ -15,6 +15,12 @@ class DateExcursion {
   String get getTime => [date.hour.toString(), date.minute.toString()].join(':');
 }
 
+enum StatusExcursion {
+  moderate,
+  active,
+  notActive,
+}
+
 class ExcursionEntity extends Equatable {
   final String id;
   final String name;
@@ -37,12 +43,14 @@ class ExcursionEntity extends Equatable {
   final String included;
   final String currency;
   final String organizationalDetails;
+  final bool isCheck;
 
   const ExcursionEntity({
     required this.specialPrice,
     required this.id,
     required this.organizationalDetails,
     required this.addServices,
+    required this.isCheck,
     required this.dates,
     required this.tags,
     required this.photos,
@@ -62,6 +70,14 @@ class ExcursionEntity extends Equatable {
     required this.rating,
   });
 
+  StatusExcursion get status {
+    if (isCheck) {
+      return StatusExcursion.active;
+    } else {
+      return StatusExcursion.moderate;
+    }
+  }
+
   @override
   List<Object?> get props => [
         name,
@@ -69,6 +85,7 @@ class ExcursionEntity extends Equatable {
         addServices,
         tags,
         included,
+        isCheck,
         photos,
         dates,
         specialPrice,

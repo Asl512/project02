@@ -48,10 +48,10 @@ class _SearchPageState extends State<SearchPage> {
                 "Поиск",
                 style: Montserrat(color: Blue, size: 25, style: Bold),
               ),
-              bottom: const PreferredSize(
+              /*bottom: const PreferredSize(
                 preferredSize: Size.fromHeight(70),
                 child: _Search(),
-              ),
+              ),*/
             ),
           ];
         },

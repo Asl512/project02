@@ -88,6 +88,7 @@ class _CityPageState extends State<CityPage> with TickerProviderStateMixin {
         body: Scaffold(
           backgroundColor: Grey,
           body: TabBarView(
+            physics: const NeverScrollableScrollPhysics(),
             controller: _tabController,
             children: [
               _BodyAllExcursions(storeApp: _store),
@@ -203,27 +204,29 @@ class _BodyAllExcursions extends StatelessWidget {
       child: StoreConnector<AppState, ListExcursionsState>(
         converter: (store) => store.state.allExcursions,
         builder: (context, store) {
-          if (store.isLoading) {
+          if (store.excursions.isNotEmpty) {
+            List<Widget> _excursionsCard = [];
+            for (int i = 0; i < store.excursions.length; i++) {
+              _excursionsCard.add(ExcursionCardWidget(
+                excursionEntity: store.excursions[i],
+                userEntity: store.users[i],
+                typeEntity: store.types[i],
+                currencyEntity: store.currencies[i],
+              ));
+            }
+            return ListView(children: _excursionsCard);
+          } else if (store.isLoading) {
             return const LoadingWidget();
           } else if (store.isError) {
             return PageReloadWidget(
               errorText: 'Ошибка загрузки экскурсий',
               func: storeApp.dispatch(GetAllExcursionsThunkAction()),
             );
-          }
-          if (store.excursions.isEmpty) {
+          } else if (store.excursions.isEmpty) {
             return const _EmptyExcursion();
+          } else {
+            return Container();
           }
-          List<Widget> _excursionsCard = [];
-          for (int i = 0; i < store.excursions.length; i++) {
-            _excursionsCard.add(ExcursionCardWidget(
-              excursionEntity: store.excursions[i],
-              userEntity: store.users[i],
-              typeEntity: store.types[i],
-              currencyEntity: store.currencies[i],
-            ));
-          }
-          return ListView(children: _excursionsCard);
         },
       ),
     );
@@ -330,7 +333,7 @@ class _EmptyExcursion extends StatelessWidget {
       child: Center(
         child: Text(
           'Экскурсии не найдены',
-          style: Montserrat(style: Bold, size: 30),
+          style: Montserrat(size: 15),
           textAlign: TextAlign.center,
         ),
       ),

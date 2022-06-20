@@ -92,6 +92,7 @@ class _AuthorizationPageState extends State<AuthorizationPage> {
                                 error: errorEmail,
                               )
                             ])),
+                        const SizedBox(height: 10),
 
                         ///PASSWORD
                         Column(
@@ -107,11 +108,12 @@ class _AuthorizationPageState extends State<AuthorizationPage> {
                                   ),
 
                                   //КНОПКА "напомнить?"
-                                  TextButton(
-                                      child: Text("Напомнить",
-                                          style: Montserrat(size: 17, style: SemiBold)),
-                                      onPressed: () => Navigator.push(context,
-                                          MaterialPageRoute(builder: (_) => const FirstStepPage())))
+                                  /*TextButton(
+                                    child: Text("Напомнить",
+                                        style: Montserrat(size: 17, style: SemiBold)),
+                                    onPressed: () => Navigator.push(context,
+                                        MaterialPageRoute(builder: (_) => const FirstStepPage())),
+                                  )*/
                                 ]),
                             TextFieldWithShadow(
                               TextField(
@@ -126,7 +128,9 @@ class _AuthorizationPageState extends State<AuthorizationPage> {
                                   decoration: InputDecoration(
                                       //ИКОНКА
                                       prefixIcon: PrefixIconTextField(
-                                          color: const Color(0xFF00f069), icon: iconPassword),
+                                        color: const Color(0xFF00f069),
+                                        icon: iconPassword,
+                                      ),
 
                                       //СКРЫТЬ/ПОКАЗАТЬ
                                       suffixIcon: Container(
@@ -210,7 +214,7 @@ class _AuthorizationPageState extends State<AuthorizationPage> {
         showTopSnackBar(
             context,
             CustomSnackBar.error(
-                message: "Вы ввели не правильные данные",
+                message: "Вы ввели неверные данные",
                 textStyle: Montserrat(size: 15, color: White)));
       } else {
         Navigator.pushAndRemoveUntil(

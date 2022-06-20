@@ -17,7 +17,7 @@ import 'package:lan_code/ui/widgets/page_reload_widget.dart';
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:redux/redux.dart';
 
-import 'my_tickets_navigation/my_tickets_card_widget.dart';
+import 'my_tickets_navigation/my_tickets_page.dart';
 
 class Navigation extends StatelessWidget {
   final int index;

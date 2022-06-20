@@ -7,6 +7,10 @@ import 'package:lan_code/back-end/redux/city/city_actions.dart';
 import 'package:lan_code/back-end/redux/city/city_reducer.dart';
 import 'package:lan_code/back-end/redux/excursion/excursion_actions.dart';
 import 'package:lan_code/back-end/redux/excursion/excursion_reducer.dart';
+import 'package:lan_code/back-end/redux/record/actions.dart';
+import 'package:lan_code/back-end/redux/record/reducer.dart';
+import 'package:lan_code/back-end/redux/ticket/ticket_actions.dart';
+import 'package:lan_code/back-end/redux/ticket/ticket_reducer.dart';
 import 'package:lan_code/back-end/redux/user/user_actions.dart';
 import 'package:lan_code/back-end/redux/user/user_reducer.dart';
 
@@ -50,12 +54,24 @@ AppState appReducer(AppState state, dynamic action) {
   } else if (action is BookingInfoAction) {
     final nextState = bookingInfoReducer(state.bookingInfoState, action);
     return state.copyWith(bookingInfoState: nextState);
-  } else if (action is ActivityExcursionsByGuideAction) {
-    final nextState = listActiveGuideExcursionsReducer(state.guidActiveExcursions, action);
+  } else if (action is ActivityGuideExcursionsAction) {
+    final nextState = activeGuideExcursionsReducer(state.guidActiveExcursions, action);
     return state.copyWith(guidActiveExcursions: nextState);
-  } else if (action is ModerateExcursionsByGuideAction) {
-    final nextState = listModerateGuideExcursionsReducer(state.guidModerateExcursions, action);
+  } else if (action is ModerateGuideExcursionsAction) {
+    final nextState = moderateGuideExcursionsReducer(state.guidModerateExcursions, action);
     return state.copyWith(guidModerateExcursions: nextState);
+  } else if (action is TicketListActivityAction) {
+    final nextState = ticketListActivityReducer(state.ticketListActivityState, action);
+    return state.copyWith(ticketListActivityState: nextState);
+  } else if (action is TicketListCancelAction) {
+    final nextState = ticketListCancelReducer(state.ticketListCancelState, action);
+    return state.copyWith(ticketListCancelState: nextState);
+  } else if (action is TicketDetailAction) {
+    final nextState = ticketDetailReducer(state.ticketDetailState, action);
+    return state.copyWith(ticketDetailState: nextState);
+  } else if (action is RecordListAction) {
+    final nextState = recordListReducer(state.recordListState, action);
+    return state.copyWith(recordListState: nextState);
   }
 
   return state;

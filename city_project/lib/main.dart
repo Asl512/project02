@@ -8,6 +8,8 @@ import 'package:lan_code/back-end/redux/app/app_state.dart';
 import 'package:lan_code/back-end/redux/booking/booking_state.dart';
 import 'package:lan_code/back-end/redux/city/city_state.dart';
 import 'package:lan_code/back-end/redux/excursion/excursion_state.dart';
+import 'package:lan_code/back-end/redux/record/state.dart';
+import 'package:lan_code/back-end/redux/ticket/ticket_state.dart';
 import 'package:lan_code/back-end/redux/user/user_state.dart';
 import 'package:lan_code/service.dart';
 import 'package:lan_code/ui/pages/splash/splash_screen.dart';
@@ -40,6 +42,10 @@ main() async {
       guidActiveExcursions: ListExcursionsState(),
       guidModerateExcursions: ListExcursionsState(),
       bookingInfoState: BookingInfoState(),
+      ticketListActivityState: TicketListState(),
+      ticketListCancelState: TicketListState(),
+      ticketDetailState: TicketDetailState(),
+      recordListState: RecordListState(),
     ),
   );
 

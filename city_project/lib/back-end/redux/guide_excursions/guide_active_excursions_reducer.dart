@@ -2,42 +2,41 @@ import 'package:lan_code/back-end/redux/guide_excursions/guide_active_excursions
 import 'package:lan_code/back-end/redux/excursion/excursion_state.dart';
 import 'package:redux/redux.dart';
 
-Reducer<ListExcursionsState> listActiveGuideExcursionsReducer = combineReducers([
-  TypedReducer<ListExcursionsState, LoadActivityExcursionsAction>(_loadActiveExcursions),
-  TypedReducer<ListExcursionsState, ErrorActivityExcursionsAction>(_errorActiveExcursions),
-  TypedReducer<ListExcursionsState, ShowActivityExcursionsAction>(_showActiveExcursions),
+Reducer<ListExcursionsState> activeGuideExcursionsReducer = combineReducers([
+  TypedReducer<ListExcursionsState, LoadActivityGuideExcursionsAction>(_loadActive),
+  TypedReducer<ListExcursionsState, ErrorActivityGuideExcursionsAction>(_errorActive),
+  TypedReducer<ListExcursionsState, ShowActivityGuideExcursionsAction>(_showActive),
 ]);
 
-Reducer<ListExcursionsState> listModerateGuideExcursionsReducer = combineReducers([
-  TypedReducer<ListExcursionsState, LoadModerateExcursionsAction>(_loadModerateExcursions),
-  TypedReducer<ListExcursionsState, ErrorModerateExcursionsAction>(_errorModerateExcursions),
-  TypedReducer<ListExcursionsState, ShowModerateExcursionsAction>(_showModerateExcursions),
+Reducer<ListExcursionsState> moderateGuideExcursionsReducer = combineReducers([
+  TypedReducer<ListExcursionsState, LoadModerateGuideExcursionsAction>(_loadModerate),
+  TypedReducer<ListExcursionsState, ErrorModerateGuideExcursionsAction>(_errorModerate),
+  TypedReducer<ListExcursionsState, ShowModerateGuideExcursionsAction>(_showModerate),
 ]);
-
 
 //List excursions
 
-ListExcursionsState _loadActiveExcursions(
+ListExcursionsState _loadActive(
   ListExcursionsState state,
-  LoadActivityExcursionsAction action,
+  LoadActivityGuideExcursionsAction action,
 ) =>
     state.copyWith(
       isLoading: true,
       isError: false,
     );
 
-ListExcursionsState _errorActiveExcursions(
+ListExcursionsState _errorActive(
   ListExcursionsState state,
-  ErrorActivityExcursionsAction action,
+  ErrorActivityGuideExcursionsAction action,
 ) =>
     state.copyWith(
       isLoading: false,
       isError: true,
     );
 
-ListExcursionsState _showActiveExcursions(
+ListExcursionsState _showActive(
   ListExcursionsState state,
-  ShowActivityExcursionsAction action,
+  ShowActivityGuideExcursionsAction action,
 ) =>
     state.copyWith(
       excursions: action.excursions,
@@ -47,27 +46,27 @@ ListExcursionsState _showActiveExcursions(
       isError: false,
     );
 
-ListExcursionsState _loadModerateExcursions(
+ListExcursionsState _loadModerate(
   ListExcursionsState state,
-  LoadModerateExcursionsAction action,
+  LoadModerateGuideExcursionsAction action,
 ) =>
     state.copyWith(
       isLoading: true,
       isError: false,
     );
 
-ListExcursionsState _errorModerateExcursions(
+ListExcursionsState _errorModerate(
   ListExcursionsState state,
-  ErrorModerateExcursionsAction action,
+  ErrorModerateGuideExcursionsAction action,
 ) =>
     state.copyWith(
       isLoading: false,
       isError: true,
     );
 
-ListExcursionsState _showModerateExcursions(
+ListExcursionsState _showModerate(
   ListExcursionsState state,
-  ShowModerateExcursionsAction action,
+  ShowModerateGuideExcursionsAction action,
 ) =>
     state.copyWith(
       excursions: action.excursions,

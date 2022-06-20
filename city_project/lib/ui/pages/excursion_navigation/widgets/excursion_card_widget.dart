@@ -103,7 +103,7 @@ class ExcursionCardWidget extends StatelessWidget {
                 ),
 
                 ///ДОБАВЛЕНИЕ В ИЗБРАННОЕ
-                Container(
+                /*Container(
                   margin: EdgeInsets.only(
                     top: MediaQuery.of(context).size.width / 50,
                     right: MediaQuery.of(context).size.width / 50,
@@ -112,7 +112,7 @@ class ExcursionCardWidget extends StatelessWidget {
                     icon: iconFavoriteWhite,
                     onPressed: null,
                   ),
-                ),
+                ),*/
               ],
             ),
 

@@ -3,6 +3,8 @@ import 'package:lan_code/back-end/redux/booking/booking_state.dart';
 import 'package:lan_code/back-end/redux/city/city_state.dart';
 import 'package:lan_code/back-end/redux/excursion/excursion_state.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lan_code/back-end/redux/record/state.dart';
+import 'package:lan_code/back-end/redux/ticket/ticket_state.dart';
 import 'package:lan_code/back-end/redux/user/user_state.dart';
 
 part 'app_state.freezed.dart';
@@ -25,5 +27,10 @@ class AppState with _$AppState {
     required ListExcursionsState guidActiveExcursions,
     required ListExcursionsState guidModerateExcursions,
     required BookingInfoState bookingInfoState,
+    // Ticket
+    required TicketListState ticketListActivityState,
+    required TicketListState ticketListCancelState,
+    required TicketDetailState ticketDetailState,
+    required RecordListState recordListState,
   }) = _AppState;
 }

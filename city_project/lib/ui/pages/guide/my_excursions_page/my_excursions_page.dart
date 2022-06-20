@@ -5,15 +5,13 @@ import 'package:lan_code/back-end/redux/excursion/excursion_state.dart';
 import 'package:lan_code/back-end/redux/guide_excursions/guide_active_excursions_action.dart';
 import 'package:lan_code/ui/common/colors.dart';
 import 'package:lan_code/ui/common/textStyle.dart';
-import 'package:lan_code/ui/pages/guide/my_excursions_page/card_widget.dart';
+import 'package:lan_code/ui/pages/guide/my_excursions_page/card.dart';
 import 'package:lan_code/ui/widgets/loading_widget.dart';
 import 'package:lan_code/ui/widgets/page_reload_widget.dart';
 import 'package:redux/redux.dart';
 
 class MyExcursionsPage extends StatefulWidget {
-  final int indexTab;
-
-  const MyExcursionsPage({this.indexTab = 0, Key? key}) : super(key: key);
+  const MyExcursionsPage({Key? key}) : super(key: key);
 
   @override
   State<MyExcursionsPage> createState() => _MyTicketsPageState();
@@ -28,32 +26,29 @@ class _MyTicketsPageState extends State<MyExcursionsPage> with TickerProviderSta
     super.didChangeDependencies();
     _store = StoreProvider.of<AppState>(context);
     _tabController = TabController(length: 2, vsync: this);
-    _tabController.index = widget.indexTab;
-    if (_tabController.index == 0) {
-      if (_store.state.guidActiveExcursions.excursions.isEmpty) {
-        _store.dispatch(getActiveExcursionsByGuideThunkAction());
-      }
-    } else {
-      if (_store.state.guidModerateExcursions.excursions.isEmpty) {
-        _store.dispatch(getModerateExcursionsByGuideThunkAction());
-      }
-    }
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
         switch (_tabController.index) {
           case 0:
             if (_store.state.guidActiveExcursions.excursions.isEmpty) {
-              _store.dispatch(getActiveExcursionsByGuideThunkAction());
+              _store.dispatch(LoadActivityGuideExcursionsAction());
+              _store.dispatch(ActiveExcursionsThunkAction());
             }
             break;
           case 1:
             if (_store.state.guidModerateExcursions.excursions.isEmpty) {
-              _store.dispatch(getModerateExcursionsByGuideThunkAction());
+              _store.dispatch(LoadModerateGuideExcursionsAction());
+              _store.dispatch(ModerateExcursionsThunkAction());
             }
             break;
         }
       }
     });
+
+    if (_store.state.guidActiveExcursions.excursions.isEmpty) {
+      _store.dispatch(LoadActivityGuideExcursionsAction());
+      _store.dispatch(ActiveExcursionsThunkAction());
+    }
   }
 
   @override
@@ -90,6 +85,7 @@ class _MyTicketsPageState extends State<MyExcursionsPage> with TickerProviderSta
           backgroundColor: Grey,
           body: TabBarView(
             controller: _tabController,
+            physics: const NeverScrollableScrollPhysics(),
             children: [
               ActiveTab(storeApp: _store),
               ModerateTab(storeApp: _store),
@@ -106,13 +102,16 @@ class ActiveTab extends StatelessWidget {
 
   const ActiveTab({Key? key, required this.storeApp}) : super(key: key);
 
+  void refresh() {
+    storeApp.dispatch(LoadActivityGuideExcursionsAction());
+    storeApp.dispatch(ActiveExcursionsThunkAction());
+  }
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       color: Blue,
-      onRefresh: () => Future(() {
-        storeApp.dispatch(getActiveExcursionsByGuideThunkAction());
-      }),
+      onRefresh: () => Future(() => refresh()),
       child: StoreConnector<AppState, ListExcursionsState>(
         converter: (store) => store.state.guidActiveExcursions,
         builder: (context, store) {
@@ -121,7 +120,7 @@ class ActiveTab extends StatelessWidget {
           } else if (store.isError) {
             return PageReloadWidget(
               errorText: 'Ошибка загрузки экскурсий',
-              func: storeApp.dispatch(getActiveExcursionsByGuideThunkAction()),
+              func: refresh,
             );
           }
           if (store.excursions.isEmpty) {
@@ -136,16 +135,15 @@ class ActiveTab extends StatelessWidget {
               ),
             );
           }
-          List<Widget> _excursionsCard = [];
-          for (int i = 0; i < store.excursions.length; i++) {
-            _excursionsCard.add(CardWidget(
-              excursionEntity: store.excursions[i],
-              userEntity: storeApp.state.authState.user,
-              typeEntity: store.types[i],
-              currencyEntity: store.currencies[i],
-            ));
-          }
-          return ListView(children: _excursionsCard);
+          return ListView.separated(
+            itemCount: store.excursions.length,
+            separatorBuilder: (BuildContext context, int index) => const Divider(height: 0),
+            itemBuilder: (BuildContext context, int index) {
+              return CardExcursion(
+                excursion: store.excursions[index],
+              );
+            },
+          );
         },
       ),
     );
@@ -157,13 +155,16 @@ class ModerateTab extends StatelessWidget {
 
   const ModerateTab({Key? key, required this.storeApp}) : super(key: key);
 
+  void refresh() {
+    storeApp.dispatch(LoadModerateGuideExcursionsAction());
+    storeApp.dispatch(ModerateExcursionsThunkAction());
+  }
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       color: Blue,
-      onRefresh: () => Future(() {
-        storeApp.dispatch(getModerateExcursionsByGuideThunkAction());
-      }),
+      onRefresh: () => Future(() => refresh()),
       child: StoreConnector<AppState, ListExcursionsState>(
         converter: (store) => store.state.guidModerateExcursions,
         builder: (context, store) {
@@ -172,7 +173,7 @@ class ModerateTab extends StatelessWidget {
           } else if (store.isError) {
             return PageReloadWidget(
               errorText: 'Ошибка загрузки экскурсий',
-              func: storeApp.dispatch(getModerateExcursionsByGuideThunkAction()),
+              func: refresh,
             );
           }
           if (store.excursions.isEmpty) {
@@ -187,16 +188,15 @@ class ModerateTab extends StatelessWidget {
               ),
             );
           }
-          List<Widget> _excursionsCard = [];
-          for (int i = 0; i < store.excursions.length; i++) {
-            _excursionsCard.add(CardWidget(
-              excursionEntity: store.excursions[i],
-              userEntity: storeApp.state.authState.user,
-              typeEntity: store.types[i],
-              currencyEntity: store.currencies[i],
-            ));
-          }
-          return ListView(children: _excursionsCard);
+          return ListView.separated(
+            itemCount: store.excursions.length,
+            separatorBuilder: (BuildContext context, int index) => const Divider(height: 0),
+            itemBuilder: (BuildContext context, int index) {
+              return CardExcursion(
+                excursion: store.excursions[index],
+              );
+            },
+          );
         },
       ),
     );
@@ -210,7 +210,7 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       leading: IconButton(
-        icon: Icon(
+        icon: const Icon(
           Icons.arrow_back_ios,
           color: Blue,
         ),
