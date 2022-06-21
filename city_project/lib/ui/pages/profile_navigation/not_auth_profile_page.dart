@@ -61,7 +61,7 @@ class NotAuthProfilePage extends StatelessWidget {
                 child: ListToDocumentWidget(
                   mainText: "При входе, вы принимаете условия пользования сервисом.",
                   func: (){
-                    _launchUrl('https://docs.yandex.ru/docs/view?url=ya-disk-public%3A%2F%2FIF%2BhvQ1wJV3Vs%2BiH8KsfPVkdeamhHqJPyXagjqOpwRDBYH9s25%2FH7mDVsNiSDiqwq%2FJ6bpmRyOJonT3VoXnDag%3D%3D%3A%2FУсловия%20использования.docx&name=Условия%20использования.docx&nosw=1');
+                    _launchUrl('https://disk.yandex.ru/i/W2r-wI6BpLmZ3A');
                   },
                 ),
               ),

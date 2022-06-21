@@ -13,6 +13,8 @@ import 'package:lan_code/ui/widgets/libary/customSnackBar.dart';
 import 'package:lan_code/ui/widgets/libary/topSnackBart.dart';
 import 'package:provider/provider.dart';
 import 'package:redux/redux.dart';
+import 'package:lan_code/ui/widgets/link_to_document_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BecomeGuidePage extends StatefulWidget {
   const BecomeGuidePage({Key? key}) : super(key: key);
@@ -83,14 +85,34 @@ class _BecomeGuidePageState extends State<BecomeGuidePage> {
             ),
           ];
         },
-        body: Center(
-          child: ButtonWidget(
-            buttonColor: Red,
-            text: "Стать гидом",
-            func: becomeGuide,
-          ),
-        ),
+        body: 
+        Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                  margin: const EdgeInsets.only(top: 30),
+                  child: ListToDocumentWidget(
+                  mainText: "Чтобы начать публиковать экскурсии, Вам нужно пройти модерацию. От Вас потребуется только Ваш мобильный телефон и фотография с листом бумаги, на котором указана сегодняшняя дата. Результат модерации придёт Вам на почту, которую Вы указывали при регистрации. Если остались вопросы, то напишите нам в техническую поддержку. Перед заполнением обязательно прочтите документ 'Соглашение между гидом и 'TripTeam'.",
+                  func: (){
+                    _launchUrl('https://disk.yandex.ru/i/gbOHaBly4cpFXg');
+                      },
+                    ),
+                  ),
+                  ButtonWidget(
+                    buttonColor: Red,
+                    text: "Стать гидом",
+                    func: becomeGuide,
+                  ),
+                ],
+              ),
       ),
     );
+  }
+  void _launchUrl(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

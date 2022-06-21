@@ -19,7 +19,9 @@ import 'package:lan_code/ui/widgets/loading_widget.dart';
 import 'package:lan_code/ui/widgets/page_reload_widget.dart';
 import 'package:lan_code/ui/widgets/text_field_style.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:lan_code/ui/widgets/link_to_document_widget.dart';
 import 'package:redux/redux.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BookingController {
   final TextEditingController standardTicket = TextEditingController();
@@ -45,7 +47,8 @@ class _BookingPageState extends State<BookingPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _store = StoreProvider.of<AppState>(context);
-    _store.dispatch(BookingInfoThunkAction(_store.state.excursionInfoState.excursion!.id));
+    _store.dispatch(
+        BookingInfoThunkAction(_store.state.excursionInfoState.excursion!.id));
   }
 
   @override
@@ -64,7 +67,8 @@ class _BookingPageState extends State<BookingPage> {
                   icon: const Icon(Icons.arrow_back_ios, size: 20, color: Blue),
                   onPressed: () => Navigator.pop(context),
                 ),
-                title: Text("Бронирование", style: Montserrat(size: 25, style: Bold)),
+                title: Text("Бронирование",
+                    style: Montserrat(size: 25, style: Bold)),
               ),
               body: StoreConnector<AppState, BookingInfoState>(
                 converter: (store) => store.state.bookingInfoState,
@@ -76,8 +80,8 @@ class _BookingPageState extends State<BookingPage> {
                   } else if (store.isError) {
                     return PageReloadWidget(
                       errorText: 'Ошибка загрузки брони',
-                      func: () => _store.dispatch(
-                          BookingInfoThunkAction(_store.state.excursionInfoState.excursion!.id)),
+                      func: () => _store.dispatch(BookingInfoThunkAction(
+                          _store.state.excursionInfoState.excursion!.id)),
                     );
                   }
                   return const _Body();
@@ -184,8 +188,6 @@ class _BodyState extends State<_Body> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ///ТЕКСТ О БРОНИ
-            const _TextButtonAboutBooking(),
-
             _Phone(controller: controller),
 
             _StandardTickets(
@@ -217,11 +219,20 @@ class _BodyState extends State<_Body> {
             ),
 
             Container(
-              margin: const EdgeInsets.only(top: 50),
+              margin: const EdgeInsets.only(top: 10),
               height: MediaQuery.of(context).size.height / 4.2,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                   Container(
+                margin: const EdgeInsets.only(top: 50),
+                child: ListToDocumentWidget(
+                  mainText: "Оплата происходит только за бронь, 20% от полной стоймости билета.",
+                  func: (){
+                    _launchUrl('https://disk.yandex.ru/i/zE7wFbfd2X3qXA');
+                  },
+                ),
+              ),
                   ///КНОПКА ЗАБРОНИРОВАТЬ
                   ButtonWidget(
                     text: "Забронировать",
@@ -235,16 +246,21 @@ class _BodyState extends State<_Body> {
                       );
                     },
                   ),
-
-                  ///ТЕКСТ О ПЛАТЕЖЕ
-                  const _TextButtonAboutPriced(),
                 ],
               ),
             ),
+            
           ],
         ),
       ],
     );
+  }
+  void _launchUrl(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }
 
@@ -581,80 +597,6 @@ class _DateTimeWidgetState extends State<_DateTimeWidget> {
           },
         ),
       ],
-    );
-  }
-}
-
-class _TextButtonAboutBooking extends StatelessWidget {
-  const _TextButtonAboutBooking({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 30),
-      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 12),
-      child: RichText(
-        textAlign: TextAlign.center,
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: "Оплата происходит только за бронь, 20% от полной стоимости билета. ",
-              style: Montserrat(size: 12, color: Blue),
-            ),
-            TextSpan(
-              text: "Подробнее.",
-              style: Montserrat(style: SemiBold, size: 13, color: Red),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  showModalBottomSheet(
-                    backgroundColor: White.withOpacity(0),
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Container();
-                    },
-                  );
-                },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _TextButtonAboutPriced extends StatelessWidget {
-  const _TextButtonAboutPriced({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 30),
-      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 12),
-      child: RichText(
-        textAlign: TextAlign.center,
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: "Оплатить бронь вы сможете только после разрешения гида. ",
-              style: Montserrat(size: 12, color: Blue),
-            ),
-            TextSpan(
-              text: "Подробнее.",
-              style: Montserrat(style: SemiBold, size: 13, color: Red),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  showModalBottomSheet(
-                    backgroundColor: White.withOpacity(0),
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Container();
-                    },
-                  );
-                },
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

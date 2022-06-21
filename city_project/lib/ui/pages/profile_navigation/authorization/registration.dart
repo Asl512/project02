@@ -10,6 +10,8 @@ import 'package:lan_code/ui/widgets/libary/customSnackBar.dart';
 import 'package:lan_code/ui/widgets/libary/topSnackBart.dart';
 import 'package:lan_code/ui/widgets/text_field_style.dart';
 import 'package:lan_code/service.dart';
+import 'package:lan_code/ui/widgets/link_to_document_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Registration extends StatefulWidget {
   const Registration({Key? key}) : super(key: key);
@@ -156,6 +158,15 @@ class _RegistrationState extends State<Registration> {
                       func: () => Validation(),
                     ),
                   ),
+                  Container(
+                margin: const EdgeInsets.only(top: 30),
+                child: ListToDocumentWidget(
+                  mainText: "При входе, вы принимаете политику конфиденциальности.",
+                  func: (){
+                    _launchUrl('https://disk.yandex.ru/i/cZQoI8jtNhi9gg');
+                  },
+                ),
+              ),
                 ]),
               ),
             ],
@@ -171,6 +182,13 @@ class _RegistrationState extends State<Registration> {
             : Container(),
       )
     ]);
+  }
+  void _launchUrl(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   void Validation() async {
