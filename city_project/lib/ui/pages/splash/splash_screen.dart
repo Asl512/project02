@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:lan_code/back-end/redux/app/app_state.dart';
 import 'package:lan_code/back-end/redux/city/city_actions.dart';
-import 'package:lan_code/back-end/redux/user/user_actions.dart';
 import 'package:lan_code/ui/common/colors.dart';
 import 'package:lan_code/ui/common/images.dart';
 import 'package:lan_code/ui/pages/navigation.dart';

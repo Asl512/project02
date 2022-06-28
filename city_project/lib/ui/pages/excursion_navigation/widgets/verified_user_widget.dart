@@ -5,7 +5,7 @@ class VerifiedUserWidget extends StatelessWidget {
   final bool check;
   final double? size;
   final double? mSize;
-  VerifiedUserWidget(
+  const VerifiedUserWidget(
       this.check,{
         this.size = 40,
         this.mSize = 15,

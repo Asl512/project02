@@ -58,29 +58,29 @@ class _SecondStepPageState extends State<SecondStepPage> {
                     children: [
                       Column(children: [
                         Container(
-                          margin: EdgeInsets.only(top: 70),
+                          margin: const EdgeInsets.only(top: 70),
                           alignment: Alignment.center,
                           child: Text("Проверочный код",style: Montserrat(color:Blue,size: 35,style: Bold)),
                           padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
                         ),
                       ]),
-                      ButtonBack()
+                      const ButtonBack()
                     ])
             )
         ),
 
         body:ListView(shrinkWrap: true,
           children: [
-            Container(
+            SizedBox(
                 height: SizePage.height/20*11,
                 child: Container(
-                  margin: EdgeInsets.only(top: 80),
+                  margin: const EdgeInsets.only(top: 80),
                   padding: EdgeInsets.symmetric(horizontal: SizePage.width/15),
                   child: Column(
                       children:[
 
                         ///KEY
-                        Container(child: Column(children:[
+                        Column(children:[
 
                           Form(
                               key: formKey,
@@ -101,7 +101,7 @@ class _SecondStepPageState extends State<SecondStepPage> {
                                     inactiveFillColor: White,
                                     errorBorderColor: Red
                                 ),
-                                animationDuration: Duration(milliseconds: 300),
+                                animationDuration: const Duration(milliseconds: 300),
                                 enableActiveFill: true,
                                 errorAnimationController: errorController,
                                 controller: textEditingController,
@@ -111,8 +111,7 @@ class _SecondStepPageState extends State<SecondStepPage> {
                                   setState(() {currentText = value;});
                                 },
                               )),
-                            ])
-                        ),
+                            ]),
 
 
                         ///ТЕКСТ
@@ -126,7 +125,7 @@ class _SecondStepPageState extends State<SecondStepPage> {
                 )
             ),
 
-            Container(
+            SizedBox(
                 height: SizePage.height/3-60,
                 child: Column(
                   children: [
@@ -135,14 +134,14 @@ class _SecondStepPageState extends State<SecondStepPage> {
                     TextButton(onPressed: (){CheckCode();},
                         child: Container(width: SizePage.width-SizePage.width/15*2,
                             height: 50,
-                            decoration: BoxDecoration(color: Blue,
+                            decoration: const BoxDecoration(color: Blue,
                                 borderRadius: BorderRadius.all(Radius.circular(500))),
                             child: Center(child: Text("Далее", style: Montserrat(style: SemiBold,size: 19)),)
                         )
                     ),
 
 
-                    ButtonRetry()
+                    const ButtonRetry()
                   ],
                 )
             ),
@@ -204,7 +203,7 @@ class _ButtonRetryState extends State<ButtonRetry> {
       }
     else{
       countM();
-      return Container(margin: EdgeInsets.only(top: 10),
+      return Container(margin: const EdgeInsets.only(top: 10),
       child: Column(
         children: [
           Text("Мы отправили вам код", style: Montserrat(color:Blue, size: 16)),

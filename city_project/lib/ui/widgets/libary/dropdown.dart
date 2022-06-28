@@ -190,7 +190,7 @@ class MyDropdownFormFieldldState<T> extends State<MyDropdownFormField>
             builder: (state) {
               return InputDecorator(
                 decoration: widget.decoration ??
-                    InputDecoration(
+                    const InputDecoration(
                       border: UnderlineInputBorder(),
                       suffixIcon: Icon(Icons.arrow_drop_down),
                     ),
@@ -212,7 +212,7 @@ class MyDropdownFormFieldldState<T> extends State<MyDropdownFormField>
                   },
                   onSubmitted: (str) {
                     _searchTextController.value =
-                        TextEditingValue(text: "");
+                        const TextEditingValue(text: "");
                     _setValue();
                     _removeOverlay();
                     _widgetFocusNode.nextFocus();
@@ -259,7 +259,7 @@ class MyDropdownFormFieldldState<T> extends State<MyDropdownFormField>
                                 Function() onTap = () {
                                   _listItemFocusedPosition = position;
                                   _searchTextController.value =
-                                      TextEditingValue(text: "");
+                                      const TextEditingValue(text: "");
                                   _removeOverlay();
                                   _setValue();
                                 };
@@ -275,7 +275,7 @@ class MyDropdownFormFieldldState<T> extends State<MyDropdownFormField>
                                 return listTile;
                               })
                               : Container(
-                            padding: EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(16),
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -431,6 +431,6 @@ class MyDropdownFormFieldldState<T> extends State<MyDropdownFormField>
     if (widget.onChanged != null) {
       widget.onChanged!(_selectedItem);
     }
-    _searchTextController.value = TextEditingValue(text: "");
+    _searchTextController.value = const TextEditingValue(text: "");
   }
 }

@@ -139,7 +139,7 @@ class _FirstStepPageState extends State<FirstStepPage> {
     }
     else{
       setState(() {isLoading = true;});
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> SecondStepPage(this.email)));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> SecondStepPage(email)));
       setState(() {isLoading = false;});
     }
   }

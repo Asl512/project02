@@ -60,7 +60,7 @@ class NotAuthProfilePage extends StatelessWidget {
                 margin: const EdgeInsets.only(top: 30),
                 child: ListToDocumentWidget(
                   mainText: "При входе, вы принимаете условия пользования сервисом.",
-                  func: (){
+                  func: () {
                     _launchUrl('https://disk.yandex.ru/i/W2r-wI6BpLmZ3A');
                   },
                 ),
@@ -73,11 +73,11 @@ class NotAuthProfilePage extends StatelessWidget {
   }
 
   void _launchUrl(url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
+    final uri = Uri.parse(url);
+    await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    );
   }
 }
 

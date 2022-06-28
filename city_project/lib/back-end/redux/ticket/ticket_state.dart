@@ -2,7 +2,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lan_code/back-end/domain/entities/categorie_people_entity.dart';
 import 'package:lan_code/back-end/domain/entities/excursion_entity.dart';
 import 'package:lan_code/back-end/domain/entities/ticket_entity.dart';
-import 'package:lan_code/back-end/domain/entities/type_entity.dart';
 import 'package:lan_code/back-end/domain/entities/type_move_entity.dart';
 import 'package:lan_code/back-end/domain/entities/user_entity.dart';
 

@@ -13,7 +13,6 @@ import 'package:lan_code/ui/widgets/image_box_widget.dart';
 import 'package:lan_code/ui/widgets/loading_widget.dart';
 import 'package:lan_code/ui/widgets/page_reload_widget.dart';
 import 'package:lan_code/ui/widgets/style.dart';
-import 'package:lan_code/ui/widgets/text_field_style.dart';
 import 'package:redux/redux.dart';
 import 'dart:math' as math;
 
@@ -265,11 +264,11 @@ class _Card extends StatelessWidget {
   }
 
   void _launchUrl(url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
+    final uri = Uri.parse(url);
+    await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    );
   }
 
   void _showUserContacts({

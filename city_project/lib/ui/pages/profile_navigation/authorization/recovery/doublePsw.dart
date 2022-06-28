@@ -48,20 +48,20 @@ class _doublePswState extends State<doublePsw> {
                         children: [
                           Column(children: [
                             Container(
-                              margin: EdgeInsets.only(top: 70),
+                              margin: const EdgeInsets.only(top: 70),
                               alignment: Alignment.center,
                               child: Text("Введите новый пароль",style: Montserrat(color:Blue,size: 35,style: Bold)),
                               padding: EdgeInsets.symmetric(horizontal: SizePage.width/20),
                             ),
                           ]),
-                          ButtonBack()
+                          const ButtonBack()
                         ])
                 )
             ),
 
         body:ListView(shrinkWrap: true,
           children: [
-            Container(
+            SizedBox(
                 height: SizePage.height/2,
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: SizePage.width/15),
@@ -71,7 +71,7 @@ class _doublePswState extends State<doublePsw> {
                         ///PASSWORD
                         Column(crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              TitleTextFormField(text: "Пароль:"),
+                              const TitleTextFormField(text: "Пароль:"),
 
                               TextFieldWithShadow(
                                   TextField(
@@ -87,11 +87,11 @@ class _doublePswState extends State<doublePsw> {
                                       },
                                       decoration: InputDecoration(
                                         //ИКОНКА
-                                          prefixIcon: PrefixIconTextField(color: Color(0xFF00f069),icon: iconPassword),
+                                          prefixIcon: PrefixIconTextField(color: const Color(0xFF00f069),icon: iconPassword),
 
                                           //СКРЫТЬ/ПОКАЗАТЬ
                                           suffixIcon: Container(
-                                              margin: EdgeInsets.only(right: 10),
+                                              margin: const EdgeInsets.only(right: 10),
                                               child: IconButton(
                                                 icon: passwordVisible == true
                                                     ? iconShow
@@ -112,7 +112,7 @@ class _doublePswState extends State<doublePsw> {
                                           border: OutlineInputBorder(
                                               borderRadius: BorderRadius.circular(
                                                   500),
-                                              borderSide: BorderSide(width: 0,
+                                              borderSide: const BorderSide(width: 0,
                                                   style: BorderStyle.none)
                                           ),
                                           fillColor: White,
@@ -125,10 +125,10 @@ class _doublePswState extends State<doublePsw> {
                             ]),
 
                         ///PASSWORD
-                        Container(margin: EdgeInsets.only(top: 30),
+                        Container(margin: const EdgeInsets.only(top: 30),
                             child:Column(crossAxisAlignment: CrossAxisAlignment.start,
                                 children:[
-                                  TitleTextFormField(text: "Повторите пароль:"),
+                                  const TitleTextFormField(text: "Повторите пароль:"),
 
                                   TextFieldWithShadow(
                                       TextField(style: Montserrat(color:Blue,size: 15),
@@ -140,10 +140,10 @@ class _doublePswState extends State<doublePsw> {
                                           });},
                                           decoration: InputDecoration(
                                             //ИКОНКА
-                                              prefixIcon: PrefixIconTextField(color: Color(0xFF00f069), icon: iconPassword),
+                                              prefixIcon: PrefixIconTextField(color: const Color(0xFF00f069), icon: iconPassword),
 
                                               //СКРЫТЬ/ПОКАЗАТЬ
-                                              suffixIcon: Container(margin: EdgeInsets.only(right: 10),
+                                              suffixIcon: Container(margin: const EdgeInsets.only(right: 10),
                                                   child: IconButton(
                                                     icon: passwordVisibleTwo == true ? iconShow : iconHide,
                                                     onPressed: ()
@@ -161,7 +161,7 @@ class _doublePswState extends State<doublePsw> {
 
                                               //СТИЛЬ
                                               border: OutlineInputBorder(borderRadius: BorderRadius.circular(500),
-                                                  borderSide: BorderSide(width: 0, style: BorderStyle.none)
+                                                  borderSide: const BorderSide(width: 0, style: BorderStyle.none)
                                               ),
                                               fillColor: White,
                                               isDense: true,
@@ -177,7 +177,7 @@ class _doublePswState extends State<doublePsw> {
                 )
             ),
 
-            Container(
+            SizedBox(
                 height: SizePage.height/3-60,
                 child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -187,7 +187,7 @@ class _doublePswState extends State<doublePsw> {
                     },
                         child: Container(width: SizePage.width-SizePage.width/15*2,
                             height: 50,
-                            decoration: BoxDecoration(color: Blue,
+                            decoration: const BoxDecoration(color: Blue,
                                 borderRadius: BorderRadius.all(Radius.circular(500))),
                             child: Center(child: Text("Далее", style: Montserrat(style: SemiBold,size: 19)),)
                         )
@@ -202,7 +202,7 @@ class _doublePswState extends State<doublePsw> {
       Positioned(
         child: isLoading
             ? Container(
-          child: Center(
+          child: const Center(
             child: CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Blue),
             ),

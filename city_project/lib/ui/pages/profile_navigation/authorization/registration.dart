@@ -184,11 +184,11 @@ class _RegistrationState extends State<Registration> {
     ]);
   }
   void _launchUrl(url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
+    final uri = Uri.parse(url);
+    await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    );
   }
 
   void Validation() async {

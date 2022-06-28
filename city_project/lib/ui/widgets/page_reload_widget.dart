@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lan_code/ui/common/colors.dart';
 import 'package:lan_code/ui/common/textStyle.dart';
-import 'package:lan_code/ui/pages/navigation.dart';
 
 class PageReloadWidget extends StatelessWidget {
   final String errorText;

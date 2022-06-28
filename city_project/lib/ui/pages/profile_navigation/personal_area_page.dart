@@ -11,8 +11,6 @@ import 'package:lan_code/ui/pages/profile_navigation/become_guide_page.dart';
 import 'package:lan_code/ui/pages/profile_navigation/widgets/button_social_network_widget.dart';
 import 'package:lan_code/ui/widgets/button_widget.dart';
 import 'package:lan_code/service.dart';
-import 'package:lan_code/ui/widgets/libary/customSnackBar.dart';
-import 'package:lan_code/ui/widgets/libary/topSnackBart.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'widgets/button_profile_style_widget.dart';
 
@@ -45,13 +43,15 @@ class PersonalAreaPage extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Stack(children: [
-                          PhotoUserWidget((user?.photo) ?? "null",
-                              size: MediaQuery.of(context).size.width / 7),
-                          VerifiedUserWidget((user?.verified) ?? false,
-                              size: MediaQuery.of(context).size.width / 7,
-                              mSize: MediaQuery.of(context).size.width / 7 / 4)
-                        ]),
+                        Stack(
+                          children: [
+                            PhotoUserWidget((user?.photo) ?? "null",
+                                size: MediaQuery.of(context).size.width / 7),
+                            VerifiedUserWidget((user?.verified) ?? false,
+                                size: MediaQuery.of(context).size.width / 7,
+                                mSize: MediaQuery.of(context).size.width / 7 / 4)
+                          ],
+                        ),
                         Container(
                           margin: const EdgeInsets.only(left: 20),
                           child: Column(
@@ -86,7 +86,7 @@ class PersonalAreaPage extends StatelessWidget {
                         ? ButtonProfileStyleWidget(
                             title: 'Мои экскурсии',
                             description: 'Экскурсии в которых вы являетесь гидом',
-                            icon: Icon(Icons.person_outlined, color: Blue, size: 30),
+                            icon: const Icon(Icons.person_outlined, color: Blue, size: 30),
                             func: () => Navigator.push(
                               context,
                               MaterialPageRoute(builder: (_) => const MyExcursionsPage()),
@@ -116,9 +116,16 @@ class PersonalAreaPage extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    const ButtonProfileStyleWidgetEasy(
+                    ButtonProfileStyleWidgetEasy(
                       title: 'О приложении',
-                      func: null,
+                      func: () async {
+                        final uri = Uri.parse(
+                            'https://docs.yandex.ru/docs/view?url=ya-disk-public%3A%2F%2FIF%2BhvQ1wJV3Vs%2BiH8KsfPVkdeamhHqJPyXagjqOpwRDBYH9s25%2FH7mDVsNiSDiqwq%2FJ6bpmRyOJonT3VoXnDag%3D%3D%3A%2FО%20проекте.docx&name=О%20проекте.docx');
+                        await launchUrl(
+                          uri,
+                          mode: LaunchMode.externalApplication,
+                        );
+                      },
                     ),
                     Container(height: 1, width: MediaQuery.of(context).size.width, color: Blue),
                     ButtonProfileStyleWidgetEasy(
@@ -178,23 +185,23 @@ class ShowWeContacts extends StatelessWidget {
                   ButtonSocialNetworkWidget(
                     icon: iconVK,
                     func: () async {
-                      launchURL('https://vk.com/astraslan', context);
+                      _launchUrl('https://vk.com/astraslan');
                     },
                   ),
                   ButtonSocialNetworkWidget(
                       icon: iconWhatsapp,
                       func: () {
-                        launchURL('', context);
+                        _launchUrl('');
                       }),
                   ButtonSocialNetworkWidget(
                       icon: iconInstagram,
                       func: () {
-                        launchURL('https://www.instagram.com/asl_astro/', context);
+                        _launchUrl('https://www.instagram.com/asl_astro/');
                       }),
                   ButtonSocialNetworkWidget(
                       icon: iconTelegram,
                       func: () {
-                        launchURL('https://t.me/astroasl', context);
+                        _launchUrl('https://t.me/astroasl');
                       })
                 ]))
           ])),
@@ -210,17 +217,11 @@ class ShowWeContacts extends StatelessWidget {
     ]);
   }
 
-  void launchURL(String url, context) async {
-    try {
-      await launch(url);
-    } catch (e) {
-      showTopSnackBar(
-          context,
-          CustomSnackBar.error(
-            message: e.toString(),
-            textStyle: Montserrat(size: 15, color: White),
-            lines: 4,
-          ));
-    }
+  void _launchUrl(url) async {
+    final uri = Uri.parse(url);
+    await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    );
   }
 }

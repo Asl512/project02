@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lan_code/back-end/data/models/review_model.dart';
-import 'package:lan_code/back-end/data/models/tag_model.dart';
-import 'package:lan_code/back-end/domain/entities/review_entity.dart';
 
 abstract class ReviewsRemoteDataSource {
   Future<List<ReviewsModel>?> getReviews(String idExcursion);

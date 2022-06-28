@@ -9,7 +9,7 @@ class PhotoUserWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(500)),
+        borderRadius: const BorderRadius.all(Radius.circular(500)),
         child: Image.network(
           url,
           fit: BoxFit.cover,

@@ -2,16 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:lan_code/back-end/redux/app/app_state.dart';
-import 'package:lan_code/back-end/redux/city/city_actions.dart';
-import 'package:lan_code/back-end/redux/user/user_actions.dart';
-import 'package:lan_code/service.dart';
 import 'package:lan_code/ui/common/colors.dart';
 import 'package:lan_code/ui/common/textStyle.dart';
 import 'package:lan_code/ui/pages/navigation.dart';
 import 'package:lan_code/ui/widgets/button_widget.dart';
 import 'package:lan_code/ui/widgets/libary/customSnackBar.dart';
 import 'package:lan_code/ui/widgets/libary/topSnackBart.dart';
-import 'package:provider/provider.dart';
 import 'package:redux/redux.dart';
 import 'package:lan_code/ui/widgets/link_to_document_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -109,10 +105,10 @@ class _BecomeGuidePageState extends State<BecomeGuidePage> {
     );
   }
   void _launchUrl(url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
+    final uri = Uri.parse(url);
+    await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    );
   }
 }
